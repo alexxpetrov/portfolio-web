@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 
+import UserProviderWrapper from "./dashboard/provider/userProvider";
+import InterceptorHoc from "./hocs/interceptorHoc";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
+import AppLayout from "./layer";
+
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -27,8 +32,15 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        style={{ margin: 0 }}
       >
-        {children}
+        <AntdRegistry>
+          <UserProviderWrapper>
+            <InterceptorHoc>
+              <AppLayout>{children}</AppLayout>
+            </InterceptorHoc>
+          </UserProviderWrapper>
+        </AntdRegistry>
       </body>
     </html>
   );
