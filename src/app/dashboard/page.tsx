@@ -1,5 +1,4 @@
 "use client";
-import Image from "next/image";
 import { Todos } from "./features/Todos";
 
 function Home() {

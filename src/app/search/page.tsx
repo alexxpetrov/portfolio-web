@@ -41,7 +41,7 @@ const AppForm = () => {
         addNewUrls: data.addNew,
       });
     }
-  }, [data, error, isLoading]);
+  }, [data, error, isLoading, form]);
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     await fetch(`${ENDPOINT}/api/searchSettings`, {

@@ -9,8 +9,8 @@ import { ENDPOINT } from "../../utils/fetcher";
 import { KeyedMutator } from "swr";
 import { Todo } from "./types";
 
-const { Header, Content, Footer } = Layout;
-const { Title, Text } = Typography;
+const { Header, Content } = Layout;
+const { Title } = Typography;
 
 type TodoListProps = {
   data?: Todo[];

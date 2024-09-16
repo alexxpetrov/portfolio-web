@@ -1,13 +1,13 @@
 "use client";
 
-import React from "react";
+import React, { ReactNode } from "react";
 import { Layout } from "antd";
 import AppHeader from "./dashboard/features/Header/Header";
 import { Provider } from "react-redux";
 import { store } from "./store/store.index";
 const { Content, Footer } = Layout;
 
-const AppLayout = ({ children }) => {
+const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
     <Provider store={store}>
       <Layout>

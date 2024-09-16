@@ -22,9 +22,10 @@ const AppHeader = () => {
   const pathname = usePathname();
 
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(actions.init());
-  }, []);
+  }, [dispatch]);
 
   return (
     <Header
