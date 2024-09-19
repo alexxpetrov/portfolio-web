@@ -5,9 +5,9 @@ import {
   CheckCircleFilled,
 } from "@ant-design/icons";
 
-import { ENDPOINT } from "../../utils/fetcher";
 import { KeyedMutator } from "swr";
 import { Todo } from "./types";
+import { ENDPOINT } from "../../utils/config";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;

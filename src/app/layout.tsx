@@ -6,6 +6,7 @@ import UserProviderWrapper from "./dashboard/provider/userProvider";
 import InterceptorHoc from "./hocs/interceptorHoc";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import AppLayout from "./layer";
+import { useAxiosSSRInterceptor } from "./dashboard/utils/serverSideFetcher";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -28,6 +29,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  useAxiosSSRInterceptor();
+
   return (
     <html lang="en">
       <body

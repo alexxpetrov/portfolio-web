@@ -2,7 +2,7 @@
 import { jwtDecode } from "jwt-decode";
 import { LoginDtoType, RegisterDtoType, User } from "../types/User";
 import axios, { AxiosError } from "axios";
-import { ENDPOINT } from "../utils/fetcher";
+import { ENDPOINT } from "../utils/config";
 
 export const authService = {
   login: async ({ email, password }: LoginDtoType): Promise<User> => {

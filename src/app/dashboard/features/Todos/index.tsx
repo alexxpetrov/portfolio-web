@@ -13,6 +13,7 @@ import { redirect } from "next/navigation";
 export const Todos = memo(function Todos() {
   const { user } = useContext(UserContext);
   const { protectedFetcher } = useFetchData();
+  console.log(user);
 
   const { data, mutate, error } = useSWR<Todo[]>(
     [user, "todos"],

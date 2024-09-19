@@ -1,8 +1,8 @@
 import { Button, Modal, Input, Form, FormProps, notification } from "antd";
 import { KeyedMutator } from "swr";
-import { ENDPOINT } from "../../utils/fetcher";
 import { Todo } from "./types";
 import { useState } from "react";
+import { ENDPOINT } from "../../utils/config";
 
 type FieldType = {
   body: string;

@@ -1,13 +1,8 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
-
-import { useCallback } from "react";
-import { User } from "../types/User";
-import { useUserContext } from "../hooks/useUserContext";
-import { jwtDecode } from "jwt-decode";
 import { ENDPOINT } from "./config";
 
 // Create a reusable Axios instance with withCredentials: true for cookies
-export const axiosInstance = axios.create({
+export const ssrAxiosInstance = axios.create({
   baseURL: `${ENDPOINT}/api`, // Your API base URL
 });
 
@@ -21,7 +16,7 @@ interface RetryQueueItem {
 }
 
 // Add global request interceptor
-axiosInstance.interceptors.request.use(
+ssrAxiosInstance.interceptors.request.use(
   async (config) => {
     // Modify request config here, e.g., add headers
 
@@ -45,7 +40,7 @@ axiosInstance.interceptors.request.use(
 
 // Function to refresh the access token using the refresh token stored in cookies
 const refreshAccessToken = async () => {
-  const response = await axiosInstance.post(
+  const response = await ssrAxiosInstance.post(
     "/refresh-token",
     {},
     {
@@ -60,8 +55,7 @@ const refreshAccessToken = async () => {
   return response.data.access_token;
 };
 
-export const useAxiosInterceptor = () => {
-  const { setUser } = useUserContext();
+export const useAxiosSSRInterceptor = () => {
   // Create a list to hold the request queue
   const refreshAndRetryQueue: RetryQueueItem[] = [];
   // @TODO: Add logout functionality when both accesstoken/refreshtoken have expired.
@@ -69,16 +63,8 @@ export const useAxiosInterceptor = () => {
   // Flag to prevent multiple token refresh requests
   let isRefreshing = false;
 
-  axiosInstance.interceptors.response.use(
-    (response) => {
-      if (response.data.access_token) {
-        setUser({
-          ...jwtDecode(response.data.access_token),
-          accessToken: response.data.access_token,
-        } as User);
-      }
-      return response;
-    },
+  ssrAxiosInstance.interceptors.response.use(
+    (response) => response,
     async (error) => {
       const originalRequest: AxiosRequestConfig = error.config;
       if (
@@ -92,16 +78,12 @@ export const useAxiosInterceptor = () => {
             // Refresh the access token
             const newAccessToken = await refreshAccessToken();
 
-            setUser({
-              ...jwtDecode(newAccessToken),
-              accessToken: newAccessToken,
-            } as User);
             // Update the request headers with the new access token
             error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
             // Retry all requests in the queue with the new token
             refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
-              axiosInstance
+              ssrAxiosInstance
                 .request(config)
                 .then((response) => resolve(response))
                 .catch((err) => reject(err));
@@ -111,7 +93,7 @@ export const useAxiosInterceptor = () => {
             refreshAndRetryQueue.length = 0;
 
             // Retry the original request
-            return axiosInstance(originalRequest);
+            return ssrAxiosInstance(originalRequest);
           } finally {
             isRefreshing = false;
           }
@@ -136,29 +118,20 @@ export const useAxiosInterceptor = () => {
   );
 };
 
-export const useFetchData = () => {
+export const useSSRFetch = () => {
   // Main request function that manages access tokens and retries failed requests
-  const protectedFetcher = useCallback(
-    ({ url, token }: { url: string; token?: string }) =>
-      async () => {
-        // Attach Authorization header with the access token
-        const headers = {
-          Authorization: token ? `Bearer ${token}` : null,
-        };
+  const protectedFetcher = async (url: string, config: AxiosRequestConfig) => {
+    // Make the API request using ssrAxiosInstance
+    const response = await ssrAxiosInstance(url, config);
 
-        // Make the API request using axiosInstance
-        const response = await axiosInstance.get(url, { headers });
-
-        return response.data; // If request succeeds, return the data
-      },
-    []
-  );
+    return response.data; // If request succeeds, return the data
+  };
 
   const fetcher =
     ({ url }: { url: string }) =>
     async () => {
       try {
-        const apiResponse = await axiosInstance.get(url);
+        const apiResponse = await ssrAxiosInstance.get(url);
 
         const result = apiResponse.data;
         return result;
