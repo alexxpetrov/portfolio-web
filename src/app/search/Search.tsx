@@ -8,7 +8,6 @@ import {
   FormProps,
   notification,
 } from "antd";
-import { SearchSettings } from "./types";
 import { ENDPOINT } from "../dashboard/utils/config";
 
 type FieldType = {
@@ -17,11 +16,7 @@ type FieldType = {
   addNewUrls: boolean;
 };
 
-const Search = memo(function Search({
-  searchSettings,
-}: {
-  searchSettings: SearchSettings;
-}) {
+const Search = memo(function Search() {
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     await fetch(`${ENDPOINT}/api/searchSettings`, {
       method: "POST",
@@ -50,11 +45,6 @@ const Search = memo(function Search({
           layout="vertical"
           onFinish={onFinish}
           style={{ maxWidth: 400, margin: "0 auto", padding: 20 }}
-          initialValues={{
-            urlsPerHour: searchSettings.amount,
-            addNewUrls: searchSettings.addNew,
-            searchOn: searchSettings.searchOn,
-          }}
         >
           {/* Input: URLs per Hour */}
           <Form.Item

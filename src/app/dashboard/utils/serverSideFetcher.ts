@@ -19,12 +19,9 @@ interface RetryQueueItem {
 ssrAxiosInstance.interceptors.request.use(
   async (config) => {
     // Modify request config here, e.g., add headers
-
-    if (
-      config.headers?.Authorization === null &&
-      config.url !== "/refresh-token"
-    ) {
-      console.log(config);
+    console.log(config, config.headers?.Authorization, config.url);
+    if (!config.headers?.Authorization && config.url !== "/refresh-token") {
+      console.log("INSIDE", config);
       const accessToken = await refreshAccessToken(); // Get the access token via the refresh token
 
       config.headers.Authorization = `Bearer ${accessToken}`;
@@ -40,6 +37,7 @@ ssrAxiosInstance.interceptors.request.use(
 
 // Function to refresh the access token using the refresh token stored in cookies
 const refreshAccessToken = async () => {
+  console.log("refresh token");
   const response = await ssrAxiosInstance.post(
     "/refresh-token",
     {},
