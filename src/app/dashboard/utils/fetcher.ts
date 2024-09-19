@@ -27,7 +27,8 @@ axiosInstance.interceptors.request.use(
 
     if (
       config.headers?.Authorization === null &&
-      config.url !== "/refresh-token"
+      config.url !== "/refresh-token" &&
+      config.url !== "/logout"
     ) {
       console.log(config);
       const accessToken = await refreshAccessToken(); // Get the access token via the refresh token
@@ -45,8 +46,6 @@ axiosInstance.interceptors.request.use(
 
 // Function to refresh the access token using the refresh token stored in cookies
 const refreshAccessToken = async () => {
-  console.log("client refresh");
-
   const response = await axiosInstance.post(
     "/refresh-token",
     {},
