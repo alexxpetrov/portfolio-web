@@ -149,7 +149,6 @@ export const useFetchData = () => {
         // Make the API request using axiosInstance
         const response = await axiosInstance.get(url, {
           headers,
-          withCredentials: true,
         });
 
         return response.data; // If request succeeds, return the data
