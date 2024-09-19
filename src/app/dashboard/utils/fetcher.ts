@@ -45,6 +45,8 @@ axiosInstance.interceptors.request.use(
 
 // Function to refresh the access token using the refresh token stored in cookies
 const refreshAccessToken = async () => {
+  console.log("client refresh");
+
   const response = await axiosInstance.post(
     "/refresh-token",
     {},
