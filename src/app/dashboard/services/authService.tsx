@@ -55,6 +55,9 @@ export const authService = {
 
   logout: async () => {
     return axios.post(`${ENDPOINT}/api/logout`, null, {
+      headers: {
+        "Content-Type": "application/json",
+      },
       withCredentials: true,
     });
   },
@@ -62,6 +65,9 @@ export const authService = {
   fetchCurrentUser: async (): Promise<User | null> => {
     try {
       const response = await axios.post(`${ENDPOINT}/api/refresh-token`, null, {
+        headers: {
+          "Content-Type": "application/json",
+        },
         withCredentials: true,
       });
 
