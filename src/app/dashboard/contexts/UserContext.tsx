@@ -7,6 +7,7 @@ import {
   User,
   UserContextType,
 } from "../types/User";
+import { loginFoo } from "../services/login";
 
 // Create the user context
 export const UserContext = createContext<UserContextType>({
@@ -28,7 +29,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null); // Stores user info
 
   const login = async ({ email, password }: LoginDtoType) => {
-    const loggedInUser = await authService.login({ email, password });
+    const loggedInUser = await loginFoo({ email, password });
     setUser(loggedInUser);
 
     return loggedInUser;

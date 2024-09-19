@@ -6,7 +6,6 @@ const slice = createSlice({
     initialState: { data: [] },
     reducers: {
         getMainData(state, action) {
-            console.log('payload', action.payload)
             state.data = action.payload
         }
     }

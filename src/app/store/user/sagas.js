@@ -11,7 +11,6 @@ async function getInitialData() {
 export function* getInitialDataSaga() {
     try {
         const data = yield call(getInitialData);
-        console.log(data)
         yield put(MainActions.getMainData(data))
         return data
     } catch {

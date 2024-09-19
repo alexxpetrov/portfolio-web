@@ -1,4 +1,3 @@
-"use client";
 import { jwtDecode } from "jwt-decode";
 import { LoginDtoType, RegisterDtoType, User } from "../types/User";
 import axios, { AxiosError } from "axios";
