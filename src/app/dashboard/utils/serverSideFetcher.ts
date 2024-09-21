@@ -1,9 +1,13 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { ENDPOINT } from "./config";
+import { cookies } from "next/headers";
+import { jwtDecode } from "jwt-decode";
+import { User } from "../types/User";
 
 // Create a reusable Axios instance with withCredentials: true for cookies
 export const ssrAxiosInstance = axios.create({
   baseURL: `${ENDPOINT}/api`, // Your API base URL
+  timeout: 5000,
 });
 
 // Define the structure of a retry queue item
@@ -19,9 +23,7 @@ interface RetryQueueItem {
 ssrAxiosInstance.interceptors.request.use(
   async (config) => {
     // Modify request config here, e.g., add headers
-    console.log(config, config.headers?.Authorization, config.url);
     if (!config.headers?.Authorization && config.url !== "/refresh-token") {
-      console.log("INSIDE", config);
       const accessToken = await refreshAccessToken(); // Get the access token via the refresh token
 
       config.headers.Authorization = `Bearer ${accessToken}`;
@@ -30,27 +32,28 @@ ssrAxiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.log("error", error);
     return Promise.reject(error);
   }
 );
 
 // Function to refresh the access token using the refresh token stored in cookies
 const refreshAccessToken = async () => {
-  console.log("refresh token");
-  const response = await ssrAxiosInstance.post(
-    "/refresh-token",
-    {},
-    {
-      withCredentials: true, // Send refresh token (stored in cookie)
-    }
-  );
+  const accessTokenCookie = cookies().get("access_token")!.value;
+  const tokenUserData = jwtDecode(accessTokenCookie) as User;
 
-  if (response.status !== 200) {
-    throw new Error("Failed to refresh token");
+  try {
+    const response = await ssrAxiosInstance("/refresh-token", {
+      method: "POST",
+      data: { id: tokenUserData.id },
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    });
+    return response.data.access_token;
+  } catch (error) {
+    return Promise.reject(error);
   }
-
-  return response.data.access_token;
 };
 
 export const useAxiosSSRInterceptor = () => {
@@ -62,7 +65,9 @@ export const useAxiosSSRInterceptor = () => {
   let isRefreshing = false;
 
   ssrAxiosInstance.interceptors.response.use(
-    (response) => response,
+    (response) => {
+      return response;
+    },
     async (error) => {
       const originalRequest: AxiosRequestConfig = error.config;
       if (
@@ -75,7 +80,6 @@ export const useAxiosSSRInterceptor = () => {
           try {
             // Refresh the access token
             const newAccessToken = await refreshAccessToken();
-
             // Update the request headers with the new access token
             error.config.headers["Authorization"] = `Bearer ${newAccessToken}`;
 
@@ -119,10 +123,19 @@ export const useAxiosSSRInterceptor = () => {
 export const useSSRFetch = () => {
   // Main request function that manages access tokens and retries failed requests
   const protectedFetcher = async (url: string, config: AxiosRequestConfig) => {
+    const accessTokenCookie = cookies().get("access_token")?.value;
     // Make the API request using ssrAxiosInstance
-    const response = await ssrAxiosInstance(url, config);
+    try {
+      const response = await ssrAxiosInstance(url, {
+        ...config,
+        method: "GET",
+        headers: { Authorization: `Bearer ${accessTokenCookie}` },
+      });
 
-    return response.data; // If request succeeds, return the data
+      return response.data; // If request succeeds, return the data
+    } catch (error) {
+      // console.log("Error during protected fetch:", error.message);
+    }
   };
 
   const fetcher =

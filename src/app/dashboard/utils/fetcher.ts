@@ -4,7 +4,8 @@ import { useCallback } from "react";
 import { User } from "../types/User";
 import { useUserContext } from "../hooks/useUserContext";
 import { jwtDecode } from "jwt-decode";
-import { ENDPOINT } from "./config";
+import { ENDPOINT, IS_DEVELOPMENT } from "./config";
+import { serverRefreshToken } from "../services/serverAction";
 
 // Create a reusable Axios instance with withCredentials: true for cookies
 export const axiosInstance = axios.create({
@@ -20,55 +21,63 @@ interface RetryQueueItem {
   config: AxiosRequestConfig;
 }
 
-// Add global request interceptor
-axiosInstance.interceptors.request.use(
-  async (config) => {
-    // Modify request config here, e.g., add headers
-
-    if (
-      config.headers?.Authorization === null &&
-      config.url !== "/refresh-token" &&
-      config.url !== "/logout"
-    ) {
-      console.log(config);
-      const accessToken = await refreshAccessToken(); // Get the access token via the refresh token
-
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    console.log("error", error);
-    return Promise.reject(error);
-  }
-);
-
 // Function to refresh the access token using the refresh token stored in cookies
-const refreshAccessToken = async () => {
-  const response = await axiosInstance.post(
-    "/refresh-token",
-    {},
-    {
-      withCredentials: true, // Send refresh token (stored in cookie)
-    }
-  );
-
-  if (response.status !== 200) {
-    throw new Error("Failed to refresh token");
-  }
-
-  return response.data.access_token;
-};
 
 export const useAxiosInterceptor = () => {
-  const { setUser } = useUserContext();
+  const { setUser, user } = useUserContext();
   // Create a list to hold the request queue
   const refreshAndRetryQueue: RetryQueueItem[] = [];
   // @TODO: Add logout functionality when both accesstoken/refreshtoken have expired.
 
   // Flag to prevent multiple token refresh requests
   let isRefreshing = false;
+
+  // Add global request interceptor
+  axiosInstance.interceptors.request.use(
+    async (config) => {
+      // Modify request config here, e.g., add headers
+
+      if (
+        config.headers?.Authorization === null &&
+        config.url !== "/refresh-token" &&
+        config.url !== "/logout"
+      ) {
+        console.log(config);
+        const accessToken = await refreshAccessToken(); // Get the access token via the refresh token
+
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+
+      return config;
+    },
+    (error) => {
+      console.log("error", error);
+      return Promise.reject(error);
+    }
+  );
+
+  const refreshAccessToken = async () => {
+    if (IS_DEVELOPMENT) {
+      const { accessToken } = (await serverRefreshToken({
+        id: user!.id,
+      })) as User;
+      return accessToken;
+    }
+    const { data, status } = await axiosInstance.post(
+      "/refresh-token",
+      { id: user?.id },
+      {
+        withCredentials: true, // Send refresh token (stored in cookie)
+      }
+    );
+
+    if (status !== 200) {
+      throw new Error("Failed to refresh token");
+    }
+
+    return data.access_token;
+    return "";
+  };
 
   axiosInstance.interceptors.response.use(
     (response) => {

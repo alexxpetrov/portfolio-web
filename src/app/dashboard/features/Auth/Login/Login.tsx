@@ -1,7 +1,16 @@
 "use client";
 import React, { useContext, useState } from "react";
 import type { FormProps } from "antd";
-import { Button, Checkbox, Form, Input, Modal, notification } from "antd";
+import {
+  Button,
+  Checkbox,
+  Flex,
+  Form,
+  Input,
+  Modal,
+  notification,
+  Typography,
+} from "antd";
 import { UserContext } from "../../../contexts/UserContext";
 import { LoginDtoType, RegisterDtoType, User } from "../../../types/User";
 import { useRouter } from "next/navigation";
@@ -51,7 +60,6 @@ const Login = () => {
         };
 
         response = await register(authDto as RegisterDtoType);
-        console.log(123);
         break;
       default:
         break;
@@ -69,7 +77,12 @@ const Login = () => {
   return (
     <>
       {user ? (
-        <Button onClick={logout}>Log out</Button>
+        <Flex align="center" gap={12}>
+          <Typography
+            style={{ color: "white" }}
+          >{`Hi ${user.firstName} ${user.lastName}!`}</Typography>
+          <Button onClick={logout}>Log out</Button>
+        </Flex>
       ) : (
         <Button onClick={() => setOpened(true)}>Log in</Button>
       )}

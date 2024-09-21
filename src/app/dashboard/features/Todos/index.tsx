@@ -19,10 +19,12 @@ export const Todos = memo(function Todos({ todos }: { todos: Todo[] }) {
       ? protectedFetcher({ url: "todos", token: user?.accessToken })
       : null,
     {
+      fallbackData: todos,
       revalidateOnFocus: false,
       revalidateOnMount: false,
     }
   );
+
   return (
     <Card>
       <Typography style={{ marginBottom: "1rem" }}>Todo List</Typography>

@@ -52,13 +52,16 @@ export const authService = {
     };
   },
 
-  logout: async () => {
-    return axios.post(`${ENDPOINT}/api/logout`, null, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
+  logout: async ({ id }: { id: string }) => {
+    return axios.post(
+      `${ENDPOINT}/api/logout`,
+      { id },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
   },
 
   fetchCurrentUser: async (): Promise<User | null> => {

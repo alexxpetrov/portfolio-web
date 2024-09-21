@@ -1,4 +1,5 @@
 export type User = {
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -13,7 +14,7 @@ export type LoginDtoType = {
 export type RegisterDtoType = LoginDtoType & {
   firstName: string;
   lastName: string;
-};
+} & { id?: string };
 
 export type UserContextType = {
   user: User | null;
