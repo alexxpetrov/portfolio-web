@@ -64,6 +64,7 @@ const Login = () => {
       default:
         break;
     }
+    push("/dashboard");
 
     notification.success({
       description: "Success",
@@ -71,8 +72,6 @@ const Login = () => {
       icon: "check",
     });
     setOpened(false);
-    console.log("push");
-    push("/dashboard");
   };
 
   return (
