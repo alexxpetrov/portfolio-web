@@ -71,6 +71,7 @@ const Login = () => {
       icon: "check",
     });
     setOpened(false);
+    console.log("push");
     push("/dashboard");
   };
 

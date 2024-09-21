@@ -10,6 +10,7 @@ export async function middleware(request: NextRequest) {
   // @TODO: Replace cookie with auth header
   // const authHeader = headers().get("Authorization");
   if (!ALLOWED_PATHS.includes(pathname) && !accessToken) {
+    console.log("redirect to login");
     return NextResponse.redirect(new URL("/login", request.url));
   }
   // No redirect found, continue without redirecting
