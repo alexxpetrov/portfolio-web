@@ -60,6 +60,7 @@ export const authService = {
         headers: {
           "Content-Type": "application/json",
         },
+        withCredentials: true,
       }
     );
   },
