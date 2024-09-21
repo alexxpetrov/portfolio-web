@@ -6,6 +6,7 @@ const ALLOWED_PATHS = ["/login", "/"];
 export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const accessToken = cookies().get("access_token");
+  console.log(pathname, accessToken, cookies().getAll(), request.cookies);
   // @TODO: Replace cookie with auth header
   // const authHeader = headers().get("Authorization");
   if (!ALLOWED_PATHS.includes(pathname) && !accessToken) {

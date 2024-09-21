@@ -1,7 +1,7 @@
 "use server";
 import { jwtDecode } from "jwt-decode";
 import { RegisterDtoType, User } from "../types/User";
-import { ENDPOINT } from "../utils/config";
+import { ENDPOINT, IS_DEVELOPMENT } from "../utils/config";
 import axios, { AxiosError } from "axios";
 import { redirect } from "next/navigation";
 import { deleteAccessTokenCookie, setAccessTokenCookie } from "../utils/cookie";
@@ -18,7 +18,9 @@ export const serverLogin = async (dto: RegisterDtoType): Promise<User> => {
     return {} as User;
   }
 
-  setAccessTokenCookie(data.access_token);
+  if (IS_DEVELOPMENT) {
+    setAccessTokenCookie(data.access_token);
+  }
 
   return {
     ...(jwtDecode(data.access_token) as User),
@@ -37,7 +39,9 @@ export const serverRegister = async (dto: RegisterDtoType): Promise<User> => {
     return {} as User;
   }
 
-  setAccessTokenCookie(data.access_token);
+  if (IS_DEVELOPMENT) {
+    setAccessTokenCookie(data.access_token);
+  }
 
   return {
     ...(jwtDecode(data.access_token) as User),
