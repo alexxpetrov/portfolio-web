@@ -7,30 +7,30 @@ import {
 
 import { KeyedMutator } from "swr";
 import { Todo } from "./types";
-import { ENDPOINT } from "../../utils/config";
+import { useFetchData } from "../../utils/fetcher";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
 
 type TodoListProps = {
-  data?: Todo[];
+  todoList?: Todo[];
   mutate: KeyedMutator<Todo[]>;
 };
-export const TodoList: React.FC<TodoListProps> = ({ data, mutate }) => {
+export const TodoList: React.FC<TodoListProps> = ({ todoList, mutate }) => {
+  const { protectedFetcher } = useFetchData();
+
   const handleStatusUpdate = async (id: number) => {
-    const updated = await fetch(`${ENDPOINT}/api/todos/${id}/status`, {
-      method: "PATCH",
+    const { data: newTodos } = await protectedFetcher(`todos/${id}/status`, {
+      method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-    }).then((r) => {
-      return r.json();
-    });
+    })();
 
-    await mutate(updated);
+    await mutate(newTodos);
   };
 
-  if (!data?.length) {
+  if (!todoList?.length) {
     return <div>No todos</div>;
   }
 
@@ -54,7 +54,7 @@ export const TodoList: React.FC<TodoListProps> = ({ data, mutate }) => {
         </div>
         <List
           grid={{ gutter: 16, column: 1 }}
-          dataSource={data}
+          dataSource={todoList}
           renderItem={(item) => (
             <List.Item>
               <Button

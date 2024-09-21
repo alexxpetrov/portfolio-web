@@ -8,7 +8,7 @@ import {
   FormProps,
   notification,
 } from "antd";
-import { ENDPOINT } from "../dashboard/utils/config";
+import { useFetchData } from "../dashboard/utils/fetcher";
 
 type FieldType = {
   urlsPerHour: number;
@@ -17,24 +17,24 @@ type FieldType = {
 };
 
 const Search = memo(function Search() {
+  const { protectedFetcher } = useFetchData();
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    await fetch(`${ENDPOINT}/api/searchSettings`, {
+    await protectedFetcher("searchSettings", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
+      data: {
         addNew: values.addNewUrls,
         searchOn: values.searchOn,
         amount: values.urlsPerHour,
-      }),
-    }).then((r) => {
-      notification.success({
-        description: "Success",
-        message: `Settings updated`,
-        icon: "check",
-      });
-      return r.json();
+      },
+    })();
+
+    notification.success({
+      description: "Success",
+      message: `Settings updated`,
+      icon: "check",
     });
   };
 

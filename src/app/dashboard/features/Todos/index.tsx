@@ -4,20 +4,16 @@ import { AddTodo } from "./AddTodo";
 import { TodoList } from "./TodoList";
 import { useFetchData } from "../../utils/fetcher";
 import { Todo } from "./types";
-import { memo, useContext } from "react";
-import { UserContext } from "../../contexts/UserContext";
+import { memo } from "react";
 
 import { Card, Typography } from "antd";
 
 export const Todos = memo(function Todos({ todos }: { todos: Todo[] }) {
-  const { user } = useContext(UserContext);
   const { protectedFetcher } = useFetchData();
 
-  const { data, mutate } = useSWR<Todo[]>(
-    [user, "todos"],
-    !todos
-      ? protectedFetcher({ url: "todos", token: user?.accessToken })
-      : null,
+  const { data: todoList, mutate } = useSWR<Todo[]>(
+    "todos",
+    protectedFetcher("todos", { method: "POST" }),
     {
       fallbackData: todos,
       revalidateOnFocus: false,
@@ -33,7 +29,7 @@ export const Todos = memo(function Todos({ todos }: { todos: Todo[] }) {
         <AddTodo {...{ mutate }} />
       </div>
 
-      <TodoList {...{ data, mutate }} />
+      <TodoList {...{ todoList, mutate }} />
     </Card>
   );
 });

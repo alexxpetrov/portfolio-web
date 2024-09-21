@@ -2,7 +2,7 @@ import { Button, Modal, Input, Form, FormProps, notification } from "antd";
 import { KeyedMutator } from "swr";
 import { Todo } from "./types";
 import { useState } from "react";
-import { ENDPOINT } from "../../utils/config";
+import { useFetchData } from "../../utils/fetcher";
 
 type FieldType = {
   body: string;
@@ -21,19 +21,19 @@ export const AddTodo = ({ mutate }: { mutate: KeyedMutator<Todo[]> }) => {
   const [opened, setOpen] = useState(false);
   const open = () => setOpen(true);
   const close = () => setOpen(false);
+  const { protectedFetcher } = useFetchData();
 
-  const onFinish: FormProps<FieldType>["onFinish"] = async (data) => {
-    const updated = await fetch(`${ENDPOINT}/api/todos`, {
+  const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
+    const { data } = await protectedFetcher("todos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
-    }).then((r) => {
-      return r.json();
-    });
+      data: values,
+    })();
 
-    await mutate(updated);
+    await mutate(data);
+
     notification.success({
       description: "Success",
       message: `Welcome `,

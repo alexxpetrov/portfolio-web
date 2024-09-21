@@ -63,6 +63,7 @@ export const useAxiosInterceptor = () => {
       })) as User;
       return accessToken;
     }
+
     const { data, status } = await axiosInstance.post(
       "/refresh-token",
       { id: user?.id },
@@ -147,23 +148,23 @@ export const useAxiosInterceptor = () => {
 };
 
 export const useFetchData = () => {
+  const { user } = useUserContext();
+
   // Main request function that manages access tokens and retries failed requests
   const protectedFetcher = useCallback(
-    ({ url, token }: { url: string; token?: string }) =>
-      async () => {
-        // Attach Authorization header with the access token
-        const headers = {
-          Authorization: token ? `Bearer ${token}` : null,
-        };
+    (url: string, config: AxiosRequestConfig) => async () => {
+      // Attach Authorization header with the access token
+      const reqConfig = {
+        ...config,
+        Authorization: user?.accessToken ? `Bearer ${user.accessToken}` : null,
+      };
 
-        // Make the API request using axiosInstance
-        const response = await axiosInstance.get(url, {
-          headers,
-        });
+      // Make the API request using axiosInstance
+      const response = await axiosInstance(url, reqConfig);
 
-        return response.data; // If request succeeds, return the data
-      },
-    []
+      return response.data; // If request succeeds, return the data
+    },
+    [user?.accessToken]
   );
 
   const fetcher =
