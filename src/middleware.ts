@@ -8,9 +8,14 @@ export async function middleware(request: NextRequest) {
   const accessToken = cookies().get("access_token");
   console.log(pathname, accessToken, cookies().getAll(), request.cookies);
   // @TODO: Replace cookie with auth header
-  // const authHeader = headers().get("Authorization");
+  // const authHeader = headers().get("Authorization");\
+  console.log(!ALLOWED_PATHS.includes(pathname), !accessToken);
   if (!ALLOWED_PATHS.includes(pathname) && !accessToken) {
-    console.log("redirect to login");
+    console.log(
+      "redirect to login",
+      request.url,
+      new URL("/login", request.url)
+    );
     return NextResponse.redirect(new URL("/login", request.url));
   }
   // No redirect found, continue without redirecting
