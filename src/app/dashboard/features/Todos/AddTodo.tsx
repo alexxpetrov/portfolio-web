@@ -24,13 +24,15 @@ export const AddTodo = ({ mutate }: { mutate: KeyedMutator<Todo[]> }) => {
   const { protectedFetcher } = useFetchData();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
-    const { data } = await protectedFetcher("todos", {
+    const { data, error } = await protectedFetcher("todos", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       data: values,
     })();
+
+    console.log(error);
 
     await mutate(data);
 

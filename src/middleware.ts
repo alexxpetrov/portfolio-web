@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
       request.url,
       new URL("/login", request.url)
     );
-    return NextResponse.redirect(new URL("/login", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
   // No redirect found, continue without redirecting
   return NextResponse.next();

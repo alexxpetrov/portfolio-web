@@ -156,7 +156,12 @@ export const useFetchData = () => {
       // Attach Authorization header with the access token
       const reqConfig = {
         ...config,
-        Authorization: user?.accessToken ? `Bearer ${user.accessToken}` : null,
+        headers: {
+          ...(config.headers ?? {}),
+          Authorization: user?.accessToken
+            ? `Bearer ${user.accessToken}`
+            : null,
+        },
       };
 
       // Make the API request using axiosInstance

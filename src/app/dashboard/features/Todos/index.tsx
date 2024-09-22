@@ -13,7 +13,7 @@ export const Todos = memo(function Todos({ todos }: { todos: Todo[] }) {
 
   const { data: todoList, mutate } = useSWR<Todo[]>(
     "todos",
-    protectedFetcher("todos", { method: "POST" }),
+    protectedFetcher("todos", { method: "GET" }),
     {
       fallbackData: todos,
       revalidateOnFocus: false,

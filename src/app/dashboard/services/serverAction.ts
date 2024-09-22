@@ -65,7 +65,7 @@ export const serverLogout = async (dto: RegisterDtoType) => {
     );
   }
 
-  redirect("/login");
+  redirect("/");
 };
 
 export const serverRefreshToken = async ({
