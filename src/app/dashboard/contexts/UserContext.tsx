@@ -65,35 +65,37 @@ export const UserProvider = ({
     email,
     password,
   }: RegisterDtoType) => {
-    try {
-      let loggedInUser;
-      if (IS_DEVELOPMENT) {
-        loggedInUser = await serverRegister({
-          firstName,
-          lastName,
-          email,
-          password,
-        });
-      } else {
-        loggedInUser = await authService.register({
-          firstName,
-          lastName,
-          email,
-          password,
-        });
-      }
-
-      setUser(loggedInUser);
-      push("/dashboard");
-
-      return loggedInUser;
-    } catch (error) {
-      notification.error({
-        message: "Error",
-        description: "Failed to register. User already exists",
-        icon: "cross",
+    let response;
+    if (IS_DEVELOPMENT) {
+      response = await serverRegister({
+        firstName,
+        lastName,
+        email,
+        password,
+      });
+    } else {
+      response = await authService.register({
+        firstName,
+        lastName,
+        email,
+        password,
       });
     }
+
+    if (response.error) {
+      notification.error({
+        message: "Error",
+        description: response.error,
+        icon: "cross",
+      });
+
+      return null;
+    }
+
+    setUser(response);
+    push("/dashboard");
+
+    return response;
   };
 
   const handleLogout = async () => {

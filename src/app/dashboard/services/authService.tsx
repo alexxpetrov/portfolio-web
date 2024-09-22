@@ -30,22 +30,31 @@ export const authService = {
     lastName,
     email,
     password,
-  }: RegisterDtoType): Promise<User> => {
-    const { data } = await axios.post(
-      `${ENDPOINT}/api/register`,
-      {
-        firstName,
-        lastName,
-        email,
-        password,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
+  }: RegisterDtoType): Promise<User & { error?: string }> => {
+    const { data } = await axios
+      .post(
+        `${ENDPOINT}/api/register`,
+        {
+          firstName,
+          lastName,
+          email,
+          password,
         },
-        withCredentials: true,
-      }
-    );
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          withCredentials: true,
+        }
+      )
+      .catch((err) => {
+        return { data: err.response.data };
+      });
+
+    if (data.error) {
+      return data;
+    }
+
     return {
       ...(jwtDecode(data.access_token) as User),
       accessToken: data.access_token,

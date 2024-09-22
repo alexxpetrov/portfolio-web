@@ -19,7 +19,7 @@ export type RegisterDtoType = LoginDtoType & {
 export type UserContextType = {
   user: User | null;
   login: (data: LoginDtoType) => Promise<User>;
-  register: (data: RegisterDtoType) => Promise<User>;
+  register: (data: RegisterDtoType) => Promise<User | null>;
   logout: () => void;
   setUser: (user: User | null) => void;
 };

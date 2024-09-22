@@ -27,16 +27,22 @@ export const serverLogin = async (dto: RegisterDtoType): Promise<User> => {
     accessToken: data.access_token,
   };
 };
-export const serverRegister = async (dto: RegisterDtoType): Promise<User> => {
-  const { data } = await axios.post(`${ENDPOINT}/api/register`, dto, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    withCredentials: true,
-  });
+export const serverRegister = async (
+  dto: RegisterDtoType
+): Promise<User & { error?: string }> => {
+  const { data } = await axios
+    .post(`${ENDPOINT}/api/register`, dto, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      withCredentials: true,
+    })
+    .catch((err) => {
+      return { data: err.response.data };
+    });
 
   if (!data.access_token) {
-    return {} as User;
+    return data;
   }
 
   if (IS_DEVELOPMENT) {

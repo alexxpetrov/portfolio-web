@@ -47,7 +47,6 @@ const Login = () => {
         };
 
         response = await login(authDto as LoginDtoType);
-
         break;
       case "register":
         authDto = {
@@ -56,8 +55,8 @@ const Login = () => {
           firstName: values.firstName ?? "",
           lastName: values.lastName ?? "",
         };
-
         response = await register(authDto as RegisterDtoType);
+
         break;
       default:
         break;
