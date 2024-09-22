@@ -14,6 +14,7 @@ import {
   serverRegister,
 } from "../services/serverAction";
 import { IS_DEVELOPMENT } from "../utils/config";
+import { useRouter } from "next/navigation";
 
 // Create the user context
 export const UserContext = createContext<UserContextType>({
@@ -38,6 +39,7 @@ export const UserProvider = ({
   accessToken: string;
   children: React.ReactNode;
 }) => {
+  const { push } = useRouter();
   const [user, setUser] = useState<User | null>(
     accessToken ? jwtDecode(accessToken) : null
   ); // Stores user info
@@ -51,6 +53,7 @@ export const UserProvider = ({
     }
 
     setUser(loggedInUser);
+    push("/dashboard");
 
     return loggedInUser;
   };
@@ -79,23 +82,22 @@ export const UserProvider = ({
     }
 
     setUser(loggedInUser);
+    push("/dashboard");
 
     return loggedInUser;
   };
 
   const handleLogout = async () => {
-    let loggedInUser;
     if (IS_DEVELOPMENT) {
-      loggedInUser = await serverLogout({
+      await serverLogout({
         id: user!.id,
       } as RegisterDtoType);
     } else {
-      loggedInUser = await authService.logout({ id: user!.id });
+      await authService.logout({ id: user!.id });
     }
 
     setUser(null);
-
-    return loggedInUser;
+    push("/login");
   };
 
   useEffect(() => {

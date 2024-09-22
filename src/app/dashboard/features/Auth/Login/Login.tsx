@@ -13,7 +13,6 @@ import {
 } from "antd";
 import { UserContext } from "../../../contexts/UserContext";
 import { LoginDtoType, RegisterDtoType, User } from "../../../types/User";
-import { useRouter } from "next/navigation";
 
 type FieldType = {
   email?: string;
@@ -32,7 +31,6 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
 };
 
 const Login = () => {
-  const { push } = useRouter();
   const { login, register, user, logout } = useContext(UserContext);
   const [formState, setFormState] = useState<"login" | "register">("login");
   const [opened, setOpened] = useState(false);
@@ -64,13 +62,13 @@ const Login = () => {
       default:
         break;
     }
-    push("/dashboard");
 
     notification.success({
       description: "Success",
       message: `Welcome ${response?.firstName} ${response?.lastName}`,
       icon: "check",
     });
+
     setOpened(false);
   };
 
