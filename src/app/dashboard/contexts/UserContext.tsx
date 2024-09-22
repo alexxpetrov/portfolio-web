@@ -15,6 +15,7 @@ import {
 } from "../services/serverAction";
 import { IS_DEVELOPMENT } from "../utils/config";
 import { useRouter } from "next/navigation";
+import { notification } from "antd";
 
 // Create the user context
 export const UserContext = createContext<UserContextType>({
@@ -64,27 +65,35 @@ export const UserProvider = ({
     email,
     password,
   }: RegisterDtoType) => {
-    let loggedInUser;
-    if (IS_DEVELOPMENT) {
-      loggedInUser = await serverRegister({
-        firstName,
-        lastName,
-        email,
-        password,
-      });
-    } else {
-      loggedInUser = await authService.register({
-        firstName,
-        lastName,
-        email,
-        password,
+    try {
+      let loggedInUser;
+      if (IS_DEVELOPMENT) {
+        loggedInUser = await serverRegister({
+          firstName,
+          lastName,
+          email,
+          password,
+        });
+      } else {
+        loggedInUser = await authService.register({
+          firstName,
+          lastName,
+          email,
+          password,
+        });
+      }
+
+      setUser(loggedInUser);
+      push("/dashboard");
+
+      return loggedInUser;
+    } catch (error) {
+      notification.error({
+        message: "Error",
+        description: "Failed to register. User already exists",
+        icon: "cross",
       });
     }
-
-    setUser(loggedInUser);
-    push("/dashboard");
-
-    return loggedInUser;
   };
 
   const handleLogout = async () => {
