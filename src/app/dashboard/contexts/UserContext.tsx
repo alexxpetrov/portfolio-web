@@ -88,8 +88,7 @@ export const UserProvider = ({
         description: response.error,
         icon: "cross",
       });
-
-      return null;
+      throw new Error(response.error);
     }
 
     setUser(response);
