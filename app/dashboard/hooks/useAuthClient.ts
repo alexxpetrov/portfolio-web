@@ -1,10 +1,10 @@
 import { ServiceType } from "@bufbuild/protobuf";
 import { createPromiseClient, PromiseClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
-import { ENDPOINT } from "../utils/config";
+import { WEBAUTHN_ENDPOINT } from "../utils/config";
 
 const transport = createConnectTransport({
-  baseUrl: ENDPOINT,
+  baseUrl: WEBAUTHN_ENDPOINT,
 });
 
 export const useClient = <T extends ServiceType>(

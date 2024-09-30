@@ -1,7 +1,7 @@
 "use server";
 import { jwtDecode } from "jwt-decode";
 import { RegisterDtoType, User } from "../types/User";
-import { ENDPOINT, IS_DEVELOPMENT } from "../utils/config";
+import { ENDPOINT, IS_DEVELOPMENT, WEBAUTHN_ENDPOINT } from "../utils/config";
 import axios, { AxiosError } from "axios";
 import { redirect } from "next/navigation";
 import { deleteAccessTokenCookie, setAccessTokenCookie } from "../utils/cookie";
@@ -12,7 +12,7 @@ import { AuthService } from "@/gen/auth/v1/auth_connect";
 import { LoginResponse } from "@/gen/auth/v1/auth_pb";
 
 const transport = createConnectTransport({
-  baseUrl: ENDPOINT,
+  baseUrl: WEBAUTHN_ENDPOINT,
 });
 
 const client = createPromiseClient(AuthService, transport);

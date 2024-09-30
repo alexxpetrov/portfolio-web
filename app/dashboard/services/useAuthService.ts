@@ -47,7 +47,8 @@ export const useAuthService = () => {
       );
     }
 
-    const credential = await navigator.credentials.create({
+    // Receive from server
+    const credOptions: CredentialCreationOptions = {
       publicKey: {
         challenge: response.challenge,
         rp: {
@@ -65,10 +66,13 @@ export const useAuthService = () => {
         ],
         authenticatorSelection: {
           authenticatorAttachment: "platform", // To use the fingerprint sensor
+          userVerification: "required",
         },
         attestation: "none", // Direct attestation
       },
-    });
+    };
+
+    const credential = await navigator.credentials.create(credOptions);
 
     if (!credential) {
       return {} as User;
