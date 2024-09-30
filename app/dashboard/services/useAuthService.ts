@@ -10,6 +10,14 @@ const checkCreds = async (challenge: Uint8Array) => {
       publicKey: {
         challenge, // Random challenge, modify as needed
         userVerification: "required", // Require user verification (biometric, PIN, etc.)
+        allowCredentials: [
+          {
+            type: "public-key",
+            id: Uint8Array.from(challenge), // The credential ID stored during registration
+            transports: ["internal"], // Force internal transport (e.g., platform authenticator like fingerprint)
+          },
+        ],
+        timeout: 60000,
       },
     });
 
