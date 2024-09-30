@@ -12,7 +12,7 @@ import { AuthService } from "@/gen/auth/v1/auth_connect";
 import { LoginResponse } from "@/gen/auth/v1/auth_pb";
 
 const transport = createConnectTransport({
-  baseUrl: "http://localhost:8080",
+  baseUrl: ENDPOINT,
 });
 
 const client = createPromiseClient(AuthService, transport);
