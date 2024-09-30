@@ -9,6 +9,7 @@ const checkCreds = async (challenge: Uint8Array) => {
       mediation: "required",
       publicKey: {
         challenge, // Random challenge, modify as needed
+        userVerification: "required", // Require user verification (biometric, PIN, etc.)
       },
     });
 
@@ -33,7 +34,7 @@ export const useAuthService = () => {
     const response = await client.beginRegistration({});
 
     const regResponse = await checkCreds(response.challenge);
-
+    console.log(regResponse);
     if (regResponse) {
       return webAuthLoginFinish(
         regResponse as Credential & {
