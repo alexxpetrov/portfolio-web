@@ -66,7 +66,6 @@ export const useAuthService = () => {
         ],
         authenticatorSelection: {
           authenticatorAttachment: "platform", // To use the fingerprint sensor
-          userVerification: "required",
         },
         attestation: "none", // Direct attestation
       },
