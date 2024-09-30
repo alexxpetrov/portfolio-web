@@ -1,30 +1,9 @@
 import { jwtDecode } from "jwt-decode";
-import { LoginDtoType, RegisterDtoType, User } from "../types/User";
+import { RegisterDtoType, User } from "../types/User";
 import axios, { AxiosError } from "axios";
 import { ENDPOINT } from "../utils/config";
 
 export const authService = {
-  login: async ({ email, password }: LoginDtoType): Promise<User> => {
-    const { data } = await axios.post(
-      `${ENDPOINT}/api/login`,
-      {
-        email,
-        password,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
-
-    return {
-      ...(jwtDecode(data.access_token) as User),
-      accessToken: data.access_token,
-    };
-  },
-
   register: async ({
     firstName,
     lastName,

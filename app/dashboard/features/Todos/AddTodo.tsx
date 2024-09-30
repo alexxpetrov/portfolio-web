@@ -1,5 +1,4 @@
 import { Button, Modal, Input, Form, FormProps, notification } from "antd";
-import { KeyedMutator } from "swr";
 import { Todo } from "./types";
 import { useState } from "react";
 import { useFetchData } from "../../utils/fetcher";
@@ -17,7 +16,7 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
   });
 };
 
-export const AddTodo = ({ mutate }: { mutate: KeyedMutator<Todo[]> }) => {
+export const AddTodo = ({ mutate }: { mutate: (data: Todo[]) => void }) => {
   const [opened, setOpen] = useState(false);
   const open = () => setOpen(true);
   const close = () => setOpen(false);

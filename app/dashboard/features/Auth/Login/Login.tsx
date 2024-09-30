@@ -13,6 +13,7 @@ import {
 } from "antd";
 import { UserContext } from "../../../contexts/UserContext";
 import { LoginDtoType, RegisterDtoType, User } from "../../../types/User";
+import { SafetyCertificateOutlined } from "@ant-design/icons";
 
 type FieldType = {
   email?: string;
@@ -31,7 +32,8 @@ const onFinishFailed: FormProps<FieldType>["onFinishFailed"] = (errorInfo) => {
 };
 
 const Login = () => {
-  const { login, register, user, logout } = useContext(UserContext);
+  const { login, register, user, logout, handleWebAuthRegister } =
+    useContext(UserContext);
   const [formState, setFormState] = useState<"login" | "register">("login");
   const [opened, setOpened] = useState(false);
 
@@ -65,6 +67,21 @@ const Login = () => {
     notification.success({
       description: "Success",
       message: `Welcome ${response?.firstName} ${response?.lastName}`,
+      icon: "check",
+    });
+
+    setOpened(false);
+  };
+
+  const handleBiometricAuth = async () => {
+    const response = await handleWebAuthRegister();
+
+    notification.success({
+      description: "Success",
+      message:
+        !response?.firstName && !response?.lastName
+          ? "Welcome! Please fill in your profile details"
+          : `Welcome ${response?.firstName ?? ""} ${response?.lastName ?? ""}`,
       icon: "check",
     });
 
@@ -161,6 +178,12 @@ const Login = () => {
           <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
             <Button type="primary" htmlType="submit">
               Submit
+            </Button>
+            <Button
+              onClick={handleBiometricAuth}
+              icon={<SafetyCertificateOutlined />}
+            >
+              Sign in with Fingerprint
             </Button>
           </Form.Item>
         </Form>

@@ -5,7 +5,6 @@ import {
   CheckCircleFilled,
 } from "@ant-design/icons";
 
-import { KeyedMutator } from "swr";
 import { Todo } from "./types";
 import { useFetchData } from "../../utils/fetcher";
 
@@ -14,7 +13,7 @@ const { Title } = Typography;
 
 type TodoListProps = {
   todoList?: Todo[];
-  mutate: KeyedMutator<Todo[]>;
+  mutate: (data: Todo[]) => void;
 };
 export const TodoList: React.FC<TodoListProps> = ({ todoList, mutate }) => {
   const { protectedFetcher } = useFetchData();

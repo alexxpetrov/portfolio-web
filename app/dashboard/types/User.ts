@@ -21,5 +21,6 @@ export type UserContextType = {
   login: (data: LoginDtoType) => Promise<User>;
   register: (data: RegisterDtoType) => Promise<User | null>;
   logout: () => void;
+  handleWebAuthRegister: () => Promise<User | null>;
   setUser: (user: User | null) => void;
 };

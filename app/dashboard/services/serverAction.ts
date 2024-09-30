@@ -6,27 +6,48 @@ import axios, { AxiosError } from "axios";
 import { redirect } from "next/navigation";
 import { deleteAccessTokenCookie, setAccessTokenCookie } from "../utils/cookie";
 
-export const serverLogin = async (dto: RegisterDtoType): Promise<User> => {
-  const { data } = await axios.post(`${ENDPOINT}/api/login`, dto, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-    withCredentials: true,
-  });
+import { ConnectError, createPromiseClient } from "@connectrpc/connect";
+import { createConnectTransport } from "@connectrpc/connect-web";
+import { AuthService } from "@/gen/auth/v1/auth_connect";
+import { LoginResponse } from "@/gen/auth/v1/auth_pb";
 
-  if (!data.access_token) {
+const transport = createConnectTransport({
+  baseUrl: "http://localhost:8080",
+});
+
+const client = createPromiseClient(AuthService, transport);
+
+export const serverLogin = async (dto: RegisterDtoType): Promise<User> => {
+  const data = (await client
+    .login(dto)
+    .then((res) => res)
+    .catch((err) => {
+      if (err instanceof ConnectError) {
+        console.log(err.code); // Code.InvalidArgument
+        console.log(err.message); // "[invalid_argument] sentence cannot be empty"
+      }
+      // Alternatively, we can use ConnectError.from()
+      // It returns a ConnectError as is, and converts any
+      // other error to a ConnectError.
+      const connectErr = ConnectError.from(err);
+      console.log(connectErr.code); // Code.InvalidArgument
+      console.log(connectErr.message); // "[invalid_argument] sentence cannot be empty"
+    })) as LoginResponse;
+
+  if (!data.accessToken) {
     return {} as User;
   }
 
   if (IS_DEVELOPMENT) {
-    setAccessTokenCookie(data.access_token);
+    setAccessTokenCookie(data.accessToken);
   }
 
   return {
-    ...(jwtDecode(data.access_token) as User),
-    accessToken: data.access_token,
+    ...(jwtDecode(data.accessToken) as User),
+    accessToken: data.accessToken,
   };
 };
+
 export const serverRegister = async (
   dto: RegisterDtoType
 ): Promise<User & { error?: string }> => {

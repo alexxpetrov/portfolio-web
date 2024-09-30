@@ -16,20 +16,16 @@ import {
 import { IS_DEVELOPMENT } from "../utils/config";
 import { useRouter } from "next/navigation";
 import { notification } from "antd";
+import { useAuthService } from "../services/useAuthService";
 
 // Create the user context
 export const UserContext = createContext<UserContextType>({
   user: null,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  login: async (_: LoginDtoType) => {
-    return {} as User;
-  },
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  register: async (_: RegisterDtoType) => {
-    return Promise.resolve({} as User);
-  },
+  login: async () => ({} as User),
+  register: () => Promise.resolve({} as User),
   logout: () => {},
   setUser: () => {},
+  handleWebAuthRegister: () => Promise.resolve({} as User),
 });
 
 // Provider component
@@ -44,13 +40,23 @@ export const UserProvider = ({
   const [user, setUser] = useState<User | null>(
     accessToken ? jwtDecode(accessToken) : null
   ); // Stores user info
+  const client = useAuthService();
+
+  const handleWebAuthRegister = async () => {
+    const loggedInUser = await client.webAuthRegister();
+
+    setUser(loggedInUser);
+    push("/dashboard");
+
+    return loggedInUser;
+  };
 
   const handleLogin = async ({ email, password }: LoginDtoType) => {
     let loggedInUser;
     if (IS_DEVELOPMENT) {
       loggedInUser = await serverLogin({ email, password } as RegisterDtoType);
     } else {
-      loggedInUser = await authService.login({ email, password });
+      loggedInUser = await client.login({ email, password });
     }
 
     setUser(loggedInUser);
@@ -123,6 +129,7 @@ export const UserProvider = ({
         login: handleLogin,
         register: handleRegister,
         logout: handleLogout,
+        handleWebAuthRegister,
         setUser,
       }}
     >

@@ -6,7 +6,7 @@ import Login from "../Auth/Login/Login";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { actions } from "@/app/store/user/actions";
+import { actions } from "../../../store/user/actions";
 
 const { Header } = Layout;
 const { Title } = Typography;
