@@ -1,7 +1,7 @@
 import { quote } from "shell-quote";
-import { EsLint } from "eslint";
+import { ESLint } from "eslint";
 
-const eslint = new EsLint();
+const eslint = new ESLint();
 
 module.exports = {
   "**/*.{ts,tsx,css}": (filenames) => {

@@ -7,9 +7,7 @@
     "ssl": "next dev --experimental-https",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:staged": "lint-staged -c lint-staged.config.msj -p false",
-    "prepare": "husky"
+    "lint": "next lint"
   },
   "dependencies": {
     "@ant-design/icons": "^5.4.0",
