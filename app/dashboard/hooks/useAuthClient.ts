@@ -5,6 +5,7 @@ import { WEBAUTHN_ENDPOINT } from "../utils/config";
 
 const transport = createConnectTransport({
   baseUrl: WEBAUTHN_ENDPOINT,
+  credentials: "include",
 });
 
 export const useClient = <T extends ServiceType>(

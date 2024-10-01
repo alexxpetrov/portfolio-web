@@ -10,6 +10,7 @@ import { serverRefreshToken } from "../services/serverAction";
 // Create a reusable Axios instance with withCredentials: true for cookies
 export const axiosInstance = axios.create({
   baseURL: `${ENDPOINT}/api`, // Your API base URL
+  timeout: 5000,
 });
 
 // Define the structure of a retry queue item

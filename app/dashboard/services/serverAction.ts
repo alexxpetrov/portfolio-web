@@ -13,6 +13,7 @@ import { LoginResponse, RegisterResponse } from "@/gen/auth/v1/auth_pb";
 
 const transport = createConnectTransport({
   baseUrl: WEBAUTHN_ENDPOINT,
+  credentials: "include",
 });
 
 const client = createPromiseClient(AuthService, transport);
