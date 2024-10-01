@@ -1,6 +1,6 @@
 import { AuthService } from "@/gen/auth/v1/auth_connect";
 import { useClient } from "../hooks/useAuthClient";
-import { LoginDtoType, User } from "../types/User";
+import { LoginDtoType, RegisterDtoType, User } from "../types/User";
 import { jwtDecode } from "jwt-decode";
 
 const checkCreds = async (challenge: Uint8Array) => {
@@ -154,5 +154,24 @@ export const useAuthService = () => {
     };
   };
 
-  return { login, webAuthRegister };
+  const register = async ({
+    email,
+    password,
+    firstName,
+    lastName,
+  }: RegisterDtoType): Promise<User> => {
+    const data = await client.register({
+      email,
+      password,
+      firstName,
+      lastName,
+    });
+    console.log(data);
+    return {
+      ...(jwtDecode(data.accessToken) as User),
+      accessToken: data.accessToken,
+    };
+  };
+
+  return { login, register, webAuthRegister };
 };

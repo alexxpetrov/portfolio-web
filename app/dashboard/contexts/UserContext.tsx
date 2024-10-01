@@ -80,22 +80,21 @@ export const UserProvider = ({
         password,
       });
     } else {
-      response = await authService.register({
+      response = await client.register({
         firstName,
         lastName,
         email,
         password,
       });
     }
-
-    if (response.error) {
-      notification.error({
-        message: "Error",
-        description: response.error,
-        icon: "cross",
-      });
-      throw new Error(response.error);
-    }
+    // if (response.error) {
+    //   notification.error({
+    //     message: "Error",
+    //     description: response.error,
+    //     icon: "cross",
+    //   });
+    //   throw new Error(response.error);
+    // }
 
     setUser(response);
     push("/dashboard");

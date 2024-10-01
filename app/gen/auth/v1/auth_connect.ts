@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { BeginLoginRequest, BeginLoginResponse, BeginRegistrationRequest, BeginRegistrationResponse, FinishLoginRequest, FinishLoginResponse, FinishRegistrationRequest, FinishRegistrationResponse, LoginRequest, LoginResponse } from "./auth_pb";
+import { BeginLoginRequest, BeginLoginResponse, BeginRegistrationRequest, BeginRegistrationResponse, FinishLoginRequest, FinishLoginResponse, FinishRegistrationRequest, FinishRegistrationResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from "./auth_pb";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -19,6 +19,15 @@ export const AuthService = {
       name: "Login",
       I: LoginRequest,
       O: LoginResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc auth.v1.AuthService.Register
+     */
+    register: {
+      name: "Register",
+      I: RegisterRequest,
+      O: RegisterResponse,
       kind: MethodKind.Unary,
     },
     /**
