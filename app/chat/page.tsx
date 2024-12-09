@@ -1,9 +1,4 @@
 "use client";
-import {
-  IconMessageReply,
-  IconTrash,
-  IconUserBitcoin,
-} from "@tabler/icons-react";
 import { useChatFetchData } from "dashboard/utils/chatFetcher";
 import { useEffect, useMemo, useState } from "react";
 import { FiSend } from "react-icons/fi"; // Importing a paper plane icon from react-icons
@@ -23,19 +18,19 @@ type Message = {
 export default function ChatLayout() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [replyTo, setReplyTo] = useState<Message | null>(null);
+  // const [replyTo, setReplyTo] = useState<Message | null>(null);
   const [ws, setWs] = useState<WebSocket | null>(null);
   const { user } = useUserContext();
   const [selectedChat, setSelectedChat] = useState<{
     id?: string;
     name?: string;
-  }>({});
+  } | null>({});
   const [showModal, setShowModal] = useState(false); // State to toggle modal visibility
   const [chatRoomName, setChatRoomName] = useState(""); // State for chat room name
 
   const { protectedFetcher } = useChatFetchData();
 
-  const { data: chats, mutate } = useSWR(
+  const { data: chats = [], mutate } = useSWR<{ name: string; id: string }[]>(
     "chat/rooms",
     protectedFetcher("chat/rooms", { method: "GET" }),
     {
@@ -52,8 +47,7 @@ export default function ChatLayout() {
       },
       data: { name: chatRoomName },
     })();
-    console.log(newRoom);
-    mutate([...chats, chatRoomName]); // Add the new chat room to the list
+    mutate([...chats, newRoom]); // Add the new chat room to the list
     setChatRoomName(""); // Clear the input field
     setShowModal(false); // Close the modal
   };
@@ -116,8 +110,8 @@ export default function ChatLayout() {
   const handleSendMessage = () => {
     if (message.trim() === "") return;
 
-    ws.send(message);
-    setReplyTo(null);
+    ws!.send(message);
+    // setReplyTo(null);
 
     console.log("Message sent:", message);
     setMessage(""); // Clear the input after sending
@@ -192,7 +186,7 @@ export default function ChatLayout() {
             {/* Chat Messages */}
             <div className="p-4 overflow-y-auto">
               {messages.map((message) =>
-                message.user_id === user.id ? (
+                message.user_id === user?.id ? (
                   <div className="mb-4 flex justify-end" key={message.id}>
                     <div className="p-3 bg-blue-600  rounded-lg max-w-xs">
                       {message.nickname}
@@ -288,51 +282,51 @@ export default function ChatLayout() {
   );
 }
 
-interface MessageProps {
-  message: Message;
-  onReply: () => void;
-  onDelete: () => void;
-}
+// interface MessageProps {
+//   message: Message;
+//   onReply: () => void;
+//   onDelete: () => void;
+// }
 
-function MessageComponent({ message, onReply, onDelete }: MessageProps) {
-  return (
-    <div
-      className={
-        message.user_id !== 1
-          ? "flex items-start mb-4 text-right"
-          : "p-3 bg-blue-600 rounded-lg max-w-xs ml-auto"
-      }
-    >
-      <IconUserBitcoin
-        // src={message.user.avatar}
-        // alt={message.user.name}
-        className="w-8 h-8 rounded-full mr-3"
-      />
-      <div className="flex-1">
-        <div className="flex items-center justify-between">
-          <span className="font-semibold">{message.user.name}</span>
-          <div className="flex space-x-1">
-            <button
-              onClick={onReply}
-              className="text-gray-400 hover:text-gray-600 focus:outline-none"
-            >
-              <IconMessageReply size={12} />
-            </button>
-            <button
-              onClick={onDelete}
-              className="text-red-400 hover:text-red-600 focus:outline-none"
-            >
-              <IconTrash size={12} />
-            </button>
-          </div>
-        </div>
-        {message.replyTo && (
-          <div className="text-xs text-gray-500 mt-1">
-            Replying to: {message.replyTo.text}
-          </div>
-        )}
-        <p className="mt-1">{message.text}</p>
-      </div>
-    </div>
-  );
-}
+// function MessageComponent({ message, onReply, onDelete }: MessageProps) {
+//   return (
+//     <div
+//       className={
+//         message.user_id !== 1
+//           ? "flex items-start mb-4 text-right"
+//           : "p-3 bg-blue-600 rounded-lg max-w-xs ml-auto"
+//       }
+//     >
+//       <IconUserBitcoin
+//         // src={message.user.avatar}
+//         // alt={message.user.name}
+//         className="w-8 h-8 rounded-full mr-3"
+//       />
+//       <div className="flex-1">
+//         <div className="flex items-center justify-between">
+//           <span className="font-semibold">{message.user.name}</span>
+//           <div className="flex space-x-1">
+//             <button
+//               onClick={onReply}
+//               className="text-gray-400 hover:text-gray-600 focus:outline-none"
+//             >
+//               <IconMessageReply size={12} />
+//             </button>
+//             <button
+//               onClick={onDelete}
+//               className="text-red-400 hover:text-red-600 focus:outline-none"
+//             >
+//               <IconTrash size={12} />
+//             </button>
+//           </div>
+//         </div>
+//         {message.replyTo && (
+//           <div className="text-xs text-gray-500 mt-1">
+//             Replying to: {message.replyTo.text}
+//           </div>
+//         )}
+//         <p className="mt-1">{message.text}</p>
+//       </div>
+//     </div>
+//   );
+// }

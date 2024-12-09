@@ -391,7 +391,7 @@ export default function Home() {
                 {" "}
                 YouTube channel
               </a>
-              , where I showcase recent pet projects I'm working on and a
+              , where I showcase recent pet projects I{"'"}m working on and a
               <a
                 className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
                 rel="noreferrer noopener"
@@ -472,7 +472,7 @@ export default function Home() {
             >
               her website{" "}
             </a>
-            and couldn't resist copying it for mine
+            and couldn{"'"}t resist copying it for mine
           </div>
         </div>
       </div>

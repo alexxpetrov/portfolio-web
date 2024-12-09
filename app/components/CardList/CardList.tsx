@@ -1,4 +1,4 @@
-export const CardList: React.FC<React.PropsWithChildren> = ({
+export const CardList: React.FC<React.PropsWithChildren & { id: string }> = ({
   children,
   id,
 }) => {
