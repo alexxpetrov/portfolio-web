@@ -169,7 +169,7 @@ export default function Home() {
       },
       {
         root: null, // Viewport
-        threshold: 0.7, // Trigger when 50% of the section is visible
+        threshold: 0.5, // Trigger when 50% of the section is visible
       }
     );
 
