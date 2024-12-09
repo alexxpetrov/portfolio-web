@@ -1,17 +1,16 @@
 "use client";
 import { useEffect } from "react";
 
-import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { actions } from "../../../store/user/actions";
 import Login from "../Auth/Login/Login";
 
-const headerItems = [
-  { key: "/", label: <Link href="/">Home</Link> },
-  { key: "/dashboard", label: <Link href="/dashboard">Dashboard</Link> },
-  { key: "/chat", label: <Link href="/chat">Chat</Link> },
-  { key: "/search", label: <Link href="/search">Search</Link> },
-];
+// const headerItems = [
+//   { key: "/", label: <Link href="/">Home</Link> },
+//   { key: "/dashboard", label: <Link href="/dashboard">Dashboard</Link> },
+//   { key: "/chat", label: <Link href="/chat">Chat</Link> },
+//   { key: "/search", label: <Link href="/search">Search</Link> },
+// ];
 
 const AppHeader = () => {
   const dispatch = useDispatch();

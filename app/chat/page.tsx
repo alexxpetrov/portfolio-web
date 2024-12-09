@@ -24,9 +24,12 @@ export default function ChatLayout() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [message, setMessage] = useState<string>("");
   const [replyTo, setReplyTo] = useState<Message | null>(null);
-  const [ws, setWs] = useState(null);
+  const [ws, setWs] = useState<WebSocket | null>(null);
   const { user } = useUserContext();
-  const [selectedChat, setSelectedChat] = useState({});
+  const [selectedChat, setSelectedChat] = useState<{
+    id?: string;
+    name?: string;
+  }>({});
   const [showModal, setShowModal] = useState(false); // State to toggle modal visibility
   const [chatRoomName, setChatRoomName] = useState(""); // State for chat room name
 
@@ -53,10 +56,6 @@ export default function ChatLayout() {
     mutate([...chats, chatRoomName]); // Add the new chat room to the list
     setChatRoomName(""); // Clear the input field
     setShowModal(false); // Close the modal
-  };
-
-  const deleteMessage = (id: number) => {
-    setMessages((prev) => prev.filter((msg) => msg.id !== id));
   };
 
   useEffect(() => {
