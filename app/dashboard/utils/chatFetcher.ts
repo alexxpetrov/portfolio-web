@@ -5,11 +5,11 @@ import { useCallback } from "react";
 import { useUserContext } from "../hooks/useUserContext";
 import { serverRefreshToken } from "../services/serverAction";
 import { User } from "../types/User";
-import { ENDPOINT, IS_DEVELOPMENT } from "./config";
+import { CHAT_ENDPOINT, IS_DEVELOPMENT } from "./config";
 
 // Create a reusable Axios instance with withCredentials: true for cookies
 export const axiosInstance = axios.create({
-  baseURL: `${ENDPOINT}/api`, // Your API base URL
+  baseURL: `${CHAT_ENDPOINT}/api`, // Your API base URL
   timeout: 5000,
 });
 
@@ -148,7 +148,7 @@ export const useAxiosInterceptor = () => {
   );
 };
 
-export const useFetchData = () => {
+export const useChatFetchData = () => {
   const { user } = useUserContext();
 
   // Main request function that manages access tokens and retries failed requests

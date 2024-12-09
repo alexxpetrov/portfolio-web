@@ -1,15 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
-import { Layout, Typography, Menu } from "antd";
+import { useEffect } from "react";
 
-import Login from "../Auth/Login/Login";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { actions } from "../../../store/user/actions";
-
-const { Header } = Layout;
-const { Title } = Typography;
+import Login from "../Auth/Login/Login";
 
 const headerItems = [
   { key: "/", label: <Link href="/">Home</Link> },
@@ -19,8 +14,6 @@ const headerItems = [
 ];
 
 const AppHeader = () => {
-  const pathname = usePathname();
-
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,38 +21,22 @@ const AppHeader = () => {
   }, [dispatch]);
 
   return (
-    <Header
-      style={{
-        position: "fixed",
-        width: "100%",
-        zIndex: 1000,
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "0 50px",
-      }}
-    >
-      {/* Logo */}
-      <div className="logo" style={{ display: "flex", alignItems: "center" }}>
-        <Title level={3} style={{ color: "#fff", margin: 0 }}>
-          MyApp
-        </Title>
+    <header className="fixed top-0 left-0 w-full z-50 bg-cover bg-center backdrop-blur-lg">
+      <div className="grid grid-cols-12 items-center px-4 py-2">
+        <div className="col-span-4 text-left text-white text-lg font-bold">
+          <ul className="flex flex-wrap gap-4">
+            <li>Main</li>
+            <li>Chat</li>
+          </ul>
+        </div>
+        <div className="col-span-4 text-left text-white text-lg font-bold"></div>
+
+        <div className="col-span-4 text-right text-gray-300 font-medium space-x-4">
+          <Login />
+        </div>
       </div>
-
-      {/* Navigation Menu */}
-
-      <Menu
-        theme="dark"
-        mode="horizontal"
-        defaultSelectedKeys={["1"]}
-        style={{ flex: 1, justifyContent: "center", borderBottom: "none" }}
-        selectedKeys={[pathname]}
-        items={headerItems}
-      />
-
-      {/* Right-side Button (e.g., Sign In/Sign Up) */}
-      <Login />
-    </Header>
+      <div className="divide-solid"></div>
+    </header>
   );
 };
 

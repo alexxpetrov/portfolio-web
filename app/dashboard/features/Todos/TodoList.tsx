@@ -1,12 +1,12 @@
-import { Layout, List, Card, Typography, Input, Button } from "antd";
 import {
-  PlusOutlined,
-  CheckCircleOutlined,
   CheckCircleFilled,
+  CheckCircleOutlined,
+  PlusOutlined,
 } from "@ant-design/icons";
+import { Button, Card, Input, Layout, List, Typography } from "antd";
 
-import { Todo } from "./types";
 import { useFetchData } from "../../utils/fetcher";
+import { Todo } from "./types";
 
 const { Header, Content } = Layout;
 const { Title } = Typography;
@@ -35,7 +35,7 @@ export const TodoList: React.FC<TodoListProps> = ({ todoList, mutate }) => {
 
   return (
     <Layout>
-      <Header style={{ background: "#001529", padding: "0 20px" }}>
+      <Header style={{ padding: "0 20px" }}>
         <Title level={3} style={{ color: "#fff" }}>
           Todo List
         </Title>

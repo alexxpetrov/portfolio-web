@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+   package chat.v1;
+
+   option go_package = "github.com/oleksiip-aiola/beef/gen/chat/v1;chatv1";  
+
+   message SendMessageRequest {
+    string value = 1;
+    int32 roomId = 2;
+   }
+   
+   message SendMessageResponse {}
+   
+   message EnterRoomRequest {
+    int32 roomId = 1;
+   }
+
+   message EnterRoomResponse {}
+
+   service ChatService {
+     rpc SendMessage(SendMessageRequest) returns (SendMessageResponse) {}
+     rpc EnterRoom(EnterRoomRequest) returns (EnterRoomResponse) {}
+   }

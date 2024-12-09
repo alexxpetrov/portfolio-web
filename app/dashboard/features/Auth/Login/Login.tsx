@@ -1,5 +1,5 @@
 "use client";
-import React, { useContext, useState } from "react";
+import { SafetyCertificateOutlined } from "@ant-design/icons";
 import type { FormProps } from "antd";
 import {
   Button,
@@ -11,9 +11,9 @@ import {
   notification,
   Typography,
 } from "antd";
+import { useContext, useState } from "react";
 import { UserContext } from "../../../contexts/UserContext";
 import { LoginDtoType, RegisterDtoType, User } from "../../../types/User";
-import { SafetyCertificateOutlined } from "@ant-design/icons";
 
 type FieldType = {
   email?: string;
@@ -91,12 +91,14 @@ const Login = () => {
   return (
     <>
       {user ? (
-        <Flex align="center" gap={12}>
-          <Typography
-            style={{ color: "white" }}
-          >{`Hi ${user.firstName} ${user.lastName}!`}</Typography>
+        <div className="flex w-full justify-end items-center gap-4">
+          <Flex align="center">
+            <Typography style={{ color: "white" }}>{`Hi ${
+              user.firstName || "User"
+            } ${user.lastName || "Usssser"}!`}</Typography>
+          </Flex>
           <Button onClick={logout}>Log out</Button>
-        </Flex>
+        </div>
       ) : (
         <Button onClick={() => setOpened(true)}>Log in</Button>
       )}

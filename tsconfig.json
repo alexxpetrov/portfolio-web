@@ -6,6 +6,7 @@
     "strict": true,
     "noEmit": true,
     "esModuleInterop": true,
+    "baseUrl": "./app",
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
@@ -18,7 +19,11 @@
       }
     ],
     "paths": {
-      "@/*": ["./app/*"]
+      "@/*": ["./app/*"],
+      "@components/*": ["components/*"], // Map "components" to the "components" folder
+      "@gen/*": ["./gen/*"], // (Optional) Map other directories as needed
+      "@styles/*": ["./styles/*"], // (Optional) Map other directories as needed
+      "@public/*": ["./public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

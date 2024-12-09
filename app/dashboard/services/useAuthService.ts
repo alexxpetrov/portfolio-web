@@ -1,7 +1,7 @@
-import { AuthService } from "@/gen/auth/v1/auth_connect";
+import { AuthService } from "@gen/auth/v1/auth_connect";
+import { jwtDecode } from "jwt-decode";
 import { useClient } from "../hooks/useAuthClient";
 import { LoginDtoType, RegisterDtoType, User } from "../types/User";
-import { jwtDecode } from "jwt-decode";
 
 const checkCreds = async (challenge: Uint8Array) => {
   try {
@@ -36,7 +36,6 @@ export const useAuthService = () => {
     const response = await client.beginRegistration({});
 
     const regResponse = await checkCreds(response.challenge);
-    console.log(regResponse);
     if (regResponse) {
       return webAuthLoginFinish(
         regResponse as Credential & {

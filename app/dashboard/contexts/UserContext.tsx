@@ -1,20 +1,20 @@
 "use client";
-import React, { createContext, useEffect, useState } from "react";
-import {
-  LoginDtoType,
-  RegisterDtoType,
-  User,
-  UserContextType,
-} from "../types/User";
 import { jwtDecode } from "jwt-decode";
+import { useRouter } from "next/navigation";
+import React, { createContext, useEffect, useState } from "react";
 import { authService } from "../services/authService";
 import {
   serverLogin,
   serverLogout,
   serverRegister,
 } from "../services/serverAction";
+import {
+  LoginDtoType,
+  RegisterDtoType,
+  User,
+  UserContextType,
+} from "../types/User";
 import { IS_DEVELOPMENT } from "../utils/config";
-import { useRouter } from "next/navigation";
 // import { notification } from "antd";
 import { useAuthService } from "../services/useAuthService";
 
@@ -37,6 +37,7 @@ export const UserProvider = ({
   children: React.ReactNode;
 }) => {
   const { push } = useRouter();
+  console.log(accessToken);
   const [user, setUser] = useState<User | null>(
     accessToken ? jwtDecode(accessToken) : null
   ); // Stores user info

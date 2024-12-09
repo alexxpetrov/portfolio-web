@@ -1,15 +1,15 @@
 "use server";
+import axios, { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
+import { redirect } from "next/navigation";
 import { RegisterDtoType, User } from "../types/User";
 import { ENDPOINT, IS_DEVELOPMENT, WEBAUTHN_ENDPOINT } from "../utils/config";
-import axios, { AxiosError } from "axios";
-import { redirect } from "next/navigation";
 import { deleteAccessTokenCookie, setAccessTokenCookie } from "../utils/cookie";
 
 import { ConnectError, createPromiseClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
-import { AuthService } from "@/gen/auth/v1/auth_connect";
-import { LoginResponse, RegisterResponse } from "@/gen/auth/v1/auth_pb";
+import { AuthService } from "@gen/auth/v1/auth_connect";
+import { LoginResponse, RegisterResponse } from "@gen/auth/v1/auth_pb";
 
 const transport = createConnectTransport({
   baseUrl: WEBAUTHN_ENDPOINT,
