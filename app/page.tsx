@@ -346,7 +346,7 @@ export default function Home() {
               <a
                 className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
                 rel="noreferrer noopener"
-                href="https://www.youtube.com/@0xAlexP"
+                href="https://github.com/alexxpetrov"
                 target="_blank"
               >
                 {" "}
