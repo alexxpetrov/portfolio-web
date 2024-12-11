@@ -7,6 +7,7 @@ type CardProps = {
   description: string;
   techStack: string[];
   imgSrc: StaticImageData;
+  link: string;
 };
 
 export const ProjectCard: FC<CardProps> = ({
@@ -15,6 +16,7 @@ export const ProjectCard: FC<CardProps> = ({
   description,
   techStack,
   imgSrc,
+  link,
 }) => {
   return (
     <div className="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4 lg:hover:!opacity-100 lg:group-hover/list:opacity-50 mb-12">
@@ -37,7 +39,7 @@ export const ProjectCard: FC<CardProps> = ({
           <div>
             <a
               className="inline-flex items-baseline font-medium leading-tight text-slate-200 hover:text-teal-300 focus-visible:text-teal-300  group/link text-base"
-              // href={link}
+              href={link}
               target="_blank"
               rel="noreferrer noopener"
               aria-label={`${title} (opens in a new tab)`}

@@ -125,25 +125,25 @@ const projectCardList = [
     imgSrc: erdTreeImg,
     link: "https://github.com/alexey-petrov/go-webauthn",
   },
-  {
-    id: 3,
-    title: "Pulse",
-    company: "· A distributed high-load chat application",
-    description: `A chat platform leveraging Identia for seamless authentication and Erdtree for robust, distributed data storage. 
-    Designed for scalability and durability, the system ensures real-time messaging with master-slave replication and Write-Ahead Logging (WAL) to guarantee data integrity and fault tolerance. 
-    Whether for personal or enterprise use, this chat app delivers a fast, secure, and reliable communication experience.`,
-    techStack: [
-      "Golang",
-      "Redis",
-      "Kafka",
-      "Identia",
-      "Erdtree",
-      "Docker/Docker Compose",
-      "Websocket",
-    ],
-    imgSrc: erdTreeImg,
-    link: "https://github.com/alexey-petrov/go-webauthn",
-  },
+  // {
+  //   id: 3,
+  //   title: "Pulse",
+  //   company: "· A distributed high-load chat application",
+  //   description: `A chat platform leveraging Identia for seamless authentication and Erdtree for robust, distributed data storage.
+  //   Designed for scalability and durability, the system ensures real-time messaging with master-slave replication and Write-Ahead Logging (WAL) to guarantee data integrity and fault tolerance.
+  //   Whether for personal or enterprise use, this chat app delivers a fast, secure, and reliable communication experience.`,
+  //   techStack: [
+  //     "Golang",
+  //     "Redis",
+  //     "Kafka",
+  //     "Identia",
+  //     "Erdtree",
+  //     "Docker/Docker Compose",
+  //     "Websocket",
+  //   ],
+  //   imgSrc: erdTreeImg,
+  //   link: "https://github.com/alexey-petrov/go-webauthn",
+  // },
 ];
 
 export default function Home() {
