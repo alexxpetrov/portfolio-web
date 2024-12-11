@@ -140,7 +140,6 @@ export const useAuthService = () => {
       email,
       password,
     });
-    console.log(data);
     return {
       ...(jwtDecode(data.accessToken) as User),
       accessToken: data.accessToken,
@@ -159,7 +158,6 @@ export const useAuthService = () => {
       firstName,
       lastName,
     });
-    console.log(data);
     return {
       ...(jwtDecode(data.accessToken) as User),
       accessToken: data.accessToken,

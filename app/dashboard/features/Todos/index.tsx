@@ -1,11 +1,11 @@
 "use client";
+import { Card, Typography } from "antd";
+import { memo, useEffect, useRef } from "react";
 import useSWR from "swr";
+import { useFetchData } from "../../utils/fetcher";
 import { AddTodo } from "./AddTodo";
 import { TodoList } from "./TodoList";
-import { useFetchData } from "../../utils/fetcher";
 import { Todo } from "./types";
-import { memo, useEffect, useRef } from "react";
-import { Card, Typography } from "antd";
 
 export const Todos = memo(function Todos({ todos }: { todos: Todo[] }) {
   const { protectedFetcher } = useFetchData();
@@ -30,10 +30,6 @@ export const Todos = memo(function Todos({ todos }: { todos: Todo[] }) {
     );
 
     workerRef.current = worker;
-
-    worker.onmessage = (event) => {
-      console.log(event.data);
-    };
 
     return () => {
       worker.terminate();

@@ -37,7 +37,6 @@ export const UserProvider = ({
   children: React.ReactNode;
 }) => {
   const { push } = useRouter();
-  console.log(accessToken);
   const [user, setUser] = useState<User | null>(
     accessToken ? jwtDecode(accessToken) : null
   ); // Stores user info
@@ -47,7 +46,6 @@ export const UserProvider = ({
     const loggedInUser = await client.webAuthRegister();
 
     setUser(loggedInUser);
-    push("/dashboard");
 
     return loggedInUser;
   };
@@ -61,7 +59,6 @@ export const UserProvider = ({
     }
 
     setUser(loggedInUser);
-    push("/dashboard");
 
     return loggedInUser;
   };
@@ -98,7 +95,6 @@ export const UserProvider = ({
     // }
 
     setUser(response);
-    push("/dashboard");
 
     return response;
   };
@@ -106,10 +102,12 @@ export const UserProvider = ({
   const handleLogout = async () => {
     if (IS_DEVELOPMENT) {
       await serverLogout({
-        id: user!.id,
-      } as RegisterDtoType);
+        accessToken: user!.accessToken,
+      });
     } else {
-      await authService.logout({ id: user!.id });
+      await authService.logout({
+        accessToken: user!.accessToken,
+      });
     }
 
     setUser(null);

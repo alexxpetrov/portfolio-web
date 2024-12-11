@@ -43,7 +43,6 @@ export const useAxiosInterceptor = () => {
         config.url !== "/refresh-token" &&
         config.url !== "/logout"
       ) {
-        console.log(config);
         const accessToken = await refreshAccessToken(); // Get the access token via the refresh token
 
         config.headers.Authorization = `Bearer ${accessToken}`;
@@ -52,7 +51,6 @@ export const useAxiosInterceptor = () => {
       return config;
     },
     (error) => {
-      console.log("error", error);
       return Promise.reject(error);
     }
   );

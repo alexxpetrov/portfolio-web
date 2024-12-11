@@ -1,7 +1,6 @@
 "use server";
 import axios, { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
-import { redirect } from "next/navigation";
 import { RegisterDtoType, User } from "../types/User";
 import { ENDPOINT, IS_DEVELOPMENT, WEBAUTHN_ENDPOINT } from "../utils/config";
 import { deleteAccessTokenCookie, setAccessTokenCookie } from "../utils/cookie";
@@ -10,6 +9,7 @@ import { ConnectError, createPromiseClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 import { AuthService } from "@gen/auth/v1/auth_connect";
 import { LoginResponse, RegisterResponse } from "@gen/auth/v1/auth_pb";
+import { redirect } from "next/navigation";
 
 const transport = createConnectTransport({
   baseUrl: WEBAUTHN_ENDPOINT,
@@ -79,21 +79,30 @@ export const serverRegister = async (dto: RegisterDtoType): Promise<User> => {
     accessToken: data.accessToken,
   };
 };
-export const serverLogout = async (dto: RegisterDtoType) => {
-  try {
-    await axios.post(`${ENDPOINT}/api/logout`, dto, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      withCredentials: true,
-    });
 
+export const serverLogout = async (dto: {accessToken: string}) => {
+  const data = (await client
+    .logout(dto)
+    .then((res) => res)
+    .catch((err) => {
+      if (err instanceof ConnectError) {
+        console.log(err.code); // Code.InvalidArgument
+        console.log(err.message); // "[invalid_argument] sentence cannot be empty"
+      }
+      // Alternatively, we can use ConnectError.from()
+      // It returns a ConnectError as is, and converts any
+      // other error to a ConnectError.
+      const connectErr = ConnectError.from(err);
+      console.log(connectErr.code); // Code.InvalidArgument
+      console.log(connectErr.message); // "[invalid_argument] sentence cannot be empty"
+    }));
+
+  if (!data?.ok) {
+    return
+  }
+
+  if (IS_DEVELOPMENT) {
     deleteAccessTokenCookie();
-  } catch (error) {
-    console.log(
-      "Error occurred while logging out:",
-      (error as AxiosError).message
-    );
   }
 
   redirect("/");

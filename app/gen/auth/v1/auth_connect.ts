@@ -3,7 +3,7 @@
 /* eslint-disable */
 // @ts-nocheck
 
-import { BeginLoginRequest, BeginLoginResponse, BeginRegistrationRequest, BeginRegistrationResponse, FinishLoginRequest, FinishLoginResponse, FinishRegistrationRequest, FinishRegistrationResponse, LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from "./auth_pb";
+import { BeginLoginRequest, BeginLoginResponse, BeginRegistrationRequest, BeginRegistrationResponse, FinishLoginRequest, FinishLoginResponse, FinishRegistrationRequest, FinishRegistrationResponse, LoginRequest, LoginResponse, LogoutRequest, LogoutResponse, RefreshAccessTokenRequest, RefreshAccessTokenResponse, RegisterRequest, RegisterResponse } from "./auth_pb";
 import { MethodKind } from "@bufbuild/protobuf";
 
 /**
@@ -64,6 +64,24 @@ export const AuthService = {
       name: "FinishLogin",
       I: FinishLoginRequest,
       O: FinishLoginResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc auth.v1.AuthService.RefreshAccessToken
+     */
+    refreshAccessToken: {
+      name: "RefreshAccessToken",
+      I: RefreshAccessTokenRequest,
+      O: RefreshAccessTokenResponse,
+      kind: MethodKind.Unary,
+    },
+    /**
+     * @generated from rpc auth.v1.AuthService.Logout
+     */
+    logout: {
+      name: "Logout",
+      I: LogoutRequest,
+      O: LogoutResponse,
       kind: MethodKind.Unary,
     },
   }

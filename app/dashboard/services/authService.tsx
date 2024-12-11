@@ -1,6 +1,6 @@
+import axios, { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
 import { RegisterDtoType, User } from "../types/User";
-import axios, { AxiosError } from "axios";
 import { ENDPOINT } from "../utils/config";
 
 export const authService = {
@@ -40,10 +40,10 @@ export const authService = {
     };
   },
 
-  logout: async ({ id }: { id: string }) => {
+  logout: async ({ accessToken }: { accessToken: string }) => {
     return axios.post(
       `${ENDPOINT}/api/logout`,
-      { id },
+      { accessToken },
       {
         headers: {
           "Content-Type": "application/json",
