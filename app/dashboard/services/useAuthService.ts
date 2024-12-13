@@ -1,15 +1,17 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-nocheck Ignoring due to Uint8Array not being ArrayBuffer, but ArrayBufferLike
+// For some reason Uint8Array is not treated as a generic, but in IDE it is.
 import { AuthService } from "@gen/auth/v1/auth_connect";
 import { jwtDecode } from "jwt-decode";
 import { useClient } from "../hooks/useAuthClient";
 import { LoginDtoType, RegisterDtoType, User } from "../types/User";
 
-
 type WebauthnCreds = Credential & {
   response: {
-    attestationObject: Uint8Array<ArrayBuffer>;
-    clientDataJSON: Uint8Array<ArrayBuffer>;
-    authenticatorData: Uint8Array<ArrayBuffer>;
-    signature: Uint8Array<ArrayBuffer>;
+    attestationObject: Uint8Array;
+    clientDataJSON: Uint8Array;
+    authenticatorData: Uint8Array;
+    signature: Uint8Array;
   };
 }
 const checkCreds = async (challenge: Uint8Array) => {
