@@ -1,7 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
+import { Tooltip } from "@components/Tooltip/Tooltip";
 import dayjs from "dayjs";
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FiSend } from "react-icons/fi";
 
 export const ChatBody = ({
@@ -24,6 +25,19 @@ export const ChatBody = ({
     setMessage(""); // Clear the input after sending
   };
 
+  const inputRef = useRef(null);
+
+  const handleBlur = useCallback(() => {
+    // Refocus the input if it loses focus
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  useEffect(() => {
+    handleBlur();
+  }, [messages, handleBlur]);
+
   if (!selectedChat?.id) {
     return (
       <div className="flex items-center justify-center h-full">
@@ -36,7 +50,28 @@ export const ChatBody = ({
     <div className="grid grid-rows-[auto,1fr,auto] h-full bg-gray-900 text-gray-200">
       {/* Chat Header */}
       <div className="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-800">
-        <span className="font-semibold">{selectedChat.name}</span>
+        <div className="flex gap-4 z-10">
+          <span className="font-semibold">{selectedChat.name}</span>
+          <Tooltip
+            title={
+              <span className="text-slate-400">
+                Chat messages are delivered in real-time using WebSocket
+                connections. All messages are efficiently stored and retrieved
+                from Redis cache or ScyllaDB database for high performance.
+                <a
+                  className="font-medium text-white hover:text-teal-300 focus-visible:text-teal-300"
+                  rel="noreferrer noopener"
+                  href="https://github.com/alexxpetrov"
+                  target="_blank"
+                >
+                  {" "}
+                  GitHub
+                </a>
+              </span>
+            }
+          />
+        </div>
+
         <button
           onClick={() => setSelectedChat(null)} // Return to no selection
           className="text-gray-400 hover:text-teal-300"
@@ -87,7 +122,7 @@ export const ChatBody = ({
                   }`}
                 >
                   <span className="block text-sm font-semibold mb-1">
-                    {message.nickname}
+                    {message.nickname.replaceAll("_", " ")}
                   </span>
                   <span className="mr-8 overflow-hidden break-words">
                     {message.content}
@@ -119,9 +154,16 @@ export const ChatBody = ({
         <div className="relative flex items-center">
           {/* Input Field */}
           <input
+            ref={inputRef}
             type="text"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter") {
+                handleSendMessage();
+              }
+            }}
+            autoFocus
             placeholder="Type a message..."
             className="w-full pr-10 p-2 bg-gray-700 text-gray-200 rounded-md outline-none focus:ring-2 focus:ring-teal-300"
           />

@@ -3,6 +3,15 @@ import { jwtDecode } from "jwt-decode";
 import { useClient } from "../hooks/useAuthClient";
 import { LoginDtoType, RegisterDtoType, User } from "../types/User";
 
+
+type WebauthnCreds = Credential & {
+  response: {
+    attestationObject: Uint8Array<ArrayBuffer>;
+    clientDataJSON: Uint8Array<ArrayBuffer>;
+    authenticatorData: Uint8Array<ArrayBuffer>;
+    signature: Uint8Array<ArrayBuffer>;
+  };
+}
 const checkCreds = async (challenge: Uint8Array) => {
   try {
     const credential = await navigator.credentials.get({
@@ -38,14 +47,7 @@ export const useAuthService = () => {
     const regResponse = await checkCreds(response.challenge);
     if (regResponse) {
       return webAuthLoginFinish(
-        regResponse as Credential & {
-          response: {
-            attestationObject: Uint8Array;
-            clientDataJSON: Uint8Array;
-            authenticatorData: Uint8Array;
-            signature: Uint8Array;
-          };
-        }
+        regResponse as WebauthnCreds
       );
     }
 
@@ -111,14 +113,7 @@ export const useAuthService = () => {
   };
 
   const webAuthLoginFinish = async (
-    credential: Credential & {
-      response: {
-        attestationObject: Uint8Array;
-        clientDataJSON: Uint8Array;
-        authenticatorData: Uint8Array;
-        signature: Uint8Array;
-      };
-    }
+    credential: WebauthnCreds
   ): Promise<User> => {
     const finishRequest = {
       credentialId: credential.id,
