@@ -1,5 +1,4 @@
 "use client";
-import console from "console";
 import { LoginModal } from "dashboard/features/Auth/LoginModal/LoginModal";
 import { useChatFetchData } from "dashboard/utils/chatFetcher";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -9,7 +8,6 @@ import { ChatBody } from "./ChatBody";
 import { ChatList } from "./components/ChatList";
 import { LogPanel } from "./components/LogPanel";
 import { ChatRoom } from "./types";
-import console from "console";
 
 type Message = {
   id: string;
