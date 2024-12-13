@@ -1,4 +1,5 @@
 "use client";
+import console from "console";
 import { LoginModal } from "dashboard/features/Auth/LoginModal/LoginModal";
 import { useChatFetchData } from "dashboard/utils/chatFetcher";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -8,6 +9,7 @@ import { ChatBody } from "./ChatBody";
 import { ChatList } from "./components/ChatList";
 import { LogPanel } from "./components/LogPanel";
 import { ChatRoom } from "./types";
+import console from "console";
 
 type Message = {
   id: string;
@@ -26,9 +28,7 @@ export default function ChatLayout() {
   const [selectedChat, setSelectedChat] = useState<ChatRoom | null>(
     {} as ChatRoom
   );
-  const [forcedRender, setForcedRender] = useState(true);
   const scrollableRef = useRef<HTMLDivElement | null>(null);
-  const chatWindowRef = useRef<Element>(null);
 
   const { protectedFetcher } = useChatFetchData();
 
@@ -133,7 +133,6 @@ export default function ChatLayout() {
         // Wait for the WebSocket to close
         webSocketRef.current.onclose = () => {
           setMessages([]);
-          setForcedRender(false);
 
           console.log("WebSocket closed. Opening new connection...");
           connectToWebSocket(id);
