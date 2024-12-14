@@ -96,6 +96,7 @@ Desktop App with Electron: Creating and maintaining React modules, setting up Ro
     link: "https://plarium.com/",
   },
 ];
+
 const projectCardList = [
   {
     id: 1,
@@ -123,27 +124,26 @@ const projectCardList = [
       "JWT",
     ],
     imgSrc: erdTreeImg,
-    link: "https://github.com/alexey-petrov/go-webauthn",
+    link: "https://github.com/alexxpetrov/identia-be",
   },
-  // {
-  //   id: 3,
-  //   title: "Pulse",
-  //   company: "· A distributed high-load chat application",
-  //   description: `A chat platform leveraging Identia for seamless authentication and Erdtree for robust, distributed data storage.
-  //   Designed for scalability and durability, the system ensures real-time messaging with master-slave replication and Write-Ahead Logging (WAL) to guarantee data integrity and fault tolerance.
-  //   Whether for personal or enterprise use, this chat app delivers a fast, secure, and reliable communication experience.`,
-  //   techStack: [
-  //     "Golang",
-  //     "Redis",
-  //     "Kafka",
-  //     "Identia",
-  //     "Erdtree",
-  //     "Docker/Docker Compose",
-  //     "Websocket",
-  //   ],
-  //   imgSrc: erdTreeImg,
-  //   link: "https://github.com/alexey-petrov/go-webauthn",
-  // },
+  {
+    id: 3,
+    title: "Beef",
+    company: "· A distributed high-load chat application",
+    description: `A chat platform leveraging Identia for seamless authentication and Erdtree for robust, distributed logs storage.
+    Designed for scalability and durability by implementing a cache layer with Redis and message queue with Kafka, the system ensures real-time messaging with master-slave replication and Write-Ahead Logging (WAL) to guarantee data integrity and fault tolerance.`,
+    techStack: [
+      "Golang",
+      "Redis",
+      "Kafka",
+      "Identia",
+      "Erdtree",
+      "Docker/Docker Compose",
+      "Websocket",
+    ],
+    imgSrc: erdTreeImg,
+    link: "https://github.com/alexxpetrov/beef",
+  },
 ];
 
 export default function Home() {

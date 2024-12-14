@@ -47,7 +47,7 @@ export const LogPanel = ({ rooms }: { rooms: ChatRoom[] }) => {
                 <a
                   className="font-medium text-white hover:text-teal-300 focus-visible:text-teal-300"
                   rel="noreferrer noopener"
-                  href="https://github.com/alexxpetrov"
+                  href="https://github.com/alexxpetrov/erdtree"
                   target="_blank"
                 >
                   {" "}

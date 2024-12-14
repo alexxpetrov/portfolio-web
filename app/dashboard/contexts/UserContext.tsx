@@ -2,7 +2,6 @@
 import { jwtDecode } from "jwt-decode";
 import { useRouter } from "next/navigation";
 import React, { createContext, useEffect, useState } from "react";
-import { authService } from "../services/authService";
 import {
   serverLogin,
   serverLogout,
@@ -37,8 +36,8 @@ export const UserProvider = ({
   children: React.ReactNode;
 }) => {
   const { push } = useRouter();
-  const [user, setUser] = useState<User | null>(
-    accessToken ? jwtDecode(accessToken) : null
+  const [user, setUser] = useState(
+    accessToken ? { ...jwtDecode(accessToken), accessToken } : null
   ); // Stores user info
   const client = useAuthService();
 
@@ -105,7 +104,7 @@ export const UserProvider = ({
         accessToken: user!.accessToken,
       });
     } else {
-      await authService.logout({
+      await client.logout({
         accessToken: user!.accessToken,
       });
     }

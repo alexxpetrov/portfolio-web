@@ -4,7 +4,7 @@ import { useChatFetchData } from "dashboard/utils/chatFetcher";
 import { useCallback, useEffect, useRef, useState } from "react";
 import useSWR from "swr";
 import { useUserContext } from "../dashboard/hooks/useUserContext";
-import { ChatBody } from "./ChatBody";
+import { ChatBody } from "./components/ChatBody";
 import { ChatList } from "./components/ChatList";
 import { LogPanel } from "./components/LogPanel";
 import { ChatRoom } from "./types";

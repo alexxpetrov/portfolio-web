@@ -161,5 +161,15 @@ export const useAuthService = () => {
     };
   };
 
-  return { login, register, webAuthRegister };
+  const logout = async ({ accessToken }: {accessToken: string}): Promise<User> => {
+    const data = await client.logout({
+      accessToken
+    });
+    return {
+      ...(jwtDecode(data.accessToken) as User),
+      accessToken: data.accessToken,
+    };
+  };
+
+  return { login, register, webAuthRegister, logout };
 };

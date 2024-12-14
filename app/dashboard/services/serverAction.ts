@@ -1,8 +1,8 @@
 "use server";
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import { jwtDecode } from "jwt-decode";
 import { RegisterDtoType, User } from "../types/User";
-import { ENDPOINT, IS_DEVELOPMENT, WEBAUTHN_ENDPOINT } from "../utils/config";
+import { IS_DEVELOPMENT, WEBAUTHN_ENDPOINT } from "../utils/config";
 import { deleteAccessTokenCookie, setAccessTokenCookie } from "../utils/cookie";
 
 import { ConnectError, createPromiseClient } from "@connectrpc/connect";
@@ -110,32 +110,33 @@ export const serverLogout = async (dto: {accessToken: string}) => {
 
 export const serverRefreshToken = async ({
   id,
+  accessToken,
 }: {
   id: string;
-}): Promise<User | null> => {
+  accessToken: string
+}) => {
   try {
-    const { data, status } = await axios.post(
-      `${ENDPOINT}/api/refresh-token`,
-      { id },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        withCredentials: true,
-      }
-    );
+    const data = (await client
+      .refreshAccessToken({accessToken, userId: id})
+      .then((res) => res)
+      .catch((err) => {
+        if (err instanceof ConnectError) {
+          console.log(err.code); // Code.InvalidArgument
+          console.log(err.message); // "[invalid_argument] sentence cannot be empty"
+        }
+        // Alternatively, we can use ConnectError.from()
+        // It returns a ConnectError as is, and converts any
+        // other error to a ConnectError.
+        const connectErr = ConnectError.from(err);
+        console.log(connectErr.code); // Code.InvalidArgument
+        console.log(connectErr.message); // "[invalid_argument] sentence cannot be empty"
+      }));
 
-    if (status === 200) {
-      setAccessTokenCookie(data.access_token);
-
-      return {
-        ...(jwtDecode(data.access_token) as User),
-        accessToken: data.access_token,
-      };
-    } else {
-      console.log("Token refresh failed");
-      return null;
+    if (!data) {
+      return null
     }
+
+    return data.accessToken
   } catch (error) {
     console.log("Error occurred:", (error as AxiosError).message);
     return null;

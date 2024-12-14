@@ -37,7 +37,6 @@ export const useAxiosInterceptor = () => {
   axiosInstance.interceptors.request.use(
     async (config) => {
       // Modify request config here, e.g., add headers
-
       if (
         config.headers?.Authorization === null &&
         config.url !== "/refresh-token" &&
@@ -57,26 +56,23 @@ export const useAxiosInterceptor = () => {
 
   const refreshAccessToken = async () => {
     if (IS_DEVELOPMENT) {
-      const { accessToken } = (await serverRefreshToken({
+      const accessToken = await serverRefreshToken({
         id: user!.id,
-      })) as User;
+        accessToken: user!.accessToken,
+      });
       return accessToken;
     }
 
-    const { data, status } = await axiosInstance.post(
-      "/refresh-token",
-      { id: user?.id },
-      {
-        withCredentials: true, // Send refresh token (stored in cookie)
-      }
-    );
+    const accessToken = await serverRefreshToken({
+      id: user!.id,
+      accessToken: user!.accessToken,
+    });
 
-    if (status !== 200) {
+    if (!accessToken) {
       throw new Error("Failed to refresh token");
     }
 
-    return data.access_token;
-    return "";
+    return accessToken;
   };
 
   axiosInstance.interceptors.response.use(
@@ -101,6 +97,10 @@ export const useAxiosInterceptor = () => {
           try {
             // Refresh the access token
             const newAccessToken = await refreshAccessToken();
+
+            if (!newAccessToken) {
+              return;
+            }
 
             setUser({
               ...jwtDecode(newAccessToken),
