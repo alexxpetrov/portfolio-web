@@ -23,7 +23,7 @@
       "@components/*": ["components/*"], // Map "components" to the "components" folder
       "@gen/*": ["./gen/*"], // (Optional) Map other directories as needed
       "@styles/*": ["./styles/*"], // (Optional) Map other directories as needed
-      "@public/*": ["./public/*"]
+      "@public/*": ["../public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],

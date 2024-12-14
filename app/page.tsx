@@ -1,6 +1,8 @@
 "use client";
 
-import erdTreeImg from "@public/projects/erdtree-arch.png";
+import beefImg from "@public/projects/beef-1.webp";
+import erdTreeImg from "@public/projects/erdtreee.png";
+import identiaImg from "@public/projects/identia.webp";
 import { CardList } from "components/CardList/CardList";
 import { JobCard } from "components/JobCard/JobCard";
 import { ProjectCard } from "components/ProjectCard/ProjectCard";
@@ -123,7 +125,7 @@ const projectCardList = [
       "Gorm",
       "JWT",
     ],
-    imgSrc: erdTreeImg,
+    imgSrc: identiaImg,
     link: "https://github.com/alexxpetrov/identia-be",
   },
   {
@@ -141,7 +143,7 @@ const projectCardList = [
       "Docker/Docker Compose",
       "Websocket",
     ],
-    imgSrc: erdTreeImg,
+    imgSrc: beefImg,
     link: "https://github.com/alexxpetrov/beef",
   },
 ];
