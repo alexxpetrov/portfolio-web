@@ -56,8 +56,9 @@ export const ChatBody = ({
             title={
               <span className="text-slate-400">
                 Chat messages are delivered in real-time using WebSocket
-                connections. All messages are efficiently stored and retrieved
-                from Redis cache or ScyllaDB database for high performance.
+                connections served by a Go Http server. All messages are
+                efficiently stored and retrieved from Redis cache or ScyllaDB
+                database for high performance.
                 <a
                   className="font-medium text-white hover:text-teal-300 focus-visible:text-teal-300"
                   rel="noreferrer noopener"

@@ -40,7 +40,7 @@ export const LogPanel = ({ rooms }: { rooms: ChatRoom[] }) => {
           <Tooltip
             title={
               <span className="text-slate-400">
-                Logs are handled by a separate microservice. It uses an
+                Logs are handled by a separate Go microservice. It uses an
                 In-Memory database built on Sync.Map with Write-Ahead Logging to
                 ensure speed and reliability. Client syncs data every 5 seconds
                 via short-polling based gRPC request

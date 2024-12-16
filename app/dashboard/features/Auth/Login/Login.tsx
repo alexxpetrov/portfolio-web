@@ -15,7 +15,7 @@ const Login = () => {
           <Tooltip
             title={
               <span className="text-slate-400">
-                Authentication is managed by a dedicated Auth microservice,
+                Authentication is managed by a dedicated Go Auth microservice,
                 utilizing JWT auth strategy, with gRPC API for
                 registration/login and token refresh. It supports both
                 email/password login and biometric WebAuthn, with data securely
