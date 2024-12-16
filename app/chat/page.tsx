@@ -80,7 +80,7 @@ export default function ChatLayout() {
   const connectToWebSocket = useCallback(
     (id: string) => {
       const ws = new WebSocket(
-        `ws://localhost:4000/api/chat/rooms/${id}?access_token=${user?.accessToken}&user_id=${user?.id}&nickname=${user?.firstName}_${user?.lastName}`
+        `wss://beef.upbeatbenevolance.xyz/api/chat/rooms/${id}?access_token=${user?.accessToken}&user_id=${user?.id}&nickname=${user?.firstName}_${user?.lastName}`
       );
 
       if (ws.OPEN) {
