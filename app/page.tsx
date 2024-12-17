@@ -59,12 +59,18 @@ Improved campaign managers’ performance by 50%`,
     dateFinish: "2023/02",
     title: "Senior Frontend Engineer, Accessibility",
     company: "· Nearmap",
-    description: `Build and maintain critical components used to construct Klaviyo
-              frontend, across the whole product. Work closely with
-              cross-functional teams, including developers, designers, and
-              product managers, to implement and advocate for best practices in
-              web accessibility.`,
-    techStack: ["JavaScript", "TypeScript", "Golang", "Backend"],
+    description: `Set up a Dockerized microfrontend service with React/Redux. 
+    Introduced the application to the team with and integrated into a large in-production product.
+Improved AVG application rating by 0.2 (4.3 -> 4.5).`,
+    techStack: [
+      "React",
+      "Jest/React Testing Library",
+      "Docker",
+      "Redux",
+      "Redux-saga",
+      "HTML/SCSS",
+      "Typescript",
+    ],
     link: "https://www.nearmap.com/",
   },
   {
