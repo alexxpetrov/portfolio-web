@@ -8,6 +8,7 @@ type CardProps = {
   techStack: string[];
   imgSrc: StaticImageData;
   link: string;
+  demoUrl?: string;
 };
 
 export const ProjectCard: FC<CardProps> = ({

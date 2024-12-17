@@ -239,6 +239,19 @@ export default function Home() {
                   </a>
                 </li>
               </ul>
+              <ul className="mt-16 w-max">
+                <li>
+                  <a
+                    className="group flex items-center py-3"
+                    href="/chat"
+                    target="_blank"
+                  >
+                    <span className="nav-text text-xs font-bold uppercase tracking-widest text-slate-500 group-hover:text-slate-200 group-focus-visible:text-slate-200">
+                      Chat Demo
+                    </span>
+                  </a>
+                </li>
+              </ul>
             </nav>
           </div>
 
