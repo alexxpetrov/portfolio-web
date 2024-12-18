@@ -63,7 +63,7 @@ export const useAuthService = () => {
         },
         user: {
           id: new Uint8Array(16), // Random user ID, modify as needed
-          name: "Yourwebsite", // Can be empty for now
+          name: "alexspetrov.com", // Can be empty for now
           displayName: "Unknown User", // Can be empty
         },
         pubKeyCredParams: [
