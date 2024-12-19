@@ -4,8 +4,8 @@ import { cookies } from "next/headers";
 
 const ACCESS_TOKEN_EXPIRATION = 24 * 7;
 
-const currentTime = new Date(); // Get the current date and time
-currentTime.setHours(currentTime.getHours() + ACCESS_TOKEN_EXPIRATION); // Add 50 hours
+const currentTime = new Date();
+currentTime.setHours(currentTime.getHours() + ACCESS_TOKEN_EXPIRATION); 
 
 export const setAccessTokenCookie = async (token: string) => {
   cookies().set("access_token", token, {

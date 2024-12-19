@@ -7,21 +7,10 @@ import { useUserContext } from "../dashboard/hooks/useUserContext";
 import { ChatBody } from "./components/ChatBody";
 import { ChatList } from "./components/ChatList";
 import { LogPanel } from "./components/LogPanel";
-import { ChatRoom } from "./types";
-
-type Message = {
-  id: string;
-  content: string;
-  user_id: string;
-  nickname: string;
-  room_id: string;
-  time_created: string;
-  type: "recv" | "self";
-};
+import { ChatRoom, Message } from "./types";
 
 export default function ChatLayout() {
   const [messages, setMessages] = useState<Message[]>([]);
-  // const [replyTo, setReplyTo] = useState<Message | null>(null);
   const { user } = useUserContext();
   const [selectedChat, setSelectedChat] = useState<ChatRoom | null>(
     {} as ChatRoom
@@ -49,32 +38,6 @@ export default function ChatLayout() {
   }, [messages]);
 
   const webSocketRef = useRef<WebSocket | null>(null);
-
-  // useEffect(() => {
-  //   if (messages?.[0]?.room_id === selectedChat?.id) {
-  //     // @ts-expect-error ignore
-  //     chatWindowRef.current = (
-  //       <ChatBody
-  //         {...{
-  //           setSelectedChat,
-  //           selectedChat,
-  //           messages,
-  //           userId: user?.id,
-  //           webSocketRef,
-  //           scrollableRef,
-  //         }}
-  //       />
-  //     );
-  //   }
-  // }, [
-  //   selectedChat?.id,
-  //   messages,
-  //   scrollableRef,
-  //   webSocketRef,
-  //   user?.id,
-  //   selectedChat,
-  //   forcedRender,
-  // ]);
 
   // Open WebSocket connection
   const connectToWebSocket = useCallback(
@@ -151,7 +114,6 @@ export default function ChatLayout() {
     <div className="min-h-screen overflow-hidden bg-slate-900 leading-relaxed text-slate-400 selection:bg-teal-300 selection:text-teal-900">
       <div className="grid h-screen xl:max-h-screen 2xl:grid-cols-[1fr_3fr_1fr] grid-rows-[4fr_1fr] 2xl:grid-rows-1">
         {!user && <LoginModal />}
-        {/* Chat Sidebar */}
         <div
           className={`bg-slate-800 text-slate-200 border-r border-slate-600 ${
             selectedChat?.id ? "hidden 2xl:flex flex-col" : "flex flex-col"
@@ -165,7 +127,6 @@ export default function ChatLayout() {
           />
         </div>
 
-        {/* Chat Content */}
         <div
           className={`bg-slate-900 text-slate-200 overflow-y-auto ${
             selectedChat?.id ? "block" : "hidden 2xl:block"
@@ -181,25 +142,8 @@ export default function ChatLayout() {
               scrollableRef,
             }}
           />
-          {/* {messages?.[0]?.room_id !== selectedChat?.id &&
-          messages.length &&
-          selectedChat?.id ? (
-            chatWindowRef.current
-          ) : (
-            <ChatBody
-              {...{
-                setSelectedChat,
-                selectedChat,
-                messages: messages.length ? messages : [],
-                userId: user?.id,
-                webSocketRef,
-                scrollableRef,
-              }}
-            />
-          )} */}
         </div>
 
-        {/* Logging Panel */}
         <LogPanel rooms={rooms} />
       </div>
     </div>

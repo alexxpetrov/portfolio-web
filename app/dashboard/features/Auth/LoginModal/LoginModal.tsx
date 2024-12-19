@@ -2,13 +2,27 @@ import { Tooltip } from "@components/Tooltip/Tooltip";
 import { notification } from "antd";
 import { UserContext } from "dashboard/contexts/UserContext";
 import { LoginDtoType, RegisterDtoType, User } from "dashboard/types/User";
-import { useContext, useEffect, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
 import { FiCheckCircle } from "react-icons/fi";
 
+enum SignUpType {
+  login = "login",
+  register = "register",
+}
+enum AuthType {
+  biometry = "biometry",
+  default = "default",
+}
 export const LoginModal = () => {
   const { login, register, handleWebAuthRegister } = useContext(UserContext);
-  const [authType, setAuthType] = useState<"biometry" | "default">("biometry");
-  const [formState, setFormState] = useState<"login" | "register">("login");
+  const [authType, setAuthType] = useState<AuthType>(AuthType.biometry);
+  const [formState, setFormState] = useState<SignUpType>(SignUpType.login);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,8 +31,7 @@ export const LoginModal = () => {
     remember: false,
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleInputChange = (e: any) => {
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
@@ -26,9 +39,7 @@ export const LoginModal = () => {
     });
   };
 
-  const [, setOpened] = useState(true);
-
-  const handleBiometricAuth = async () => {
+  const handleBiometricAuth = useCallback(async () => {
     const response = await handleWebAuthRegister();
 
     notification.success({
@@ -40,12 +51,9 @@ export const LoginModal = () => {
       icon: <FiCheckCircle />,
       type: "success",
     });
+  }, [handleWebAuthRegister]);
 
-    setOpened(false);
-  };
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const handleSubmit = async (e: any) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e!.preventDefault(); // Prevent page refresh
 
     let response: User | null = null;
@@ -80,20 +88,14 @@ export const LoginModal = () => {
       icon: <FiCheckCircle />,
       type: "success",
     });
-
-    setOpened(false);
   };
-
-  useEffect(() => {
-    // handleBiometricAuth();
-  }, []);
 
   return (
     <div className="fixed inset-0 bg-slate-900 bg-opacity-95 flex items-center justify-center z-50">
       <div className="bg-slate-800 text-slate-200 rounded-md p-6 w-full max-w-md">
         <div className="flex items-center gap-4 mb-4">
           <h2 className="text-xl font-bold text-teal-300 ">
-            {formState === "login" ? "Log In" : "Sign Up"}
+            {formState === SignUpType.login ? "Log In" : "Sign Up"}
           </h2>
           <Tooltip
             title={
@@ -117,7 +119,7 @@ export const LoginModal = () => {
           />
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
-          {authType === "default" ? (
+          {authType === AuthType.default ? (
             <>
               <div>
                 <label
@@ -195,7 +197,11 @@ export const LoginModal = () => {
                 <button
                   type="button"
                   onClick={() =>
-                    setFormState(formState === "login" ? "register" : "login")
+                    setFormState(
+                      formState === SignUpType.login
+                        ? SignUpType.register
+                        : SignUpType.login
+                    )
                   }
                   className="text-teal-300 hover:underline"
                 >
@@ -213,7 +219,7 @@ export const LoginModal = () => {
                 </button>
                 <button
                   type="submit"
-                  onClick={() => setAuthType("biometry")}
+                  onClick={() => setAuthType(AuthType.biometry)}
                   className="w-full bg-slate-700 hover:bg-slate-800 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center space-x-2"
                 >
                   I want to see the future
@@ -224,14 +230,14 @@ export const LoginModal = () => {
             <div className="space-y-2">
               <button
                 type="button"
-                onClick={() => handleBiometricAuth()}
+                onClick={handleBiometricAuth}
                 className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md focus:ring-2 focus:ring-teal-500"
               >
                 <span>Click me</span>
               </button>
               <button
                 type="submit"
-                onClick={() => setAuthType("default")}
+                onClick={() => setAuthType(AuthType.default)}
                 className="w-full bg-slate-700 hover:bg-slate-800 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center space-x-2"
               >
                 Back to old school

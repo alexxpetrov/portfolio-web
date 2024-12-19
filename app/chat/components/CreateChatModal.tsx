@@ -23,8 +23,8 @@ export const CreateChatModal = ({
       data: { name: chatRoomName },
     })();
     onCreateChat(newRoom);
-    setChatRoomName(""); // Clear the input field
-    onClose(); // Close the modal
+    setChatRoomName("");
+    onClose();
   };
 
   return (

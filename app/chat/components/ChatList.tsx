@@ -1,6 +1,6 @@
 import { Tooltip } from "@components/Tooltip/Tooltip";
 import { ChatRoom } from "chat/types";
-import { FC, memo, useMemo, useState } from "react";
+import { FC, memo, useCallback, useMemo, useState } from "react";
 import { KeyedMutator } from "swr";
 import { CreateChatModal } from "./CreateChatModal";
 import { SearchBar } from "./SearchBar";
@@ -18,14 +18,17 @@ export const ChatList: FC<ChatListProps> = memo(
     const [searchQuery, setSearchQuery] = useState("");
     const [showModal, setShowModal] = useState(false); // State to toggle modal visibility
 
-    const onSearchChange = (value: string) => {
+    const onSearchChange = useCallback((value: string) => {
       setSearchQuery(value);
-    };
+    }, []);
 
-    const handleCreateChat = (newRoom: { name: string; id: string }) => {
-      mutate([...rooms, newRoom]); // Add the new chat room to the list
-      switchWebSocket(newRoom);
-    };
+    const handleCreateChat = useCallback(
+      (newRoom: { name: string; id: string }) => {
+        mutate([...rooms, newRoom]); // Add the new chat room to the list
+        switchWebSocket(newRoom);
+      },
+      [mutate, rooms, switchWebSocket]
+    );
 
     const filteredChats = useMemo(
       () =>

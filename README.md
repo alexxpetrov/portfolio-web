@@ -1,4 +1,34 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Alex Petrov's Portfolio Frontend
+
+This is a Next.js project bootstrapped with `create-next-app`.
+
+## Overview
+This project showcases my portfolio, including a live chat application and landing page. It utilizes modern web technologies to deliver a seamless and responsive user experience.
+
+### Landing Page
+- Hosted on **Vercel** for optimized performance.
+- Highlights portfolio projects and skills.
+- Responsive design with Tailwind CSS.
+- [Landing](https://www.alexspetrov.com)
+
+### Chat Application
+- Demo available at [Chat Demo](https://www.alexspetrov.com/chat).
+- **Backend Hosted On**:
+  - **Fly.io**: Handles user authorization and logs. ([Identia](https://github.com/alexxpetrov/identia-be), [Erdtree](https://github.com/alexxpetrov/erdtree))
+  - **Vultr**: Ubuntu VPS serves as the chat application backend. ([Beef](https://github.com/alexxpetrov/beef))
+- Utilizes **ConnectRPC** for robust communication between the client and server.
+- Fully responsive UI built with Tailwind CSS.
+
+### Kudos to Brittany Chiang
+Stumbled across the portfolio https://github.com/bchiang7 Brittany Chiang did at https://brittanychiang.com and couldn't resist copying it for mine
+
+## Technologies Used
+
+- **Framework**: [Next.js 14](https://nextjs.org) with App Router.
+- **Frontend**: [React 18](https://reactjs.org) (to be upgraded to v 19).
+- **Styling**: [Tailwind CSS](https://tailwindcss.com) for utility-first styling.
+- **Communication**: [Protocol Buffers (Protobuf)](https://protobuf.dev) and [ConnectRPC](https://connectrpc.com) for efficient server-client interaction. REST
+- **Git Hooks**: [Husky](https://typicode.github.io/husky/) for managing pre-commit hooks.
 
 ## Getting Started
 
@@ -16,21 +46,48 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Development
 
-## Learn More
+### Prerequisites
+Make sure you have the following installed:
 
-To learn more about Next.js, take a look at the following resources:
+- [Node.js](https://nodejs.org) (version 16 or higher).
+- [pnpm](https://pnpm.io), [yarn](https://yarnpkg.com), or [bun](https://bun.sh) (optional).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Setting Up
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/portfolio-frontend.git
+   cd portfolio-frontend
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Install dependencies:
+   ```bash
+   npm install
+   # or
+   yarn install
+   # or
+   pnpm install
+   # or
+   bun install
+   ```
 
-## Deploy on Vercel
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Linting & Formatting
+This project uses **Husky** for pre-commit hooks and **ESLint** for code linting.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+To lint and format your code:
+```bash
+npm run lint
+npm run format
+```
+
+---
+
+Thank you for checking out my portfolio project! For any questions, reach out via the contact form on the [landing page](https://www.alexspetrov.com).
+
