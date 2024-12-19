@@ -1,9 +1,9 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-nocheck
 import { Tooltip } from "@components/Tooltip/Tooltip";
-import dayjs from "dayjs";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { FiSend } from "react-icons/fi";
+import { MessageList } from "./MessageList";
 
 export const ChatBody = ({
   selectedChat,
@@ -19,10 +19,9 @@ export const ChatBody = ({
     if (message.trim() === "") return;
 
     webSocketRef.current!.send(message);
-    // setReplyTo(null);
 
     console.log("Message sent:", message);
-    setMessage(""); // Clear the input after sending
+    setMessage("");
   };
 
   const inputRef = useRef(null);
@@ -74,7 +73,7 @@ export const ChatBody = ({
         </div>
 
         <button
-          onClick={() => setSelectedChat(null)} // Return to no selection
+          onClick={() => setSelectedChat(null)}
           className="text-gray-400 hover:text-teal-300"
         >
           Back
@@ -86,68 +85,7 @@ export const ChatBody = ({
         className="p-4 overflow-y-auto scroll-smooth space-y-4"
         ref={scrollableRef}
       >
-        {messages.length ? (
-          messages.reduce((acc, message, index) => {
-            const messageDate = dayjs(message.time_created).format(
-              "DD/MM/YYYY"
-            );
-
-            const isNewDay =
-              index === 0 ||
-              dayjs(messages[index - 1].time_created).format("DD/MM/YYYY") !==
-                messageDate;
-
-            if (isNewDay) {
-              acc.push(
-                <div
-                  key={`date-${messageDate}`}
-                  className="text-center text-xs text-gray-500 mb-2"
-                >
-                  {messageDate}
-                </div>
-              );
-            }
-
-            acc.push(
-              <div
-                key={message.id}
-                className={`flex ${
-                  message.user_id === userId ? "justify-end" : "justify-start"
-                } mb-4`}
-              >
-                <div
-                  className={`p-3 flex flex-col rounded-lg max-w-xs relative ${
-                    message.user_id === userId
-                      ? "bg-teal-600 text-white"
-                      : "bg-gray-800 text-gray-200"
-                  }`}
-                >
-                  <span className="block text-sm font-semibold mb-1">
-                    {message.nickname.replaceAll("_", " ")}
-                  </span>
-                  <span className="mr-8 overflow-hidden break-words">
-                    {message.content}
-                  </span>
-                  <span
-                    className={`text-xs absolute bottom-1 right-2 ${
-                      message.user_id === userId
-                        ? "text-teal-200"
-                        : "text-gray-400"
-                    }`}
-                  >
-                    {dayjs(message.time_created).format("HH:mm")}
-                  </span>
-                </div>
-              </div>
-            );
-
-            return acc;
-          }, [])
-        ) : (
-          <div className="flex items-center justify-center h-full">
-            <span className="text-slate-500">The message history is empty</span>
-          </div>
-        )}
+        <MessageList messages={messages} userId={userId} />
       </div>
 
       {/* Chat Input */}

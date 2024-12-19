@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEventHandler, useState } from "react";
 
 export const SearchBar = ({
   onChange,
@@ -7,9 +7,9 @@ export const SearchBar = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState(""); // State to track search query
 
-  const handleChange = (value: string) => {
-    setSearchQuery(value);
-    onChange(value);
+  const handleChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    setSearchQuery(e.target.value);
+    onChange(e.target.value);
   };
 
   return (
@@ -18,7 +18,7 @@ export const SearchBar = ({
         type="text"
         placeholder="Search"
         value={searchQuery}
-        onChange={(e) => handleChange(e.target.value)}
+        onChange={handleChange}
         className="w-full p-2 bg-slate-700 text-slate-200 rounded-md outline-none focus:ring-2 focus:ring-teal-300"
       />
     </div>
