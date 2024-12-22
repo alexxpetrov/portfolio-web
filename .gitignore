@@ -35,3 +35,11 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# environment
+.env
+
+# certificates
+certificates
+
+# next
+tmp
