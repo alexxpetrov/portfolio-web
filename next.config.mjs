@@ -5,7 +5,7 @@ const nextConfig = {
       config.module.rules.push({
         test: /\.worker\.ts$/,
         use: { loader: 'worker-loader' },
-      })
+      });
     }
 
     config.resolve.fallback = {
@@ -14,9 +14,9 @@ const nextConfig = {
       ...config.resolve.fallback,
 
       fs: false, // the solution
-    }
+    };
 
-    return config
+    return config;
   },
   experimental: {
     turbo: {
@@ -30,6 +30,6 @@ const nextConfig = {
       },
     },
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

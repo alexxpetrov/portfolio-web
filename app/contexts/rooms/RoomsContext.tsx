@@ -1,5 +1,5 @@
-import type { ChatRoom, RoomsContextType } from 'chat/types'
-import { createContext, type RefObject } from 'react'
+import type { ChatRoom, RoomsContextType } from 'chat/types';
+import { createContext, type RefObject } from 'react';
 
 export const RoomsContext = createContext<RoomsContextType>({
   rooms: [],
@@ -9,4 +9,4 @@ export const RoomsContext = createContext<RoomsContextType>({
   selectedChat: {} as ChatRoom,
   webSocketRef: {} as RefObject<WebSocket | null>,
   setSelectedChat: () => {},
-})
+});

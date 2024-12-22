@@ -1,12 +1,12 @@
-'use client'
-import { Tooltip } from '@components/Tooltip/Tooltip'
-import { UserContext } from 'contexts/user/UserContext'
-import { useContext, useState } from 'react'
-import { LoginModal } from '../LoginModal/LoginModal'
+'use client';
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { UserContext } from 'contexts/user/UserContext';
+import { useContext, useState } from 'react';
+import { LoginModal } from '../LoginModal/LoginModal';
 
 function Login() {
-  const { user, logout } = useContext(UserContext)
-  const [opened, setOpened] = useState(false)
+  const { user, logout } = useContext(UserContext);
+  const [opened, setOpened] = useState(false);
 
   return (
     <>
@@ -34,8 +34,9 @@ function Login() {
                 )}
               />
               <button
-                className="bg-zinc-600 hover:bg-zinc-700 text-white font-semibold px-4 rounded-md focus:ring-2 focus:ring-zinc-300"
+                className="rounded-md bg-zinc-600 px-4 font-semibold text-white hover:bg-zinc-700 focus:ring-2 focus:ring-zinc-300"
                 onClick={logout}
+                type="button"
               >
                 Log out
               </button>
@@ -43,15 +44,16 @@ function Login() {
           )
         : (
             <button
-              className="bg-zinc-600 hover:bg-zinc-700 text-white font-semibold px-4 rounded-md focus:ring-2 focus:ring-zinc-300"
+              className="rounded-md bg-zinc-600 px-4 font-semibold text-white hover:bg-zinc-700 focus:ring-2 focus:ring-zinc-300"
               onClick={() => setOpened(true)}
+              type="button"
             >
               Log in
             </button>
           )}
       {opened && <LoginModal />}
     </>
-  )
+  );
 }
 
-export default Login
+export default Login;

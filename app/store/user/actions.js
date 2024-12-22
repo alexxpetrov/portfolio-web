@@ -1,5 +1,5 @@
-import { createAction } from '@reduxjs/toolkit'
+import { createAction } from '@reduxjs/toolkit';
 
-export const init = createAction('INIT')
+export const init = createAction('INIT');
 
-export const actions = { init }
+export const actions = { init };

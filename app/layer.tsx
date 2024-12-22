@@ -1,8 +1,8 @@
-'use client'
+'use client';
 
-import type { ReactNode } from 'react'
-import { Provider } from 'react-redux'
-import { store } from './store/store.index'
+import type { ReactNode } from 'react';
+import { Provider } from 'react-redux';
+import { store } from './store/store.index';
 
 function AppLayout({ children }: { children: ReactNode }) {
   return (
@@ -14,7 +14,7 @@ function AppLayout({ children }: { children: ReactNode }) {
         {children}
       </div>
     </Provider>
-  )
+  );
 }
 
-export default AppLayout
+export default AppLayout;

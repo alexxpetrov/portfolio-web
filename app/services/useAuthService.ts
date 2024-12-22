@@ -1,16 +1,16 @@
-import type { LoginDtoType, RegisterDtoType, User } from '../types/user'
-import { AuthService } from '@gen/protobuff/auth/v1/auth_pb'
-import { jwtDecode } from 'jwt-decode'
-import { useAuthClient } from '../hooks/useAuthClient'
+import type { LoginDtoType, RegisterDtoType, User } from '../types/user';
+import { AuthService } from '@gen/protobuff/auth/v1/auth_pb';
+import { jwtDecode } from 'jwt-decode';
+import { useAuthClient } from '../hooks/useAuthClient';
 
 type WebauthnCreds = Credential & {
   response: {
-    attestationObject: Uint8Array
-    clientDataJSON: Uint8Array
-    authenticatorData: Uint8Array
-    signature: Uint8Array
-  }
-}
+    attestationObject: Uint8Array;
+    clientDataJSON: Uint8Array;
+    authenticatorData: Uint8Array;
+    signature: Uint8Array;
+  };
+};
 async function checkCreds(challenge: Uint8Array) {
   try {
     const credential = await navigator.credentials.get({
@@ -21,45 +21,43 @@ async function checkCreds(challenge: Uint8Array) {
         allowCredentials: [],
         timeout: 60000,
       },
-    })
+    });
 
     if (credential) {
       // Credentials exist and are ready to use, proceed to authentication
-      console.log('Credentials found, authenticating...', credential)
-      return credential
+      console.log('Credentials found, authenticating...', credential);
+      return credential;
       // Handle successful authentication here
-    }
-    else {
+    } else {
       // No credentials available or user consent is needed
-      console.log('No credentials available, consider registration.')
+      console.log('No credentials available, consider registration.');
       // Fall back to registration or show a login button
     }
-  }
-  catch (error) {
-    console.error('Error checking credentials:', error)
+  } catch (error) {
+    console.error('Error checking credentials:', error);
   }
 }
 export function useAuthService() {
-  const client = useAuthClient(AuthService)
+  const client = useAuthClient(AuthService);
 
   const webAuthRegisterFinish = async (
     credential: Credential & {
-      response: { attestationObject: ArrayBuffer, clientDataJSON: ArrayBuffer }
+      response: { attestationObject: ArrayBuffer; clientDataJSON: ArrayBuffer };
     },
   ): Promise<User> => {
     const finishRequest = {
       credentialId: credential.id,
       attestationObject: new Uint8Array(credential.response.attestationObject),
       clientDataJson: new Uint8Array(credential.response.clientDataJSON),
-    }
+    };
 
-    const data = await client.finishRegistration(finishRequest)
+    const data = await client.finishRegistration(finishRequest);
 
     return {
       ...(jwtDecode(data.accessToken) as User),
       accessToken: data.accessToken,
-    }
-  }
+    };
+  };
 
   const webAuthLoginFinish = async (
     credential: WebauthnCreds,
@@ -69,24 +67,24 @@ export function useAuthService() {
       authenticatorData: credential.response.authenticatorData,
       clientDataJson: credential.response.clientDataJSON,
       signature: credential.response.signature,
-    }
+    };
 
-    const data = await client.finishLogin(finishRequest)
+    const data = await client.finishLogin(finishRequest);
 
     return {
       ...(jwtDecode(data.accessToken) as User),
       accessToken: data.accessToken,
-    }
-  }
+    };
+  };
 
   const webAuthRegister = async (): Promise<User> => {
-    const response = await client.beginRegistration({})
+    const response = await client.beginRegistration({});
 
-    const regResponse = await checkCreds(response.challenge)
+    const regResponse = await checkCreds(response.challenge);
     if (regResponse) {
       return webAuthLoginFinish(
         regResponse as WebauthnCreds,
-      )
+      );
     }
 
     // Receive from server
@@ -112,35 +110,35 @@ export function useAuthService() {
         },
         attestation: 'none', // Direct attestation
       },
-    }
+    };
 
-    const credential = await navigator.credentials.create(credOptions)
+    const credential = await navigator.credentials.create(credOptions);
 
     if (!credential) {
-      return {} as User
+      return {} as User;
     }
     // Prepare the finish request
     return webAuthRegisterFinish(
       credential as Credential & {
         response: {
-          attestationObject: ArrayBuffer
-          clientDataJSON: ArrayBuffer
-        }
+          attestationObject: ArrayBuffer;
+          clientDataJSON: ArrayBuffer;
+        };
       },
-    )
+    );
     // Send the credential back to the server to complete registration
-  }
+  };
 
   const login = async ({ email, password }: LoginDtoType): Promise<User> => {
     const data = await client.login({
       email,
       password,
-    })
+    });
     return {
       ...(jwtDecode(data.accessToken) as User),
       accessToken: data.accessToken,
-    }
-  }
+    };
+  };
 
   const register = async ({
     email,
@@ -153,18 +151,18 @@ export function useAuthService() {
       password,
       firstName,
       lastName,
-    })
+    });
     return {
       ...(jwtDecode(data.accessToken) as User),
       accessToken: data.accessToken,
-    }
-  }
+    };
+  };
 
   const logout = async ({ accessToken }: { accessToken: string }) => {
     await client.logout({
       accessToken,
-    })
-  }
+    });
+  };
 
-  return { login, register, webAuthRegister, logout }
+  return { login, register, webAuthRegister, logout };
 }

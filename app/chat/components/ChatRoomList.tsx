@@ -1,28 +1,28 @@
-import { Tooltip } from '@components/Tooltip/Tooltip'
-import { useRoomsContext } from 'hooks/useRoomsContext'
-import { memo, useCallback, useMemo, useState } from 'react'
-import { mutate } from 'swr'
-import { CreateChatModal } from './CreateChatModal'
-import { SearchBar } from './SearchBar'
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { useRoomsContext } from 'hooks/useRoomsContext';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { mutate } from 'swr';
+import { CreateChatModal } from './CreateChatModal';
+import { SearchBar } from './SearchBar';
 
 export const ChatRoomList = memo(() => {
-  const { selectedChat, switchWebSocket } = useRoomsContext()
-  const { rooms } = useRoomsContext()
+  const { selectedChat, switchWebSocket } = useRoomsContext();
+  const { rooms } = useRoomsContext();
 
-  const [searchQuery, setSearchQuery] = useState('')
-  const [showModal, setShowModal] = useState(false) // State to toggle modal visibility
+  const [searchQuery, setSearchQuery] = useState('');
+  const [showModal, setShowModal] = useState(false); // State to toggle modal visibility
 
   const onSearchChange = useCallback((value: string) => {
-    setSearchQuery(value)
-  }, [])
+    setSearchQuery(value);
+  }, []);
 
   const handleCreateChat = useCallback(
-    (newRoom: { name: string, id: string }) => {
-      mutate([...rooms, newRoom]) // Add the new chat room to the list
-      switchWebSocket(newRoom)
+    (newRoom: { name: string; id: string }) => {
+      mutate([...rooms, newRoom]); // Add the new chat room to the list
+      switchWebSocket(newRoom);
     },
     [rooms, switchWebSocket],
-  )
+  );
 
   const filteredChats = useMemo(
     () =>
@@ -30,33 +30,34 @@ export const ChatRoomList = memo(() => {
         name.toLowerCase().includes(searchQuery.toLowerCase()),
       ),
     [rooms, searchQuery],
-  )
+  );
 
   return (
     <>
       <SearchBar onChange={onSearchChange} />
-      <div className="overflow-y-auto max-h-[calc(100vh-400px)] 2xl:max-h-screen overflow-hidden break-words">
+      <div className="max-h-[calc(100vh-400px)] overflow-hidden overflow-y-auto break-words 2xl:max-h-screen">
         {filteredChats.length > 0
           ? (
               filteredChats.map(({ id, name }) => (
-                <div
+                <button
+                  type="button"
                   key={id}
                   onClick={() => switchWebSocket({ id, name })}
-                  className={`p-4 cursor-pointer rounded-md hover:bg-slate-700 ${
+                  className={`cursor-pointer rounded-md p-4 hover:bg-slate-700 ${
                     selectedChat?.id === id ? 'bg-slate-700' : ''
                   }`}
                 >
                   {name}
-                </div>
+                </button>
               ))
             )
           : (
               <div className="p-4 text-center text-slate-500">No chats found</div>
             )}
       </div>
-      <div className="p-4 flex items-center gap-4">
+      <div className="flex items-center gap-4 p-4">
         <button
-          className="bg-teal-600 hover:bg-teal-700 text-white font-semibold py-2 px-4 rounded-md focus:ring-2 focus:ring-teal-300"
+          className="rounded-md bg-teal-600 px-4 py-2 font-semibold text-white hover:bg-teal-700 focus:ring-2 focus:ring-teal-300"
           onClick={() => setShowModal(true)}
           type="button"
         >
@@ -88,5 +89,5 @@ export const ChatRoomList = memo(() => {
         />
       )}
     </>
-  )
-})
+  );
+});

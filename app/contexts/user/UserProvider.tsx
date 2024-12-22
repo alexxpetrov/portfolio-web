@@ -1,55 +1,54 @@
-'use client'
+'use client';
 import type {
   LoginDtoType,
   RegisterDtoType,
   User,
-} from '../../types/user'
-import { UserContext } from 'contexts/user/UserContext'
-import { jwtDecode } from 'jwt-decode'
-import { useRouter } from 'next/navigation'
-import React, { useEffect, useState } from 'react'
+} from '../../types/user';
+import { UserContext } from 'contexts/user/UserContext';
+import { jwtDecode } from 'jwt-decode';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
 import {
   serverLogin,
   serverLogout,
   serverRegister,
-} from '../../services/serverAction'
-import { useAuthService } from '../../services/useAuthService'
-import { IS_DEVELOPMENT } from '../../utils/config'
+} from '../../services/serverAction';
+import { useAuthService } from '../../services/useAuthService';
+import { IS_DEVELOPMENT } from '../../utils/config';
 
 export function UserProvider({
   accessToken,
   children,
 }: {
-  accessToken: string
-  children: React.ReactNode
+  accessToken: string;
+  children: React.ReactNode;
 }) {
-  const { push } = useRouter()
+  const { push } = useRouter();
   const [user, setUser] = useState(
     accessToken ? { ...jwtDecode(accessToken), accessToken } : null,
-  )
-  const client = useAuthService()
+  );
+  const client = useAuthService();
 
   const handleWebAuthRegister = async () => {
-    const loggedInUser = await client.webAuthRegister()
+    const loggedInUser = await client.webAuthRegister();
 
-    setUser(loggedInUser)
+    setUser(loggedInUser);
 
-    return loggedInUser
-  }
+    return loggedInUser;
+  };
 
   const handleLogin = async ({ email, password }: LoginDtoType) => {
-    let loggedInUser
+    let loggedInUser;
     if (IS_DEVELOPMENT) {
-      loggedInUser = await serverLogin({ email, password } as RegisterDtoType)
-    }
-    else {
-      loggedInUser = await client.login({ email, password })
+      loggedInUser = await serverLogin({ email, password } as RegisterDtoType);
+    } else {
+      loggedInUser = await client.login({ email, password });
     }
 
-    setUser(loggedInUser)
+    setUser(loggedInUser);
 
-    return loggedInUser
-  }
+    return loggedInUser;
+  };
 
   const handleRegister = async ({
     firstName,
@@ -57,50 +56,48 @@ export function UserProvider({
     email,
     password,
   }: RegisterDtoType) => {
-    let response
+    let response;
     if (IS_DEVELOPMENT) {
       response = await serverRegister({
         firstName,
         lastName,
         email,
         password,
-      })
-    }
-    else {
+      });
+    } else {
       response = await client.register({
         firstName,
         lastName,
         email,
         password,
-      })
+      });
     }
 
-    setUser(response)
+    setUser(response);
 
-    return response
-  }
+    return response;
+  };
 
   const handleLogout = async () => {
     if (IS_DEVELOPMENT) {
       await serverLogout({
         accessToken: user!.accessToken,
-      })
-    }
-    else {
+      });
+    } else {
       await client.logout({
         accessToken: user!.accessToken,
-      })
+      });
     }
 
-    push('/')
-    setUser(null)
-  }
+    push('/');
+    setUser(null);
+  };
 
   useEffect(() => {
     if (accessToken) {
-      setUser({ ...jwtDecode(accessToken ?? ''), accessToken } as User)
+      setUser({ ...jwtDecode(accessToken ?? ''), accessToken } as User);
     }
-  }, [accessToken])
+  }, [accessToken]);
 
   return (
     <UserContext
@@ -115,5 +112,5 @@ export function UserProvider({
     >
       {children}
     </UserContext>
-  )
+  );
 }

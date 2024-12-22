@@ -1,5 +1,5 @@
-import type { User, UserContextType } from 'types/user'
-import { createContext } from 'react'
+import type { User, UserContextType } from 'types/user';
+import { createContext } from 'react';
 
 export const UserContext = createContext<UserContextType>({
   user: null,
@@ -8,4 +8,4 @@ export const UserContext = createContext<UserContextType>({
   logout: () => {},
   setUser: () => {},
   handleWebAuthRegister: () => Promise.resolve({} as User),
-})
+});

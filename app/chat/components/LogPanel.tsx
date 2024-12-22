@@ -1,16 +1,16 @@
-import { Tooltip } from '@components/Tooltip/Tooltip'
-import Login from 'features/Auth/Login/Login'
-import { useRoomsContext } from 'hooks/useRoomsContext'
-import { useUserContext } from 'hooks/useUserContext'
-import { useMemo } from 'react'
-import { useUserService } from 'services/useUserService'
-import useSWR from 'swr'
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import Login from 'features/Auth/Login/Login';
+import { useRoomsContext } from 'hooks/useRoomsContext';
+import { useUserContext } from 'hooks/useUserContext';
+import { useMemo } from 'react';
+import { useUserService } from 'services/useUserService';
+import useSWR from 'swr';
 
 export function LogPanel() {
-  const { getUserInfo } = useUserService()
-  const { rooms } = useRoomsContext()
+  const { getUserInfo } = useUserService();
+  const { rooms } = useRoomsContext();
 
-  const { user } = useUserContext()
+  const { user } = useUserContext();
 
   const { data: userInfo } = useSWR(
     user || null,
@@ -20,23 +20,23 @@ export function LogPanel() {
       fallbackData: {},
       refreshInterval: 5000,
     },
-  )
+  );
 
   const lastMessageRoomName = useMemo(
     () => rooms.find(({ id }) => id === userInfo?.lastMessageRoomId)?.name,
     [rooms, userInfo?.lastMessageRoomId],
-  )
+  );
   const lastJoinedRoomName = useMemo(
     () => rooms.find(({ id }) => id === userInfo?.joinedRoomId)?.name,
     [rooms, userInfo?.joinedRoomId],
-  )
+  );
 
   return (
     <div
-      className="bg-slate-800 text-slate-200 border-t md:border-l border-slate-600"
+      className="border-t border-slate-600 bg-slate-800 text-slate-200 md:border-l"
     >
-      <div className="p-4 border-b border-slate-600 flex items-center gap-4 justify-between h-auto">
-        <div className="flex items-center gap-4 justify-center">
+      <div className="flex h-auto items-center justify-between gap-4 border-b border-slate-600 p-4">
+        <div className="flex items-center justify-center gap-4">
           <span className="font-bold text-slate-200">Logs</span>
           <Tooltip
             title={(
@@ -62,7 +62,7 @@ export function LogPanel() {
           <Login />
         </div>
       </div>
-      <div className="p-4 overflow-y-auto h-full text-sm text-slate-400 ">
+      <div className="h-full overflow-y-auto p-4 text-sm text-slate-400 ">
         {userInfo?.loginTimestamp && (
           <div className="mb-2">
             Your login timestamp:
@@ -98,5 +98,5 @@ export function LogPanel() {
         )}
       </div>
     </div>
-  )
+  );
 }

@@ -1,57 +1,57 @@
-import type { AxiosError, AxiosRequestConfig } from 'axios'
-import type { User } from '../types/user'
+import type { AxiosError, AxiosRequestConfig } from 'axios';
+import type { User } from '../types/user';
 
-import axios from 'axios'
-import { jwtDecode } from 'jwt-decode'
-import { useCallback } from 'react'
-import { useUserContext } from '../hooks/useUserContext'
-import { serverRefreshToken } from '../services/serverAction'
-import { CHAT_ENDPOINT, IS_DEVELOPMENT } from './config'
+import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
+import { useCallback } from 'react';
+import { useUserContext } from '../hooks/useUserContext';
+import { serverRefreshToken } from '../services/serverAction';
+import { CHAT_ENDPOINT, IS_DEVELOPMENT } from './config';
 
 // Create a reusable Axios instance with withCredentials: true for cookies
 export const axiosInstance = axios.create({
   baseURL: `${CHAT_ENDPOINT}/api`, // Your API base URL
   timeout: 5000,
-})
+});
 
 // Define the structure of a retry queue item
-interface RetryQueueItem {
-  resolve: (value?: any) => void
-  reject: (error?: any) => void
-  config: AxiosRequestConfig
-}
+type RetryQueueItem = {
+  resolve: (value?: any) => void;
+  reject: (error?: any) => void;
+  config: AxiosRequestConfig;
+};
 
 // Function to refresh the access token using the refresh token stored in cookies
 
 export function useAxiosInterceptor() {
-  const { setUser, user } = useUserContext()
+  const { setUser, user } = useUserContext();
   // Create a list to hold the request queue
-  const refreshAndRetryQueue: RetryQueueItem[] = []
+  const refreshAndRetryQueue: RetryQueueItem[] = [];
   // @TODO: Add logout functionality when both accesstoken/refreshtoken have expired.
 
   // Flag to prevent multiple token refresh requests
-  let isRefreshing = false
+  let isRefreshing = false;
 
   const refreshAccessToken = async () => {
     if (IS_DEVELOPMENT) {
       const accessToken = await serverRefreshToken({
         id: user!.id,
         accessToken: user!.accessToken,
-      })
-      return accessToken
+      });
+      return accessToken;
     }
 
     const accessToken = await serverRefreshToken({
       id: user!.id,
       accessToken: user!.accessToken,
-    })
+    });
 
     if (!accessToken) {
-      throw new Error('Failed to refresh token')
+      throw new Error('Failed to refresh token');
     }
 
-    return accessToken
-  }
+    return accessToken;
+  };
 
   // Add global request interceptor
   axiosInstance.interceptors.request.use(
@@ -62,17 +62,17 @@ export function useAxiosInterceptor() {
         && config.url !== '/refresh-token'
         && config.url !== '/logout'
       ) {
-        const accessToken = await refreshAccessToken() // Get the access token via the refresh token
+        const accessToken = await refreshAccessToken(); // Get the access token via the refresh token
 
-        config.headers.Authorization = `Bearer ${accessToken}`
+        config.headers.Authorization = `Bearer ${accessToken}`;
       }
 
-      return config
+      return config;
     },
     (error) => {
-      return Promise.reject(error)
+      return Promise.reject(error);
     },
-  )
+  );
 
   axiosInstance.interceptors.response.use(
     (response) => {
@@ -80,50 +80,49 @@ export function useAxiosInterceptor() {
         setUser({
           ...jwtDecode(response.data.access_token),
           accessToken: response.data.access_token,
-        } as User)
+        } as User);
       }
-      return response
+      return response;
     },
     async (error) => {
-      const originalRequest: AxiosRequestConfig = error.config
+      const originalRequest: AxiosRequestConfig = error.config;
       if (
         error.response
         && error.response.status === 401
         && error.config.url !== '/refresh-token'
       ) {
         if (!isRefreshing) {
-          isRefreshing = true
+          isRefreshing = true;
           try {
             // Refresh the access token
-            const newAccessToken = await refreshAccessToken()
+            const newAccessToken = await refreshAccessToken();
 
             if (!newAccessToken) {
-              return
+              return;
             }
 
             setUser({
               ...jwtDecode(newAccessToken),
               accessToken: newAccessToken,
-            } as User)
+            } as User);
             // Update the request headers with the new access token
-            error.config.headers.Authorization = `Bearer ${newAccessToken}`
+            error.config.headers.Authorization = `Bearer ${newAccessToken}`;
 
             // Retry all requests in the queue with the new token
             refreshAndRetryQueue.forEach(({ config, resolve, reject }) => {
               axiosInstance
                 .request(config)
                 .then(response => resolve(response))
-                .catch(err => reject(err))
-            })
+                .catch(err => reject(err));
+            });
 
             // Clear the queue
-            refreshAndRetryQueue.length = 0
+            refreshAndRetryQueue.length = 0;
 
             // Retry the original request
-            return axiosInstance(originalRequest)
-          }
-          finally {
-            isRefreshing = false
+            return axiosInstance(originalRequest);
+          } finally {
+            isRefreshing = false;
           }
         }
 
@@ -133,21 +132,21 @@ export function useAxiosInterceptor() {
             config: originalRequest,
             resolve,
             reject,
-          })
-        })
+          });
+        });
       }
 
       // @TODO: Add logout functionality when both accesstoken/refreshtoken have expired.
       // setUser(null);
 
       // Return a Promise rejection if the status code is not 401
-      return Promise.reject(error)
+      return Promise.reject(error);
     },
-  )
+  );
 }
 
 export function useChatFetchData() {
-  const { user } = useUserContext()
+  const { user } = useUserContext();
 
   // Main request function that manages access tokens and retries failed requests
   const protectedFetcher = useCallback(
@@ -161,29 +160,28 @@ export function useChatFetchData() {
             ? `Bearer ${user.accessToken}`
             : null,
         },
-      }
+      };
 
       // Make the API request using axiosInstance
-      const response = await axiosInstance(url, reqConfig)
+      const response = await axiosInstance(url, reqConfig);
 
-      return response.data // If request succeeds, return the data
+      return response.data; // If request succeeds, return the data
     },
     [user?.accessToken],
-  )
+  );
 
   const fetcher
     = ({ url }: { url: string }) =>
       async () => {
         try {
-          const apiResponse = await axiosInstance.get(url)
+          const apiResponse = await axiosInstance.get(url);
 
-          const result = apiResponse.data
-          return result
+          const result = apiResponse.data;
+          return result;
+        } catch (error) {
+          console.log('Error occurred:', (error as AxiosError).message);
         }
-        catch (error) {
-          console.log('Error occurred:', (error as AxiosError).message)
-        }
-      }
+      };
 
-  return { protectedFetcher, fetcher }
+  return { protectedFetcher, fetcher };
 }

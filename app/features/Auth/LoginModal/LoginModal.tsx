@@ -1,6 +1,6 @@
-import { Tooltip } from '@components/Tooltip/Tooltip'
-import { useFormControls } from './hooks/useFormControls'
-import { AuthType, SignUpType } from './types'
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { useFormControls } from './hooks/useFormControls';
+import { AuthType, SignUpType } from './types';
 
 export function LoginModal() {
   const {
@@ -12,12 +12,12 @@ export function LoginModal() {
     authType,
     setAuthType,
     formData,
-  } = useFormControls()
+  } = useFormControls();
 
   return (
-    <div className="fixed inset-0 bg-slate-900 bg-opacity-95 flex items-center justify-center z-50">
-      <div className="bg-slate-800 text-slate-200 rounded-md p-6 w-full max-w-md">
-        <div className="flex items-center gap-4 mb-4">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900 bg-opacity-95">
+      <div className="w-full max-w-md rounded-md bg-slate-800 p-6 text-slate-200">
+        <div className="mb-4 flex items-center gap-4">
           <h2 className="text-xl font-bold text-teal-300 ">
             {formState === SignUpType.login ? 'Log In' : 'Sign Up'}
           </h2>
@@ -49,7 +49,7 @@ export function LoginModal() {
                   <div>
                     <label
                       htmlFor="email"
-                      className="block text-sm font-medium text-teal-300 mb-1"
+                      className="mb-1 block text-sm font-medium text-teal-300"
                     >
                       Email
                     </label>
@@ -59,14 +59,14 @@ export function LoginModal() {
                       name="email"
                       value={formData.email}
                       onChange={handleInputChange}
-                      className="w-full p-2 bg-slate-700 text-slate-200 rounded-md outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full rounded-md bg-slate-700 p-2 text-slate-200 outline-none focus:ring-2 focus:ring-teal-500"
                       required
                     />
                   </div>
                   <div>
                     <label
                       htmlFor="password"
-                      className="block text-sm font-medium text-teal-300 mb-1"
+                      className="mb-1 block text-sm font-medium text-teal-300"
                     >
                       Password
                     </label>
@@ -76,7 +76,7 @@ export function LoginModal() {
                       name="password"
                       value={formData.password}
                       onChange={handleInputChange}
-                      className="w-full p-2 bg-slate-700 text-slate-200 rounded-md outline-none focus:ring-2 focus:ring-teal-500"
+                      className="w-full rounded-md bg-slate-700 p-2 text-slate-200 outline-none focus:ring-2 focus:ring-teal-500"
                       required
                     />
                   </div>
@@ -85,7 +85,7 @@ export function LoginModal() {
                       <div>
                         <label
                           htmlFor="firstName"
-                          className="block text-sm font-medium text-teal-300 mb-1"
+                          className="mb-1 block text-sm font-medium text-teal-300"
                         >
                           First Name
                         </label>
@@ -95,14 +95,14 @@ export function LoginModal() {
                           name="firstName"
                           value={formData.firstName}
                           onChange={handleInputChange}
-                          className="w-full p-2 bg-slate-700 text-slate-200 rounded-md outline-none focus:ring-2 focus:ring-teal-500"
+                          className="w-full rounded-md bg-slate-700 p-2 text-slate-200 outline-none focus:ring-2 focus:ring-teal-500"
                           required
                         />
                       </div>
                       <div>
                         <label
                           htmlFor="lastName"
-                          className="block text-sm font-medium text-teal-300 mb-1"
+                          className="mb-1 block text-sm font-medium text-teal-300"
                         >
                           Last Name
                         </label>
@@ -112,7 +112,7 @@ export function LoginModal() {
                           name="lastName"
                           value={formData.lastName}
                           onChange={handleInputChange}
-                          className="w-full p-2 bg-slate-700 text-slate-200 rounded-md outline-none focus:ring-2 focus:ring-teal-500"
+                          className="w-full rounded-md bg-slate-700 p-2 text-slate-200 outline-none focus:ring-2 focus:ring-teal-500"
                           required
                         />
                       </div>
@@ -137,14 +137,14 @@ export function LoginModal() {
                   <div className="space-y-2">
                     <button
                       type="submit"
-                      className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md focus:ring-2 focus:ring-teal-500"
+                      className="w-full rounded-md bg-teal-600 px-4 py-2 font-medium text-white hover:bg-teal-700 focus:ring-2 focus:ring-teal-500"
                     >
                       Submit
                     </button>
                     <button
                       type="button"
                       onClick={() => setAuthType(AuthType.biometry)}
-                      className="w-full bg-slate-700 hover:bg-slate-800 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center space-x-2"
+                      className="flex w-full items-center justify-center space-x-2 rounded-md bg-slate-700 px-4 py-2 font-medium text-white hover:bg-slate-800"
                     >
                       I want to see the future
                     </button>
@@ -156,14 +156,14 @@ export function LoginModal() {
                   <button
                     type="button"
                     onClick={handleBiometricAuth}
-                    className="w-full bg-teal-600 hover:bg-teal-700 text-white font-medium py-2 px-4 rounded-md focus:ring-2 focus:ring-teal-500"
+                    className="w-full rounded-md bg-teal-600 px-4 py-2 font-medium text-white hover:bg-teal-700 focus:ring-2 focus:ring-teal-500"
                   >
                     <span>Click me</span>
                   </button>
                   <button
                     type="button"
                     onClick={() => setAuthType(AuthType.default)}
-                    className="w-full bg-slate-700 hover:bg-slate-800 text-white font-medium py-2 px-4 rounded-md flex items-center justify-center space-x-2"
+                    className="flex w-full items-center justify-center space-x-2 rounded-md bg-slate-700 px-4 py-2 font-medium text-white hover:bg-slate-800"
                   >
                     Back to old school
                   </button>
@@ -172,5 +172,5 @@ export function LoginModal() {
         </form>
       </div>
     </div>
-  )
+  );
 }
