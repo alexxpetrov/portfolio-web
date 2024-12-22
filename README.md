@@ -46,7 +46,6 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-
 ## Development
 
 ### Prerequisites
@@ -90,4 +89,3 @@ npm run format
 ---
 
 Thank you for checking out my portfolio project! For any questions, reach out via the contact form on the [landing page](https://www.alexspetrov.com).
-

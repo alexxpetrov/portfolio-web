@@ -1,5 +1,5 @@
 self.onmessage = (event) => {
-  console.log("received data , ", event.data);
+  console.log('received data , ', event.data)
 
-  self.postMessage("hello from worker");
-};
+  self.postMessage('hello from worker')
+}

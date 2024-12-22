@@ -1,15 +1,16 @@
-import Image, { StaticImageData } from "next/image";
-import { FC } from "react";
+import type { StaticImageData } from 'next/image'
+import type { FC } from 'react'
+import Image from 'next/image'
 
-type CardProps = {
-  title: string;
-  company: string;
-  description: string;
-  techStack: string[];
-  imgSrc: StaticImageData;
-  link: string;
-  demoUrl?: string;
-};
+interface CardProps {
+  title: string
+  company: string
+  description: string
+  techStack: string[]
+  imgSrc: StaticImageData
+  link: string
+  demoUrl?: string
+}
 
 export const ProjectCard: FC<CardProps> = ({
   title,
@@ -47,7 +48,8 @@ export const ProjectCard: FC<CardProps> = ({
             >
               <span className="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
               <span>
-                {title}{" "}
+                {title}
+                {' '}
                 <span className="inline-block">
                   {company}
                   <svg
@@ -61,7 +63,8 @@ export const ProjectCard: FC<CardProps> = ({
                       fillRule="evenodd"
                       d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
                       clipRule="evenodd"
-                    ></path>
+                    >
+                    </path>
                   </svg>
                 </span>
               </span>
@@ -70,7 +73,7 @@ export const ProjectCard: FC<CardProps> = ({
         </h3>
         <p className="mt-2 text-sm leading-normal">{description}</p>
         <ul className="mt-2 flex flex-wrap" aria-label="Technologies used">
-          {techStack.map((tech) => (
+          {techStack.map(tech => (
             <li className="mr-1.5 mt-2" key={tech}>
               <div className="flex items-center rounded-full bg-teal-400/10 px-3 py-1 text-xs font-medium leading-5 text-teal-300 ">
                 {tech}
@@ -80,5 +83,5 @@ export const ProjectCard: FC<CardProps> = ({
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}

@@ -1,9 +1,9 @@
-"use client";
-import { useEffect } from "react";
+'use client'
+import { useEffect } from 'react'
 
-import { useDispatch } from "react-redux";
-import { actions } from "../../store/user/actions";
-import Login from "../Auth/Login/Login";
+import { useDispatch } from 'react-redux'
+import { actions } from '../../store/user/actions'
+import Login from '../Auth/Login/Login'
 
 // const headerItems = [
 //   { key: "/", label: <Link href="/">Home</Link> },
@@ -12,12 +12,12 @@ import Login from "../Auth/Login/Login";
 //   { key: "/search", label: <Link href="/search">Search</Link> },
 // ];
 
-const AppHeader = () => {
-  const dispatch = useDispatch();
+function AppHeader() {
+  const dispatch = useDispatch()
 
   useEffect(() => {
-    dispatch(actions.init());
-  }, [dispatch]);
+    dispatch(actions.init())
+  }, [dispatch])
 
   return (
     <header className="fixed top-0 left-0 w-full z-50 bg-cover bg-center backdrop-blur-lg">
@@ -36,7 +36,7 @@ const AppHeader = () => {
       </div>
       <div className="divide-solid"></div>
     </header>
-  );
-};
+  )
+}
 
-export default AppHeader;
+export default AppHeader

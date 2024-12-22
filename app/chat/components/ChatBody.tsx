@@ -1,43 +1,44 @@
-import { Tooltip } from "@components/Tooltip/Tooltip";
-import { useChatContext } from "hooks/useChatContext";
-import { useRoomsContext } from "hooks/useRoomsContext";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { FiSend } from "react-icons/fi";
-import { MessageList } from "./MessageList";
+import { Tooltip } from '@components/Tooltip/Tooltip'
+import { useChatContext } from 'hooks/useChatContext'
+import { useRoomsContext } from 'hooks/useRoomsContext'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { FiSend } from 'react-icons/fi'
+import { MessageList } from './MessageList'
 
-export const ChatBody = () => {
-  const [message, setMessage] = useState<string>("");
-  const { scrollableRef, messages } = useChatContext();
-  const { webSocketRef, selectedChat, setSelectedChat } = useRoomsContext();
+export function ChatBody() {
+  const [message, setMessage] = useState<string>('')
+  const { scrollableRef, messages } = useChatContext()
+  const { webSocketRef, selectedChat, setSelectedChat } = useRoomsContext()
 
   const handleSendMessage = () => {
-    if (message.trim() === "") return;
+    if (message.trim() === '')
+      return
 
-    webSocketRef.current!.send(message);
+    webSocketRef.current!.send(message)
 
-    console.log("Message sent:", message);
-    setMessage("");
-  };
+    console.log('Message sent:', message)
+    setMessage('')
+  }
 
-  const inputRef = useRef(null);
+  const inputRef = useRef(null)
 
   const handleBlur = useCallback(() => {
     // Refocus the input if it loses focus
     if (inputRef.current) {
-      (inputRef.current as HTMLInputElement).focus();
+      (inputRef.current as HTMLInputElement).focus()
     }
-  }, []);
+  }, [])
 
   useEffect(() => {
-    handleBlur();
-  }, [messages, handleBlur]);
+    handleBlur()
+  }, [messages, handleBlur])
 
   if (!selectedChat?.id) {
     return (
       <div className="flex items-center justify-center h-full">
         <span className="text-slate-500">Select a chat to start messaging</span>
       </div>
-    );
+    )
   }
 
   return (
@@ -47,7 +48,7 @@ export const ChatBody = () => {
         <div className="flex gap-4 z-10">
           <span className="font-semibold">{selectedChat.name}</span>
           <Tooltip
-            title={
+            title={(
               <span className="text-slate-400">
                 Chat messages are delivered in real-time using WebSocket
                 connections served by a Go Http server. All messages are
@@ -59,11 +60,11 @@ export const ChatBody = () => {
                   href="https://github.com/alexxpetrov/beef"
                   target="_blank"
                 >
-                  {" "}
+                  {' '}
                   GitHub
                 </a>
               </span>
-            }
+            )}
           />
         </div>
 
@@ -91,10 +92,10 @@ export const ChatBody = () => {
             ref={inputRef}
             type="text"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={e => setMessage(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
-                handleSendMessage();
+              if (e.key === 'Enter') {
+                handleSendMessage()
               }
             }}
             autoFocus
@@ -113,5 +114,5 @@ export const ChatBody = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

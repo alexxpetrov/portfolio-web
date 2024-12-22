@@ -1,10 +1,10 @@
-"use client";
+'use client'
 
-import { ReactNode } from "react";
-import { Provider } from "react-redux";
-import { store } from "./store/store.index";
+import type { ReactNode } from 'react'
+import { Provider } from 'react-redux'
+import { store } from './store/store.index'
 
-const AppLayout = ({ children }: { children: ReactNode }) => {
+function AppLayout({ children }: { children: ReactNode }) {
   return (
     <Provider store={store}>
       {/* Header */}
@@ -14,7 +14,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
         {children}
       </div>
     </Provider>
-  );
-};
+  )
+}
 
-export default AppLayout;
+export default AppLayout

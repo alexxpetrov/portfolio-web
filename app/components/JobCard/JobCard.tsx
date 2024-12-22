@@ -1,14 +1,14 @@
-import { FC } from "react";
+import type { FC } from 'react'
 
-type CardProps = {
-  dateStart: string;
-  dateFinish: string;
-  title: string;
-  company: string;
-  description: string;
-  techStack: string[];
-  link: string;
-};
+interface CardProps {
+  dateStart: string
+  dateFinish: string
+  title: string
+  company: string
+  description: string
+  techStack: string[]
+  link: string
+}
 
 export const JobCard: FC<CardProps> = ({
   dateStart,
@@ -26,7 +26,10 @@ export const JobCard: FC<CardProps> = ({
         className="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-slate-500 sm:col-span-2"
         aria-label="2024 to Present"
       >
-        {dateStart} — {dateFinish}
+        {dateStart}
+        {' '}
+        —
+        {dateFinish}
       </header>
       <div className="z-10 sm:col-span-6">
         <h3 className="font-medium leading-snug text-slate-200">
@@ -40,7 +43,8 @@ export const JobCard: FC<CardProps> = ({
             >
               <span className="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
               <span>
-                {title}{" "}
+                {title}
+                {' '}
                 <span className="inline-block">
                   {company}
                   <svg
@@ -54,7 +58,8 @@ export const JobCard: FC<CardProps> = ({
                       fillRule="evenodd"
                       d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
                       clipRule="evenodd"
-                    ></path>
+                    >
+                    </path>
                   </svg>
                 </span>
               </span>
@@ -63,7 +68,7 @@ export const JobCard: FC<CardProps> = ({
         </h3>
         <p className="mt-2 text-sm leading-normal">{description}</p>
         <ul className="mt-2 flex flex-wrap" aria-label="Technologies used">
-          {techStack.map((tech) => (
+          {techStack.map(tech => (
             <li className="mr-1.5 mt-2" key={tech}>
               <div className="flex items-center rounded-full bg-teal-400/10 px-3 py-1 text-xs font-medium leading-5 text-teal-300 ">
                 {tech}
@@ -73,5 +78,5 @@ export const JobCard: FC<CardProps> = ({
         </ul>
       </div>
     </div>
-  );
-};
+  )
+}

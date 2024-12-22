@@ -1,11 +1,11 @@
-import { RoomsContext } from "contexts/RoomsContext";
-import { useContext } from "react";
+import { RoomsContext } from 'contexts/rooms/RoomsContext'
+import { useContext } from 'react'
 
 // Custom hook to use the UserContext
-export const useRoomsContext = () => {
-  const context = useContext(RoomsContext);
+export function useRoomsContext() {
+  const context = useContext(RoomsContext)
   if (!context) {
-    throw new Error("useRoomsContext must be used within a UserProvider");
+    throw new Error('useRoomsContext must be used within a UserProvider')
   }
-  return context;
-};
+  return context
+}

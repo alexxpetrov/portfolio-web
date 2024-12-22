@@ -16,5 +16,5 @@ export const CardList: React.FC<React.PropsWithChildren & { id: string }> = ({
         <ol className="group/list">{children}</ol>
       </div>
     </section>
-  );
-};
+  )
+}

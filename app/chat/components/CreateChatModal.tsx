@@ -1,31 +1,32 @@
-import { ChatRoom } from "chat/types";
-import { useState } from "react";
-import { useChatFetchData } from "utils/chatFetcher";
+import type { ChatRoom } from 'chat/types'
+import { useState } from 'react'
+import { useChatFetchData } from 'utils/chatFetcher'
 
-export const CreateChatModal = ({
+export function CreateChatModal({
   onClose,
   onCreateChat,
 }: {
-  onClose: () => void;
-  onCreateChat: (room: ChatRoom) => void;
-}) => {
-  const { protectedFetcher } = useChatFetchData();
+  onClose: () => void
+  onCreateChat: (room: ChatRoom) => void
+}) {
+  const { protectedFetcher } = useChatFetchData()
 
-  const [chatRoomName, setChatRoomName] = useState(""); // State for chat room name
+  const [chatRoomName, setChatRoomName] = useState('') // State for chat room name
 
   const handleCreateChat = async () => {
-    if (chatRoomName.trim() === "") return;
+    if (chatRoomName.trim() === '')
+      return
     const newRoom = await protectedFetcher(`chat/rooms`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       data: { name: chatRoomName },
-    })();
-    onCreateChat(newRoom);
-    setChatRoomName("");
-    onClose();
-  };
+    })()
+    onCreateChat(newRoom)
+    setChatRoomName('')
+    onClose()
+  }
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -37,10 +38,10 @@ export const CreateChatModal = ({
           autoFocus
           type="text"
           value={chatRoomName}
-          onChange={(e) => setChatRoomName(e.target.value)}
+          onChange={e => setChatRoomName(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleCreateChat();
+            if (e.key === 'Enter') {
+              handleCreateChat()
             }
           }}
           placeholder="Chat Room Name"
@@ -50,17 +51,19 @@ export const CreateChatModal = ({
           <button
             onClick={onClose} // Close the modal
             className="p-2 bg-slate-700 text-white rounded-md hover:bg-slate-800"
+            type="button"
           >
             Cancel
           </button>
           <button
             onClick={handleCreateChat} // Create the chat room
             className="p-2 bg-teal-600 text-white rounded-md hover:bg-teal-700"
+            type="button"
           >
             Create
           </button>
         </div>
       </div>
     </div>
-  );
-};
+  )
+}

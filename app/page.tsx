@@ -1,163 +1,163 @@
-"use client";
+'use client'
 
-import beefImg from "@public/projects/beef-1.webp";
-import erdTreeImg from "@public/projects/erdtreee.png";
-import identiaImg from "@public/projects/identia.webp";
-import { CardList } from "components/CardList/CardList";
-import { JobCard } from "components/JobCard/JobCard";
-import { ProjectCard } from "components/ProjectCard/ProjectCard";
-import { useEffect } from "react";
+import beefImg from '@public/projects/beef-1.webp'
+import erdTreeImg from '@public/projects/erdtreee.png'
+import identiaImg from '@public/projects/identia.webp'
+import { CardList } from 'components/CardList/CardList'
+import { JobCard } from 'components/JobCard/JobCard'
+import { ProjectCard } from 'components/ProjectCard/ProjectCard'
+import { useEffect } from 'react'
 
 const cards = [
   {
     id: 1,
-    dateStart: "2024-08",
-    dateFinish: "Present",
-    title: "Senior Frontend Engineer",
-    company: "· Aiola",
+    dateStart: '2024-08',
+    dateFinish: 'Present',
+    title: 'Senior Frontend Engineer',
+    company: '· Aiola',
     description: `Created and deployed to production AI Model Publish flow UI and back end using AWS DynamoDB/AppSync for data storage/retrieval and Prefect to track asynchronous job status. 
 Applied short-polling strategy to synchronize Front End with AWS DynamoDB using Nest.js Back end as a proxy
 Unified three endpoint requests into a single one resulting in improved request latency and a lower amount of unnecessary FE state changes
 Integrated and set up ESLint ( tsconfig ) with Husky to improve codebase quality and lower the amount of CI runs.
 `,
     techStack: [
-      "TypeScript",
-      "Nest.js",
-      "React",
-      "Jest",
-      "React Testing Library",
-      "AWS",
-      "AppSync",
-      "DynamoDB",
-      "Prefect",
+      'TypeScript',
+      'Nest.js',
+      'React',
+      'Jest',
+      'React Testing Library',
+      'AWS',
+      'AppSync',
+      'DynamoDB',
+      'Prefect',
     ],
-    link: "https://aiola.com/",
+    link: 'https://aiola.com/',
   },
   {
     id: 2,
-    dateStart: "2023-02",
-    dateFinish: "2024-08",
-    title: "Senior Frontend Engineer",
-    company: "· Playtika",
+    dateStart: '2023-02',
+    dateFinish: '2024-08',
+    title: 'Senior Frontend Engineer',
+    company: '· Playtika',
     description: `Created a dynamic Redux storage with multiple nested layers. 
 Added an FE-based version-controlled migration mechanism
 Refactored a large monolithic application into independent modules 
 Improved campaign managers’ performance by 50%`,
     techStack: [
-      "React",
-      "Typescript",
-      "Redux",
-      "Redux-saga",
-      "Recharts",
-      "Ag-Grid",
+      'React',
+      'Typescript',
+      'Redux',
+      'Redux-saga',
+      'Recharts',
+      'Ag-Grid',
     ],
-    link: "https://www.playtika.com/",
+    link: 'https://www.playtika.com/',
   },
   {
     id: 3,
-    dateStart: "2022/02",
-    dateFinish: "2023/02",
-    title: "Senior Frontend Engineer, Accessibility",
-    company: "· Nearmap",
+    dateStart: '2022/02',
+    dateFinish: '2023/02',
+    title: 'Senior Frontend Engineer, Accessibility',
+    company: '· Nearmap',
     description: `Set up a Dockerized microfrontend service with React/Redux. 
     Introduced the application to the team with and integrated into a large in-production product.
 Improved AVG application rating by 0.2 (4.3 -> 4.5).`,
     techStack: [
-      "React",
-      "Jest/React Testing Library",
-      "Docker",
-      "Redux",
-      "Redux-saga",
-      "HTML/SCSS",
-      "Typescript",
+      'React',
+      'Jest/React Testing Library',
+      'Docker',
+      'Redux',
+      'Redux-saga',
+      'HTML/SCSS',
+      'Typescript',
     ],
-    link: "https://www.nearmap.com/",
+    link: 'https://www.nearmap.com/',
   },
   {
     id: 4,
-    dateStart: "2019/06",
-    dateFinish: "2022/02",
-    title: "Middle Frontend Engineer",
-    company: "· Altexsoft",
+    dateStart: '2019/06',
+    dateFinish: '2022/02',
+    title: 'Middle Frontend Engineer',
+    company: '· Altexsoft',
     description: `Internal Forum: Leading a team of Front End junior developers, creating and assigning tasks, grooming and decomposing stories, setting up front end
 Video recording software: Created a custom video player using Canvas, merging two video streams using WebRTC
 Set up initial Front End structure for Next.js, React, Redux and Webpack.`,
     techStack: [
-      "React",
-      "Next.js",
-      "WebRTC",
-      "Canvas",
-      "HTML/SCSS",
-      "Typescript",
+      'React',
+      'Next.js',
+      'WebRTC',
+      'Canvas',
+      'HTML/SCSS',
+      'Typescript',
     ],
-    link: "https://www.altexsoft.com/",
+    link: 'https://www.altexsoft.com/',
   },
   {
     id: 5,
-    dateStart: "2018/01",
-    dateFinish: "2019/06",
-    title: "Junior Frontend Engineer",
-    company: "· Plarium",
+    dateStart: '2018/01',
+    dateFinish: '2019/06',
+    title: 'Junior Frontend Engineer',
+    company: '· Plarium',
     description: `Browser App: Building and maintaining online chat, web app and user forum
 Desktop App with Electron: Creating and maintaining React modules, setting up Routes and ensuring static typing with Typescript.`,
-    techStack: ["React", "Electron", "Typescript"],
-    link: "https://plarium.com/",
+    techStack: ['React', 'Electron', 'Typescript'],
+    link: 'https://plarium.com/',
   },
-];
+]
 
 const projectCardList = [
   {
     id: 1,
-    title: "Erdtree",
-    company: "· Distributed Key-Value Store System",
+    title: 'Erdtree',
+    company: '· Distributed Key-Value Store System',
     description: `Distributed key-value store system implementing a master-slave replication pattern with Write-Ahead Logging (WAL) for durability. 
     The system is built using Go, Connect-RPC, and Protocol Buffers, designed to provide high availability and eventual consistency leveraging sync Map.`,
-    techStack: ["Golang", "gRPC/ConnectRPC", "Protocol Buffer"],
+    techStack: ['Golang', 'gRPC/ConnectRPC', 'Protocol Buffer'],
     imgSrc: erdTreeImg,
-    link: "https://github.com/alexxpetrov/erdtree",
+    link: 'https://github.com/alexxpetrov/erdtree',
   },
   {
     id: 2,
-    title: "Identia",
-    company: "· JWT Auth microservice with WebAuthn",
+    title: 'Identia',
+    company: '· JWT Auth microservice with WebAuthn',
     description: `Identia is a robust JWT authentication microservice built with Go, integrating WebAuthn for secure passwordless authentication.\
     It's a distributed system with multiple shards that reduce Read operation intesity load to the Master node allowing for high-performance, scalable, and modern authentication workflows.`,
     techStack: [
-      "Golang",
-      "PostgreSQL",
-      "gRPC/ConnectRPC",
-      "WebAuthn",
-      "Fiber",
-      "Gorm",
-      "JWT",
+      'Golang',
+      'PostgreSQL',
+      'gRPC/ConnectRPC',
+      'WebAuthn',
+      'Fiber',
+      'Gorm',
+      'JWT',
     ],
     imgSrc: identiaImg,
-    link: "https://github.com/alexxpetrov/identia-be",
+    link: 'https://github.com/alexxpetrov/identia-be',
   },
   {
     id: 3,
-    title: "Beef",
-    company: "· A distributed high-load chat application",
+    title: 'Beef',
+    company: '· A distributed high-load chat application',
     description: `A chat platform leveraging Identia for seamless authentication and Erdtree for robust, distributed logs storage.
     Designed for scalability and durability by implementing a cache layer with Redis and message queue with Kafka, the system ensures real-time messaging with master-slave replication and Write-Ahead Logging (WAL) to guarantee data integrity and fault tolerance.`,
     techStack: [
-      "Golang",
-      "Redis",
-      "Kafka",
-      "Identia",
-      "Erdtree",
-      "Docker/Docker Compose",
-      "Websocket",
+      'Golang',
+      'Redis',
+      'Kafka',
+      'Identia',
+      'Erdtree',
+      'Docker/Docker Compose',
+      'Websocket',
     ],
     imgSrc: beefImg,
-    link: "https://github.com/alexxpetrov/beef",
+    link: 'https://github.com/alexxpetrov/beef',
   },
-];
+]
 
 export default function Home() {
   useEffect(() => {
-    const menuItems = document.querySelectorAll("nav a");
-    const sections = document.querySelectorAll("section");
+    const menuItems = document.querySelectorAll('nav a')
+    const sections = document.querySelectorAll('section')
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -165,30 +165,30 @@ export default function Home() {
           if (entry.isIntersecting) {
             // Remove active class from all menu items
 
-            menuItems.forEach((item) => item.classList.remove("active"));
+            menuItems.forEach(item => item.classList.remove('active'))
             // Add active class to the menu item linked to the visible section
             const activeMenu = document.querySelector(
-              `a[href="#${entry.target.id}"]`
-            );
+              `a[href="#${entry.target.id}"]`,
+            )
 
-            activeMenu!.classList.add("active");
+            activeMenu!.classList.add('active')
           }
-        });
+        })
       },
       {
         root: null, // Viewport
         threshold: 0.5, // Trigger when 50% of the section is visible
-      }
-    );
+      },
+    )
 
     // Observe each section
-    sections.forEach((section) => observer.observe(section));
+    sections.forEach(section => observer.observe(section))
 
     // Cleanup on unmount
     return () => {
-      observer.disconnect();
-    };
-  }, []);
+      observer.disconnect()
+    }
+  }, [])
 
   return (
     <div className="mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-16 lg:py-0">
@@ -329,26 +329,30 @@ export default function Home() {
                 href="https://aiola.com/"
                 target="_blank"
               >
-                {" "}
+                {' '}
                 startups
-              </a>{" "}
-              to{" "}
+              </a>
+              {' '}
+              to
+              {' '}
               <a
                 className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
                 rel="noreferrer noopener"
                 href="https://www.nearmap.com/"
                 target="_blank"
               >
-                large companies{" "}
+                large companies
+                {' '}
               </a>
-              and{" "}
+              and
+              {' '}
               <a
                 className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
                 rel="noreferrer noopener"
                 href="https://www.playtika.com/"
                 target="_blank"
               >
-                {" "}
+                {' '}
                 digital entertainment corporations
               </a>
               , where I tackled challenges like refactoring monolithic apps,
@@ -360,19 +364,22 @@ export default function Home() {
                 href="https://www.youtube.com/@0xAlexP"
                 target="_blank"
               >
-                {" "}
+                {' '}
                 YouTube channel
               </a>
-              , where I showcase recent pet projects I{"'"}m working on and a
+              , where I showcase recent pet projects I
+              {'\''}
+              m working on and a
               <a
                 className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
                 rel="noreferrer noopener"
                 href="https://github.com/alexxpetrov"
                 target="_blank"
               >
-                {" "}
+                {' '}
                 GitHub
-              </a>{" "}
+              </a>
+              {' '}
               with my projects. I’m passionate about bridging the gap between
               frontend and backend development and working toward becoming a
               well-rounded engineer.
@@ -384,7 +391,7 @@ export default function Home() {
             </p>
           </section>
           <CardList id="experience">
-            {cards.map((card) => (
+            {cards.map(card => (
               <JobCard {...card} key={card.id} />
             ))}
             <div className="mt-12">
@@ -396,7 +403,8 @@ export default function Home() {
                 aria-label="View Full Resume (opens in a new tab)"
               >
                 <span>
-                  View Full{" "}
+                  View Full
+                  {' '}
                   <span className="inline-block">
                     Resume
                     <svg
@@ -410,7 +418,8 @@ export default function Home() {
                         fillRule="evenodd"
                         d="M5.22 14.78a.75.75 0 001.06 0l7.22-7.22v5.69a.75.75 0 001.5 0v-7.5a.75.75 0 00-.75-.75h-7.5a.75.75 0 000 1.5h5.69l-7.22 7.22a.75.75 0 000 1.06z"
                         clipRule="evenodd"
-                      ></path>
+                      >
+                      </path>
                     </svg>
                   </span>
                 </span>
@@ -419,12 +428,13 @@ export default function Home() {
           </CardList>
 
           <CardList id="projects">
-            {projectCardList.map((card) => (
+            {projectCardList.map(card => (
               <ProjectCard {...card} key={card.id} />
             ))}
           </CardList>
           <div>
-            Stumbled across the portfolio{" "}
+            Stumbled across the portfolio
+            {' '}
             <a
               className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
               href="https://github.com/bchiang7"
@@ -432,9 +442,11 @@ export default function Home() {
               rel="noreferrer noopener"
               aria-label="digital product studio (opens in a new tab)"
             >
-              Brittany Chiang{" "}
+              Brittany Chiang
+              {' '}
             </a>
-            did at{" "}
+            did at
+            {' '}
             <a
               className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
               href="https://brittanychiang.com"
@@ -442,12 +454,15 @@ export default function Home() {
               rel="noreferrer noopener"
               aria-label="digital product studio (opens in a new tab)"
             >
-              her website{" "}
+              her website
+              {' '}
             </a>
-            and couldn{"'"}t resist copying it for mine
+            and couldn
+            {'\''}
+            t resist copying it for mine
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
