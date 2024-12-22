@@ -1,7 +1,7 @@
 'use client'
 import { Tooltip } from '@components/Tooltip/Tooltip'
+import { UserContext } from 'contexts/user/UserContext'
 import { useContext, useState } from 'react'
-import { UserContext } from '../../../contexts/user/UserProvider'
 import { LoginModal } from '../LoginModal/LoginModal'
 
 function Login() {

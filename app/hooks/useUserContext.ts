@@ -1,4 +1,4 @@
-import { UserContext } from 'contexts/UserContext'
+import { UserContext } from 'contexts/user/UserContext'
 import { useContext } from 'react'
 
 // Custom hook to use the UserContext

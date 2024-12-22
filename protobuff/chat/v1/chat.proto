@@ -2,7 +2,7 @@ syntax = "proto3";
 
    package chat.v1;
 
-   option go_package = "github.com/oleksiip-aiola/beef/gen/chat/v1;chatv1";  
+   option go_package = "github.com/alexxpetrov/beef/gen/chat/v1;chatv1";  
 
    message SendMessageRequest {
     string value = 1;

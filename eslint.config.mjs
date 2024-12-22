@@ -13,12 +13,13 @@ export default antfu({
     'next/core-web-vitals',
     'next/typescript',
   ],
-  globals: {
-    process: true,
-  },
   ignores: [
     'dist',
     'node_modules',
     'app/gen',
+    'envConfig.ts',
+    'app/utils/config.ts',
+    'app/workers',
+    'tailwind.config.ts',
   ],
 })

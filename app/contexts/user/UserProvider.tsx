@@ -4,7 +4,7 @@ import type {
   RegisterDtoType,
   User,
 } from '../../types/user'
-import { UserContext } from 'contexts/UserContext'
+import { UserContext } from 'contexts/user/UserContext'
 import { jwtDecode } from 'jwt-decode'
 import { useRouter } from 'next/navigation'
 import React, { useEffect, useState } from 'react'

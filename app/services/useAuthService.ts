@@ -1,8 +1,5 @@
 import type { LoginDtoType, RegisterDtoType, User } from '../types/user'
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck Ignoring due to Uint8Array not being ArrayBuffer, but ArrayBufferLike
-// For some reason Uint8Array is not treated as a generic, but in IDE it is.
-import { AuthService } from '@gen/auth/v1/auth_pb'
+import { AuthService } from '@gen/protobuff/auth/v1/auth_pb'
 import { jwtDecode } from 'jwt-decode'
 import { useAuthClient } from '../hooks/useAuthClient'
 
@@ -44,6 +41,43 @@ async function checkCreds(challenge: Uint8Array) {
 }
 export function useAuthService() {
   const client = useAuthClient(AuthService)
+
+  const webAuthRegisterFinish = async (
+    credential: Credential & {
+      response: { attestationObject: ArrayBuffer, clientDataJSON: ArrayBuffer }
+    },
+  ): Promise<User> => {
+    const finishRequest = {
+      credentialId: credential.id,
+      attestationObject: new Uint8Array(credential.response.attestationObject),
+      clientDataJson: new Uint8Array(credential.response.clientDataJSON),
+    }
+
+    const data = await client.finishRegistration(finishRequest)
+
+    return {
+      ...(jwtDecode(data.accessToken) as User),
+      accessToken: data.accessToken,
+    }
+  }
+
+  const webAuthLoginFinish = async (
+    credential: WebauthnCreds,
+  ): Promise<User> => {
+    const finishRequest = {
+      credentialId: credential.id,
+      authenticatorData: credential.response.authenticatorData,
+      clientDataJson: credential.response.clientDataJSON,
+      signature: credential.response.signature,
+    }
+
+    const data = await client.finishLogin(finishRequest)
+
+    return {
+      ...(jwtDecode(data.accessToken) as User),
+      accessToken: data.accessToken,
+    }
+  }
 
   const webAuthRegister = async (): Promise<User> => {
     const response = await client.beginRegistration({})
@@ -97,43 +131,6 @@ export function useAuthService() {
     // Send the credential back to the server to complete registration
   }
 
-  const webAuthRegisterFinish = async (
-    credential: Credential & {
-      response: { attestationObject: ArrayBuffer, clientDataJSON: ArrayBuffer }
-    },
-  ): Promise<User> => {
-    const finishRequest = {
-      credentialId: credential.id,
-      attestationObject: new Uint8Array(credential.response.attestationObject),
-      clientDataJson: new Uint8Array(credential.response.clientDataJSON),
-    }
-
-    const data = await client.finishRegistration(finishRequest)
-
-    return {
-      ...(jwtDecode(data.accessToken) as User),
-      accessToken: data.accessToken,
-    }
-  }
-
-  const webAuthLoginFinish = async (
-    credential: WebauthnCreds,
-  ): Promise<User> => {
-    const finishRequest = {
-      credentialId: credential.id,
-      authenticatorData: credential.response.authenticatorData,
-      clientDataJson: credential.response.clientDataJSON,
-      signature: credential.response.signature,
-    }
-
-    const data = await client.finishLogin(finishRequest)
-
-    return {
-      ...(jwtDecode(data.accessToken) as User),
-      accessToken: data.accessToken,
-    }
-  }
-
   const login = async ({ email, password }: LoginDtoType): Promise<User> => {
     const data = await client.login({
       email,
@@ -163,7 +160,7 @@ export function useAuthService() {
     }
   }
 
-  const logout = async ({ accessToken }: { accessToken: string }): Promise<User> => {
+  const logout = async ({ accessToken }: { accessToken: string }) => {
     await client.logout({
       accessToken,
     })
