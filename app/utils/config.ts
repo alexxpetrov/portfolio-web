@@ -1,6 +1,7 @@
 import '../../envConfig.ts';
 
 const getEnvironmentVariable = (environmentVariable: string): string => {
+  console.log(process.env.NODE_ENV, process.env);
   const unvalidatedEnvironmentVariable = process.env[environmentVariable];
   if (!unvalidatedEnvironmentVariable) {
     if (process.env.NODE_ENV !== 'development') {
