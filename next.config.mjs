@@ -19,6 +19,7 @@ const nextConfig = {
     return config;
   },
   experimental: {
+    dynamicIO: true,
     turbo: {
       resolve: {
         fallback: {

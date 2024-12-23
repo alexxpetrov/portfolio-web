@@ -9,12 +9,12 @@ import testingLibrary from 'eslint-plugin-testing-library';
 export default antfu({
   react: true,
   typescript: true,
-
   lessOpinionated: true,
   isInEditor: false,
 
   stylistic: {
     semi: true,
+    maxLineLength: '120',
   },
 
   formatters: {
@@ -60,4 +60,8 @@ export default antfu({
     'jsx-a11y/no-autofocus': 'off',
     'no-restricted-globals': 'warn',
   },
+}, {
+  ignores: [
+    'app/gen',
+  ],
 });
