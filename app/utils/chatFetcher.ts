@@ -6,11 +6,11 @@ import { jwtDecode } from 'jwt-decode';
 import { useCallback } from 'react';
 import { useUserContext } from '../hooks/useUserContext';
 import { serverRefreshToken } from '../services/serverAction';
-import { CHAT_ENDPOINT, IS_DEVELOPMENT } from './config';
+import { config } from './config';
 
 // Create a reusable Axios instance with withCredentials: true for cookies
 export const axiosInstance = axios.create({
-  baseURL: `${CHAT_ENDPOINT}/api`, // Your API base URL
+  baseURL: `${config.CHAT_ENDPOINT}/api`, // Your API base URL
   timeout: 5000,
 });
 
@@ -33,7 +33,7 @@ export function useAxiosInterceptor() {
   let isRefreshing = false;
 
   const refreshAccessToken = async () => {
-    if (IS_DEVELOPMENT) {
+    if (config.IS_DEVELOPMENT) {
       const accessToken = await serverRefreshToken({
         id: user!.id,
         accessToken: user!.accessToken,

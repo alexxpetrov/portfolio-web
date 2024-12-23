@@ -5,14 +5,14 @@ import { TransportProvider } from '@connectrpc/connect-query';
 import { createConnectTransport } from '@connectrpc/connect-web';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
-import { CHAT_GRPC_ENDPOINT } from 'utils/config';
+import { config } from 'utils/config';
 import { store } from './store/store.index';
 
 const queryClient = new QueryClient();
 
 function AppLayout({ children }: { children: ReactNode }) {
   const transport = createConnectTransport({
-    baseUrl: CHAT_GRPC_ENDPOINT,
+    baseUrl: config.CHAT_GRPC_ENDPOINT,
     fetch: (input, init) => fetch(input, { ...init, credentials: 'include' }),
   });
 

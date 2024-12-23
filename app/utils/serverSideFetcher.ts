@@ -3,11 +3,11 @@ import type { User } from '../types/user';
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
 import { cookies } from 'next/headers';
-import { ENDPOINT } from './config';
+import { config } from './config';
 
 // Create a reusable Axios instance with withCredentials: true for cookies
 export const ssrAxiosInstance = axios.create({
-  baseURL: `${ENDPOINT}/api`, // Your API base URL
+  baseURL: `${config.ENDPOINT}/api`, // Your API base URL
   timeout: 5000,
 });
 

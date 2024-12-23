@@ -8,11 +8,11 @@ import { createConnectTransport } from '@connectrpc/connect-web';
 import { AuthService } from '@gen/protobuff/auth/v1/auth_pb';
 import { jwtDecode } from 'jwt-decode';
 import { redirect } from 'next/navigation';
-import { IS_DEVELOPMENT, WEBAUTHN_ENDPOINT } from '../utils/config';
+import { config } from '../utils/config';
 import { deleteAccessTokenCookie, setAccessTokenCookie } from '../utils/cookie';
 
 const transport = createConnectTransport({
-  baseUrl: WEBAUTHN_ENDPOINT,
+  baseUrl: config.WEBAUTHN_ENDPOINT,
   fetch: (input, init) => fetch(input, { ...init, credentials: 'include' }),
 });
 
@@ -39,7 +39,7 @@ export async function serverLogin(dto: RegisterDtoType): Promise<User> {
     return {} as User;
   }
 
-  if (IS_DEVELOPMENT) {
+  if (config.IS_DEVELOPMENT) {
     setAccessTokenCookie(data.accessToken);
   }
 
@@ -70,7 +70,7 @@ export async function serverRegister(dto: RegisterDtoType): Promise<User> {
     return {} as User;
   }
 
-  if (IS_DEVELOPMENT) {
+  if (config.IS_DEVELOPMENT) {
     setAccessTokenCookie(data.accessToken);
   }
 
@@ -101,7 +101,7 @@ export async function serverLogout(dto: { accessToken: string }) {
     return;
   }
 
-  if (IS_DEVELOPMENT) {
+  if (config.IS_DEVELOPMENT) {
     deleteAccessTokenCookie();
   }
 
