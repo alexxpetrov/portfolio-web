@@ -1,26 +1,13 @@
 import { Tooltip } from '@components/Tooltip/Tooltip';
 import Login from 'features/Auth/Login/Login';
 import { useRoomsContext } from 'hooks/useRoomsContext';
-import { useUserContext } from 'hooks/useUserContext';
 import { useMemo } from 'react';
 import { useUserService } from 'services/useUserService';
-import useSWR from 'swr';
 
 export function LogPanel() {
-  const { getUserInfo } = useUserService();
   const { rooms } = useRoomsContext();
 
-  const { user } = useUserContext();
-
-  const { data: userInfo } = useSWR(
-    user || null,
-    () => getUserInfo({ userId: user!.id }),
-    {
-      // @ts-expect-error ignore
-      fallbackData: {},
-      refreshInterval: 5000,
-    },
-  );
+  const { data: userInfo } = useUserService();
 
   const lastMessageRoomName = useMemo(
     () => rooms.find(({ id }) => id === userInfo?.lastMessageRoomId)?.name,

@@ -1,5 +1,5 @@
+import type { UseMutateFunction } from '@tanstack/react-query';
 import type { Dispatch, RefObject, SetStateAction } from 'react';
-import type { KeyedMutator } from 'swr';
 
 export type ChatRoom = {
   id: string;
@@ -24,7 +24,7 @@ export type ChatContextType = {
 
 export type RoomsContextType = {
   rooms: ChatRoom[];
-  mutate: KeyedMutator<ChatRoom[]>;
+  mutate: UseMutateFunction<any, Error, ChatRoom[], unknown>;
   switchWebSocket: ({ id, name }: ChatRoom) => void;
   connectToWebSocket: (id: string) => void;
   selectedChat: ChatRoom | null;

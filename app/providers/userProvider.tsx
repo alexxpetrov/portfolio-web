@@ -7,7 +7,7 @@ function UserProviderWrapper({
   children,
 }: {
   children: ReactNode;
-  accessToken: string;
+  accessToken?: string;
 }) {
   return <UserProvider accessToken={accessToken}>{children}</UserProvider>;
 }

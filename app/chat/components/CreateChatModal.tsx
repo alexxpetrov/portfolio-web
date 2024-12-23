@@ -30,7 +30,7 @@ export function CreateChatModal({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="w-full max-w-md rounded-md bg-slate-900 p-6 text-slate-200 sm:p-8 md:max-w-lg lg:max-w-xl">
         <h2 className="mb-4 text-lg font-semibold text-slate-200">
           Create Chat Room

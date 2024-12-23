@@ -1,13 +1,12 @@
 import { Tooltip } from '@components/Tooltip/Tooltip';
 import { useRoomsContext } from 'hooks/useRoomsContext';
 import { memo, useCallback, useMemo, useState } from 'react';
-import { mutate } from 'swr';
 import { CreateChatModal } from './CreateChatModal';
 import { SearchBar } from './SearchBar';
 
 export const ChatRoomList = memo(() => {
   const { selectedChat, switchWebSocket } = useRoomsContext();
-  const { rooms } = useRoomsContext();
+  const { rooms, mutate } = useRoomsContext();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false); // State to toggle modal visibility
@@ -21,7 +20,7 @@ export const ChatRoomList = memo(() => {
       mutate([...rooms, newRoom]); // Add the new chat room to the list
       switchWebSocket(newRoom);
     },
-    [rooms, switchWebSocket],
+    [rooms, switchWebSocket, mutate],
   );
 
   const filteredChats = useMemo(

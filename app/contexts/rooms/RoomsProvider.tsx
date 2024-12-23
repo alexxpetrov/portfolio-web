@@ -1,8 +1,8 @@
 import type { ChatRoom } from 'chat/types';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useChatContext } from 'hooks/useChatContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useCallback, useRef, useState } from 'react';
-import useSWR from 'swr';
 import { useChatFetchData } from 'utils/chatFetcher';
 import { RoomsContext } from './RoomsContext';
 
@@ -11,13 +11,20 @@ export function RoomsProvider({ children }: { children: React.ReactNode }) {
   const { user } = useUserContext();
   const { setMessages, scrollableRef } = useChatContext();
 
-  const { data: rooms = [], mutate } = useSWR<{ name: string; id: string }[]>(
-    user?.id ? 'chat/rooms' : null,
-    protectedFetcher('chat/rooms', { method: 'GET' }),
-    {
-      fallbackData: [],
+  // Access the client
+  const queryClient = useQueryClient();
+
+  // Queries
+  const { data: rooms } = useQuery({ queryKey: ['chat/rooms'], queryFn: protectedFetcher('chat/rooms', { method: 'GET' }), enabled: !!user?.id, initialData: [] });
+
+  // Mutations
+  const mutation = useMutation<any, Error, ChatRoom[], unknown>({
+    mutationFn: protectedFetcher('chat/rooms', { method: 'GET' }),
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ['chat/rooms'] });
     },
-  );
+  });
 
   const webSocketRef = useRef<WebSocket | null>(null);
 
@@ -100,7 +107,7 @@ export function RoomsProvider({ children }: { children: React.ReactNode }) {
     <RoomsContext
       value={{
         rooms,
-        mutate,
+        mutate: mutation.mutate,
         selectedChat,
         switchWebSocket,
         connectToWebSocket,

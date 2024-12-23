@@ -1,33 +1,23 @@
-import { createConnectTransport } from '@connectrpc/connect-web';
-import { UserInfoService } from '@gen/app/user/v1/user_pb';
-import dayjs from 'dayjs';
-import { useAuthClient } from 'hooks/useAuthClient';
-import { CHAT_GRPC_ENDPOINT } from 'utils/config';
-
-const transport = createConnectTransport({
-  baseUrl: CHAT_GRPC_ENDPOINT,
-  credentials: 'include',
-});
-
-export const CLASSIC_DATE_TIME_FORMAT = 'DD/MM/YYYY HH:mm';
+import type { GetInfoResponse } from '@gen/protobuff/user/v1/user_pb';
+import { useQuery } from '@connectrpc/connect-query';
+import { UserInfoService } from '@gen/protobuff/user/v1/user_pb';
+import { formatLogDate } from 'chat/utils/utils';
+import { useUserContext } from 'hooks/useUserContext';
 
 export function useUserService() {
-  const client = useAuthClient(UserInfoService, transport);
+  const { user } = useUserContext();
+  const { data } = useQuery(UserInfoService.method.getUserInfo, { userId: user!.id }, { refetchInterval: 5000, enabled: !!user, placeholderData: {} as GetInfoResponse });
 
-  const getUserInfo = async ({ userId }: { userId: string }) => {
-    const data = await client.getUserInfo({
-      userId,
-    });
+  if (!data) {
+    return { data: {} as GetInfoResponse };
+  }
 
-    return {
-      loginTimestamp: data.loginTimestamp ? dayjs(data.loginTimestamp).format(CLASSIC_DATE_TIME_FORMAT) : null,
-      registerTimestamp: data.registerTimestamp ? dayjs(data.registerTimestamp).format(CLASSIC_DATE_TIME_FORMAT) : null,
-      joinedRoomId: data.joinedRoomId,
-      leftRoomId: data.leftRoomId,
-      lastMessage: data.lastMessage,
-      lastMessageRoomId: data.lastMessageRoomId,
-    };
+  return {
+    loginTimestamp: data.loginTimestamp ? formatLogDate(data.loginTimestamp) : null,
+    registerTimestamp: data.registerTimestamp ? formatLogDate(data.registerTimestamp) : null,
+    joinedRoomId: data.joinedRoomId,
+    leftRoomId: data.leftRoomId,
+    lastMessage: data.lastMessage,
+    lastMessageRoomId: data.lastMessageRoomId,
   };
-
-  return { getUserInfo };
 }

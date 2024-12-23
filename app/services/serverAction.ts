@@ -1,11 +1,11 @@
 'use server';
-import type { LoginResponse, RegisterResponse } from '@gen/auth/v1/auth_pb';
+import type { LoginResponse, RegisterResponse } from '@gen/protobuff/auth/v1/auth_pb';
 import type { AxiosError } from 'axios';
 import type { RegisterDtoType, User } from '../types/user';
-import { ConnectError, createClient } from '@connectrpc/connect';
 
+import { ConnectError, createClient } from '@connectrpc/connect';
 import { createConnectTransport } from '@connectrpc/connect-web';
-import { AuthService } from '@gen/auth/v1/auth_pb';
+import { AuthService } from '@gen/protobuff/auth/v1/auth_pb';
 import { jwtDecode } from 'jwt-decode';
 import { redirect } from 'next/navigation';
 import { IS_DEVELOPMENT, WEBAUTHN_ENDPOINT } from '../utils/config';
@@ -13,7 +13,7 @@ import { deleteAccessTokenCookie, setAccessTokenCookie } from '../utils/cookie';
 
 const transport = createConnectTransport({
   baseUrl: WEBAUTHN_ENDPOINT,
-  credentials: 'include',
+  fetch: (input, init) => fetch(input, { ...init, credentials: 'include' }),
 });
 
 const client = createClient(AuthService, transport);

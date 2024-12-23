@@ -20,7 +20,7 @@ export function UserProvider({
   accessToken,
   children,
 }: {
-  accessToken: string;
+  accessToken?: string;
   children: React.ReactNode;
 }) {
   const { push } = useRouter();
