@@ -4,9 +4,9 @@ const getEnvironmentVariable = (environmentVariable: string): string => {
   const unvalidatedEnvironmentVariable = process.env[environmentVariable];
   if (!unvalidatedEnvironmentVariable) {
     if (process.env.NODE_ENV !== 'development') {
-      throw new Error(
-        `Couldn't find environment variable: ${environmentVariable}`,
-      );
+      // throw new Error(
+      //   `Couldn't find environment variable: ${environmentVariable}`,
+      // );
     }
     console.error(`Couldn't find environment variable: ${environmentVariable}`);
     return '';

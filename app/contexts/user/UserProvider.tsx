@@ -14,7 +14,7 @@ import {
   serverRegister,
 } from '../../services/serverAction';
 import { useAuthService } from '../../services/useAuthService';
-import { IS_DEVELOPMENT } from '../../utils/config';
+import { config } from '../../utils/config';
 
 export function UserProvider({
   accessToken,
@@ -39,7 +39,7 @@ export function UserProvider({
 
   const handleLogin = async ({ email, password }: LoginDtoType) => {
     let loggedInUser;
-    if (IS_DEVELOPMENT) {
+    if (config.IS_DEVELOPMENT) {
       loggedInUser = await serverLogin({ email, password } as RegisterDtoType);
     } else {
       loggedInUser = await client.login({ email, password });
@@ -57,7 +57,7 @@ export function UserProvider({
     password,
   }: RegisterDtoType) => {
     let response;
-    if (IS_DEVELOPMENT) {
+    if (config.IS_DEVELOPMENT) {
       response = await serverRegister({
         firstName,
         lastName,
@@ -79,7 +79,7 @@ export function UserProvider({
   };
 
   const handleLogout = async () => {
-    if (IS_DEVELOPMENT) {
+    if (config.IS_DEVELOPMENT) {
       await serverLogout({
         accessToken: user!.accessToken,
       });
