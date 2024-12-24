@@ -9,7 +9,7 @@ export function useUserService() {
   const { data } = useQuery(UserInfoService.method.getUserInfo, { userId: user!.id }, { enabled: !!user, placeholderData: {} as GetInfoResponse, refetchInterval: 5000 });
 
   if (!data) {
-    return { data: {} as GetInfoResponse };
+    return {} as GetInfoResponse;
   }
 
   return {

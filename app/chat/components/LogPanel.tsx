@@ -5,7 +5,7 @@ import { useUserService } from 'services/useUserService';
 
 export function LogPanel() {
   const { rooms } = useRoomsContext();
-  const { data: userInfo } = useUserService();
+  const userInfo = useUserService();
 
   const lastMessageRoomName = rooms.find(({ id }) => id === userInfo?.lastMessageRoomId)?.name;
   const lastJoinedRoomName = rooms.find(({ id }) => id === userInfo?.joinedRoomId)?.name;
