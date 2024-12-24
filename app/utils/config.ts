@@ -1,21 +1,21 @@
 import '../../envConfig.ts';
 
-const getEnvironmentVariable = (environmentVariable: string): string => {
-  const unvalidatedEnvironmentVariable = process.env[environmentVariable];
+// const getEnvironmentVariable = (environmentVariable: string): string => {
+//   const unvalidatedEnvironmentVariable = process.env[environmentVariable];
 
-  if (!unvalidatedEnvironmentVariable) {
-    if (process.env.NODE_ENV !== 'development') {
-      // throw new Error(
-      //   `Couldn't find environment variable: ${environmentVariable}`,
-      // );
-      return '';
-    }
-    console.error(`Couldn't find environment variable: ${environmentVariable}`);
-    return '';
-  } else {
-    return unvalidatedEnvironmentVariable;
-  }
-};
+//   if (!unvalidatedEnvironmentVariable) {
+//     if (process.env.NODE_ENV !== 'development') {
+//       // throw new Error(
+//       //   `Couldn't find environment variable: ${environmentVariable}`,
+//       // );
+//       return '';
+//     }
+//     console.error(`Couldn't find environment variable: ${environmentVariable}`);
+//     return '';
+//   } else {
+//     return unvalidatedEnvironmentVariable;
+//   }
+// };
 
 export const config = {
   // ENDPOINT: getEnvironmentVariable('NEXT_PUBLIC_HOST') || 'http://localhost:4500',
