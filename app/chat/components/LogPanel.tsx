@@ -8,8 +8,8 @@ export function LogPanel() {
 
   const { data: userInfo } = useUserService();
 
-  const lastMessageRoomName = () => rooms.find(({ id }) => id === userInfo?.lastMessageRoomId)?.name;
-  const lastJoinedRoomName = () => rooms.find(({ id }) => id === userInfo?.joinedRoomId)?.name;
+  const lastMessageRoomName = rooms.find(({ id }) => id === userInfo?.lastMessageRoomId)?.name;
+  const lastJoinedRoomName = rooms.find(({ id }) => id === userInfo?.joinedRoomId)?.name;
 
   return (
     <div
