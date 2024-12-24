@@ -3,6 +3,7 @@ import nextPlugin from '@next/eslint-plugin-next';
 import jestDom from 'eslint-plugin-jest-dom';
 import jsxA11y from 'eslint-plugin-jsx-a11y';
 import playwright from 'eslint-plugin-playwright';
+import reactCompiler from 'eslint-plugin-react-compiler';
 import tailwind from 'eslint-plugin-tailwindcss';
 import testingLibrary from 'eslint-plugin-testing-library';
 
@@ -29,6 +30,7 @@ export default antfu({
 }, ...tailwind.configs['flat/recommended'], jsxA11y.flatConfigs.recommended, {
   plugins: {
     '@next/next': nextPlugin,
+    'react-compiler': reactCompiler,
   },
   rules: {
     ...nextPlugin.configs.recommended.rules,
@@ -59,6 +61,7 @@ export default antfu({
     'no-console': 'warn',
     'jsx-a11y/no-autofocus': 'off',
     'no-restricted-globals': 'warn',
+    'react-compiler/react-compiler': 'error',
   },
 }, {
   ignores: [

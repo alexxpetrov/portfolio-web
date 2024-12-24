@@ -19,6 +19,7 @@ const nextConfig = {
     return config;
   },
   experimental: {
+    reactCompiler: true,
     dynamicIO: true,
     turbo: {
       resolveAlias: {
