@@ -5,6 +5,7 @@ import { useChatContext } from 'hooks/useChatContext';
 import { useUserContext } from 'hooks/useUserContext';
 import { useRef, useState } from 'react';
 import { useChatFetchData } from 'utils/chatFetcher';
+import { config } from 'utils/config';
 import { RoomsContext } from './RoomsContext';
 
 export function RoomsProvider({ children }: { children: React.ReactNode }) {
@@ -34,7 +35,7 @@ export function RoomsProvider({ children }: { children: React.ReactNode }) {
   // Open WebSocket connection
   const connectToWebSocket = (id: string) => {
     const ws = new WebSocket(
-      `wss://beef.alexspetrov.com/api/chat/rooms/${id}?access_token=${user?.accessToken}&user_id=${user?.id}&nickname=${user?.firstName}_${user?.lastName}`,
+      `${config.CHAT_WEBSOCKET_ENDPOINT}/api/chat/rooms/${id}?access_token=${user?.accessToken}&user_id=${user?.id}&nickname=${user?.firstName}_${user?.lastName}`,
     );
 
     if (ws.OPEN) {

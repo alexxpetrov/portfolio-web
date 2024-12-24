@@ -27,5 +27,6 @@ export const config = {
   WEBAUTHN_ENDPOINT: process.env.NEXT_PUBLIC_WEBAUTHN_ENDPOINT || 'http://localhost:4500',
   CHAT_ENDPOINT: process.env.NEXT_PUBLIC_CHAT_ENDPOINT || 'http://localhost:4000',
   CHAT_GRPC_ENDPOINT: process.env.NEXT_PUBLIC_CHAT_GRPC_ENDPOINT || 'http://localhost:4600',
+  CHAT_WEBSOCKET_ENDPOINT: process.env.NEXT_PUBLIC_CHAT_WEBSOCKET_ENDPOINT || 'ws://localhost:4000',
   IS_DEVELOPMENT: (process.env.NEXT_PUBLIC_ENV || 'development') === 'development',
 };

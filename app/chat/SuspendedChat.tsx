@@ -1,3 +1,4 @@
+import { ChatProvider } from 'contexts/chat/ChatProvider';
 import { RoomsProvider } from 'contexts/rooms/RoomsProvider';
 import InterceptorHoc from 'hocs/interceptorHoc';
 import UserProviderWrapper from 'providers/userProvider';
@@ -9,11 +10,13 @@ export const SuspendedChat = async () => {
 
   return (
     <UserProviderWrapper accessToken={accessToken}>
-      <RoomsProvider>
-        <InterceptorHoc>
-          <ChatWrapper />
-        </InterceptorHoc>
-      </RoomsProvider>
+      <ChatProvider>
+        <RoomsProvider>
+          <InterceptorHoc>
+            <ChatWrapper />
+          </InterceptorHoc>
+        </RoomsProvider>
+      </ChatProvider>
     </UserProviderWrapper>
   );
 };
