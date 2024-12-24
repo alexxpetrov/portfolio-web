@@ -3,12 +3,10 @@ import type {
   FormEventHandler,
 } from 'react';
 import type { LoginDtoType, RegisterDtoType, User } from 'types/user';
-import { notification } from 'antd';
 import { useUserContext } from 'hooks/useUserContext';
 import {
   useState,
 } from 'react';
-import { FiCheckCircle } from 'react-icons/fi';
 import { AuthType, SignUpType } from '../types';
 
 type FormData = {
@@ -41,22 +39,22 @@ export function useFormControls() {
 
   const handleBiometricAuth = async () => {
     try {
-      const response = await handleWebAuthRegister();
-      const name = [response?.firstName, response?.lastName]
-        .filter(Boolean)
-        .join(' ');
+      await handleWebAuthRegister();
+      // const name = [response?.firstName, response?.lastName]
+      //   .filter(Boolean)
+      //   .join(' ');
 
-      notification.success({
-        description: 'Success',
-        message: name ? `Welcome ${name}!` : 'Welcome!',
-        icon: <FiCheckCircle />,
-        type: 'success',
-      });
+      // notification.success({
+      //   description: 'Success',
+      //   message: name ? `Welcome ${name}!` : 'Welcome!',
+      //   icon: <FiCheckCircle />,
+      //   type: 'success',
+      // });
     } catch {
-      notification.error({
-        description: `Error during biometric authentication`,
-        message: 'Authentication failed',
-      });
+      // notification.error({
+      //   description: `Error during biometric authentication`,
+      //   message: 'Authentication failed',
+      // });
     }
   };
 
@@ -84,21 +82,21 @@ export function useFormControls() {
         }
 
         if (response) {
-          const name = [response.firstName, response.lastName]
-            .filter(Boolean)
-            .join(' ');
-          notification.success({
-            description: 'Success',
-            message: `Welcome ${name}!`,
-            icon: <FiCheckCircle />,
-            type: 'success',
-          });
+          // const name = [response.firstName, response.lastName]
+          //   .filter(Boolean)
+          //   .join(' ');
+          // notification.success({
+          //   description: 'Success',
+          //   message: `Welcome ${name}!`,
+          //   icon: <FiCheckCircle />,
+          //   type: 'success',
+          // });
         }
       } catch {
-        notification.error({
-          description: 'Authentication failed',
-          message: 'Please check your credentials and try again',
-        });
+        // notification.error({
+        //   description: 'Authentication failed',
+        //   message: 'Please check your credentials and try again',
+        // });
       }
     };
 

@@ -62,19 +62,22 @@ export function useAuthService() {
   const webAuthLoginFinish = async (
     credential: WebauthnCreds,
   ): Promise<User> => {
-    const finishRequest = {
-      credentialId: credential.id,
-      authenticatorData: credential.response.authenticatorData,
-      clientDataJson: credential.response.clientDataJSON,
-      signature: credential.response.signature,
-    };
-
-    const data = await client.finishLogin(finishRequest);
-
-    return {
-      ...(jwtDecode(data.accessToken) as User),
-      accessToken: data.accessToken,
-    };
+    try {
+      const finishRequest = {
+        credentialId: credential.id,
+        authenticatorData: new Uint8Array(credential.response.authenticatorData),
+        clientDataJson: new Uint8Array(credential.response.clientDataJSON),
+        signature: new Uint8Array(credential.response.signature),
+      };
+      const data = await client.finishLogin(finishRequest);
+      return {
+        ...(jwtDecode(data.accessToken) as User),
+        accessToken: data.accessToken,
+      };
+    } catch (error) {
+      console.log(error);
+    }
+    return {} as User;
   };
 
   const webAuthRegister = async (): Promise<User> => {
@@ -117,7 +120,8 @@ export function useAuthService() {
     if (!credential) {
       return {} as User;
     }
-    // Prepare the finish request
+
+    // Send the credential back to the server to complete registration
     return webAuthRegisterFinish(
       credential as Credential & {
         response: {
@@ -126,7 +130,6 @@ export function useAuthService() {
         };
       },
     );
-    // Send the credential back to the server to complete registration
   };
 
   const login = async ({ email, password }: LoginDtoType): Promise<User> => {

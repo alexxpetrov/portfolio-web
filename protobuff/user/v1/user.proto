@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package userInfo.v1;
 
-option go_package = "github.com/alexxpetrov/erdtree/gen/userInfo/v1;userInfov1";
+option go_package = "github.com/alexxpetrov/erdtree/gen/user/v1;userInfov1";
 
 message GetInfoRequest {
   string accessToken = 1;

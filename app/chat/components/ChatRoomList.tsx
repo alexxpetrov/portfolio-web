@@ -31,8 +31,8 @@ export const ChatRoomList = () => {
         {filteredChats.length > 0
           ? (
               filteredChats.map(({ id, name }) => (
-                <button
-                  type="button"
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
+                <div
                   key={id}
                   onClick={() => switchWebSocket({ id, name })}
                   className={`cursor-pointer rounded-md p-4 hover:bg-slate-700 ${
@@ -40,7 +40,7 @@ export const ChatRoomList = () => {
                   }`}
                 >
                   {name}
-                </button>
+                </div>
               ))
             )
           : (

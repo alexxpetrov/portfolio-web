@@ -7,7 +7,7 @@ import type {
 import { UserContext } from 'contexts/user/UserContext';
 import { jwtDecode } from 'jwt-decode';
 import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   serverLogin,
   serverLogout,
@@ -92,12 +92,6 @@ export function UserProvider({
     push('/');
     setUser(null);
   };
-
-  useEffect(() => {
-    if (accessToken) {
-      setUser({ ...jwtDecode(accessToken ?? ''), accessToken } as User);
-    }
-  }, [accessToken]);
 
   return (
     <UserContext

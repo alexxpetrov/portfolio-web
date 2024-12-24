@@ -9,12 +9,13 @@ import { store } from './store/store.index';
 
 const queryClient = new QueryClient();
 
-function AppLayout({ children }: { children: ReactNode }) {
-  const transport = createConnectTransport({
-    baseUrl: config.CHAT_GRPC_ENDPOINT,
-    fetch: (input, init) => fetch(input, { ...init, credentials: 'include' }),
-  });
+const transport = createConnectTransport({
+  baseUrl: config.CHAT_GRPC_ENDPOINT,
+  fetch: (input, init) => fetch(input, { ...init, credentials: 'include' }),
+  useHttpGet: true,
+});
 
+function AppLayout({ children }: { children: ReactNode }) {
   return (
     <TransportProvider transport={transport}>
       <QueryClientProvider client={queryClient}>

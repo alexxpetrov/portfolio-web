@@ -1,3 +1,4 @@
+'use client';
 import type { ChatRoom } from 'chat/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useChatContext } from 'hooks/useChatContext';
@@ -13,10 +14,8 @@ export function RoomsProvider({ children }: { children: React.ReactNode }) {
 
   // Access the client
   const queryClient = useQueryClient();
-
   // Queries
   const { data: rooms } = useQuery({ queryKey: ['chat/rooms'], queryFn: protectedFetcher('chat/rooms', { method: 'GET' }), enabled: !!user?.id, initialData: [] });
-
   // Mutations
   const mutation = useMutation<any, Error, ChatRoom[], unknown>({
     mutationFn: protectedFetcher('chat/rooms', { method: 'GET' }),

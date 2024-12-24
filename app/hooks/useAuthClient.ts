@@ -7,7 +7,8 @@ import { config } from '../utils/config';
 const transport = createConnectTransport({
   baseUrl: config.WEBAUTHN_ENDPOINT,
   fetch: (input, init) => fetch(input, { ...init, credentials: 'include' }),
-
+  useBinaryFormat: false,
+  useHttpGet: true,
 });
 
 export function useAuthClient<T extends GenService<any>>(service: T, trans?: Transport): Client<T> {
