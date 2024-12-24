@@ -1,3 +1,4 @@
+import { RoomsProvider } from 'contexts/rooms/RoomsProvider';
 import InterceptorHoc from 'hocs/interceptorHoc';
 import UserProviderWrapper from 'providers/userProvider';
 import { getAccessTokenCookie } from 'utils/cookie';
@@ -8,9 +9,11 @@ export const SuspendedChat = async () => {
 
   return (
     <UserProviderWrapper accessToken={accessToken}>
-      <InterceptorHoc>
-        <ChatWrapper />
-      </InterceptorHoc>
+      <RoomsProvider>
+        <InterceptorHoc>
+          <ChatWrapper />
+        </InterceptorHoc>
+      </RoomsProvider>
     </UserProviderWrapper>
   );
 };
