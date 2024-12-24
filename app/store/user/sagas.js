@@ -1,6 +1,6 @@
-import { all, call, put, takeLatest } from "redux-saga/effects";
-import { init } from "./actions";
-import { MainActions } from "./reducers";
+import { all, call, put, takeLatest } from 'redux-saga/effects';
+import { init } from './actions';
+import { MainActions } from './reducers';
 
 async function getInitialData() {
   const data = await Promise.resolve([1, 2, 3]);
@@ -14,7 +14,7 @@ export function* getInitialDataSaga() {
     yield put(MainActions.getMainData(data));
     return data;
   } catch {
-    console.log("api fail");
+    console.log('api fail');
   }
 }
 
@@ -22,7 +22,7 @@ export function* handleInitialize() {
   try {
     yield call(getInitialDataSaga);
   } catch {
-    console.log("error");
+    console.log('error');
   }
 }
 

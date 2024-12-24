@@ -4,7 +4,7 @@ const nextConfig = {
     if (!isServer) {
       config.module.rules.push({
         test: /\.worker\.ts$/,
-        use: { loader: "worker-loader" },
+        use: { loader: 'worker-loader' },
       });
     }
 
@@ -17,6 +17,14 @@ const nextConfig = {
     };
 
     return config;
+  },
+  experimental: {
+    dynamicIO: true,
+    turbo: {
+      resolveAlias: {
+        underscore: 'lodash',
+      },
+    },
   },
 };
 

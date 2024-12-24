@@ -6,11 +6,15 @@
   --background: #ffffff;
   --foreground: #171717;
   font-family: Inter, sans-serif;
-  font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+  font-feature-settings:
+    'liga' 1,
+    'calt' 1; /* fix for Chrome */
 }
 
 @supports (font-variation-settings: normal) {
-  :root { font-family: InterVariable, sans-serif; }
+  :root {
+    font-family: InterVariable, sans-serif;
+  }
 }
 
 @media (prefers-color-scheme: dark) {
@@ -32,10 +36,10 @@ body {
 }
 
 @layer components {
-  .active span:first-child{
-    @apply w-16 bg-slate-200
+  .active span:first-child {
+    @apply w-16 bg-slate-200;
   }
-  .active span:nth-child(2){
-    @apply text-slate-200
+  .active span:nth-child(2) {
+    @apply text-slate-200;
   }
 }

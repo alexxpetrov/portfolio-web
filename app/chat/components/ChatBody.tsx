@@ -1,58 +1,55 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck
-import { Tooltip } from "@components/Tooltip/Tooltip";
-import { useCallback, useEffect, useRef, useState } from "react";
-import { FiSend } from "react-icons/fi";
-import { MessageList } from "./MessageList";
+import { Tooltip } from '@components/Tooltip/Tooltip';
+import { useChatContext } from 'hooks/useChatContext';
+import { useRoomsContext } from 'hooks/useRoomsContext';
+import { useEffect, useRef, useState } from 'react';
+import { FiSend } from 'react-icons/fi';
+import { MessageList } from './MessageList';
 
-export const ChatBody = ({
-  selectedChat,
-  setSelectedChat,
-  messages,
-  scrollableRef,
-  webSocketRef,
-  userId,
-}) => {
-  const [message, setMessage] = useState<string>("");
+export function ChatBody() {
+  const [message, setMessage] = useState<string>('');
+  const { scrollableRef, messages } = useChatContext();
+  const { webSocketRef, selectedChat, setSelectedChat } = useRoomsContext();
 
   const handleSendMessage = () => {
-    if (message.trim() === "") return;
+    if (message.trim() === '') {
+      return;
+    }
 
     webSocketRef.current!.send(message);
 
-    console.log("Message sent:", message);
-    setMessage("");
+    console.log('Message sent:', message);
+    setMessage('');
   };
 
   const inputRef = useRef(null);
 
-  const handleBlur = useCallback(() => {
+  const handleBlur = () => {
     // Refocus the input if it loses focus
     if (inputRef.current) {
-      inputRef.current.focus();
+      (inputRef.current as HTMLInputElement).focus();
     }
-  }, []);
+  };
 
   useEffect(() => {
     handleBlur();
-  }, [messages, handleBlur]);
+  }, [messages]);
 
   if (!selectedChat?.id) {
     return (
-      <div className="flex items-center justify-center h-full">
+      <div className="flex h-full items-center justify-center">
         <span className="text-slate-500">Select a chat to start messaging</span>
       </div>
     );
   }
 
   return (
-    <div className="grid grid-rows-[auto,1fr,auto] h-full bg-gray-900 text-gray-200">
+    <div className="grid h-full grid-rows-[auto,1fr,auto] bg-gray-900 text-gray-200">
       {/* Chat Header */}
-      <div className="p-4 border-b border-gray-700 flex justify-between items-center bg-gray-800">
-        <div className="flex gap-4 z-10">
+      <div className="flex items-center justify-between border-b border-gray-700 bg-gray-800 p-4">
+        <div className="z-10 flex gap-4">
           <span className="font-semibold">{selectedChat.name}</span>
           <Tooltip
-            title={
+            title={(
               <span className="text-slate-400">
                 Chat messages are delivered in real-time using WebSocket
                 connections served by a Go Http server. All messages are
@@ -64,17 +61,18 @@ export const ChatBody = ({
                   href="https://github.com/alexxpetrov/beef"
                   target="_blank"
                 >
-                  {" "}
+                  {' '}
                   GitHub
                 </a>
               </span>
-            }
+            )}
           />
         </div>
 
         <button
           onClick={() => setSelectedChat(null)}
           className="text-gray-400 hover:text-teal-300"
+          type="button"
         >
           Back
         </button>
@@ -82,35 +80,36 @@ export const ChatBody = ({
 
       {/* Chat Messages */}
       <div
-        className="p-4 overflow-y-auto scroll-smooth space-y-4"
+        className="space-y-4 overflow-y-auto scroll-smooth p-4"
         ref={scrollableRef}
       >
-        <MessageList messages={messages} userId={userId} />
+        <MessageList />
       </div>
 
       {/* Chat Input */}
-      <div className="p-4 border-t border-gray-700 bg-gray-800">
+      <div className="border-t border-gray-700 bg-gray-800 p-4">
         <div className="relative flex items-center">
           {/* Input Field */}
           <input
             ref={inputRef}
             type="text"
             value={message}
-            onChange={(e) => setMessage(e.target.value)}
+            onChange={e => setMessage(e.target.value)}
             onKeyDown={(e) => {
-              if (e.key === "Enter") {
+              if (e.key === 'Enter') {
                 handleSendMessage();
               }
             }}
             autoFocus
             placeholder="Type a message..."
-            className="w-full pr-10 p-2 bg-gray-700 text-gray-200 rounded-md outline-none focus:ring-2 focus:ring-teal-300"
+            className="w-full rounded-md bg-gray-700 p-2 pr-10 text-gray-200 outline-none focus:ring-2 focus:ring-teal-300"
           />
           {/* Send Icon */}
           {message.trim() && (
             <button
               onClick={handleSendMessage}
               className="absolute right-2 text-gray-400 hover:text-teal-300"
+              type="button"
             >
               <FiSend size={20} />
             </button>
@@ -119,4 +118,4 @@ export const ChatBody = ({
       </div>
     </div>
   );
-};
+}

@@ -1,15 +1,8 @@
 version: v2
 plugins:
-  # This will invoke protoc-gen-es and write output to src/gen
+  # This will invoke protoc-gen-es and write output to app/gen
   - local: protoc-gen-es
     out: app/gen
-    opt: 
-      - target=ts
-      - import_extension=none
-  # This will invoke protoc-gen-connect-es
-  - local: protoc-gen-connect-es
-    out: app/gen
-    # Add more plugin options here
-    opt: 
+    opt:
       - target=ts
       - import_extension=none

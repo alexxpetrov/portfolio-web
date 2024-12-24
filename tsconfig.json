@@ -1,32 +1,54 @@
 {
   "compilerOptions": {
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
+    "incremental": true,
+    "target": "ES2017",
+    "jsx": "preserve",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "baseUrl": "./app",
     "module": "esnext",
     "moduleResolution": "bundler",
+    "paths": {
+      "@/*": [
+        "./app/*"
+      ],
+      "@components/*": [
+        "components/*"
+      ], // Map "components" to the "components" folder
+      "@gen/*": [
+        "./gen/*"
+      ], // (Optional) Map other directories as needed
+      "@styles/*": [
+        "./styles/*"
+      ], // (Optional) Map other directories as needed
+      "@public/*": [
+        "../public/*"
+      ]
+    },
     "resolveJsonModule": true,
+    "allowJs": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
     "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
+    "skipLibCheck": true,
     "plugins": [
       {
         "name": "next"
       }
-    ],
-    "paths": {
-      "@/*": ["./app/*"],
-      "@components/*": ["components/*"], // Map "components" to the "components" folder
-      "@gen/*": ["./gen/*"], // (Optional) Map other directories as needed
-      "@styles/*": ["./styles/*"], // (Optional) Map other directories as needed
-      "@public/*": ["../public/*"]
-    }
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
-  "exclude": ["node_modules"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ],
   "unusedExpectErrorDirectives": false
 }
