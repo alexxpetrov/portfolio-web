@@ -16,28 +16,37 @@ export function MessageList() {
     );
   }
 
-  let lastDate = '';
-
-  return messages.map((message) => {
+  const processedMessages = messages.map((message, index, arr) => {
     const messageDate = formatDate(message.time_created);
-    const isNewDay = lastDate !== messageDate;
-    lastDate = messageDate;
+    const prevMessageDate
+      = index > 0 ? formatDate(arr[index - 1].time_created) : null;
+    const isNewDay = messageDate !== prevMessageDate;
 
-    return (
-      <React.Fragment key={message.id}>
-        {isNewDay && (
-          <div
-            className="mb-2 text-center text-xs text-gray-500"
-            key={`date-${messageDate}`}
-          >
-            {messageDate}
-          </div>
-        )}
-        <ChatMessage
-          message={message}
-          isCurrentUser={message.user_id === user?.id}
-        />
-      </React.Fragment>
-    );
+    return {
+      ...message,
+      messageDate,
+      isNewDay,
+    };
   });
+
+  return (
+    <div>
+      {processedMessages.map(message => (
+        <React.Fragment key={message.id}>
+          {message.isNewDay && (
+            <div
+              className="mb-2 text-center text-xs text-gray-500"
+              key={`date-${message.messageDate}`}
+            >
+              {message.messageDate}
+            </div>
+          )}
+          <ChatMessage
+            message={message}
+            isCurrentUser={message.user_id === user?.id}
+          />
+        </React.Fragment>
+      ))}
+    </div>
+  );
 }
