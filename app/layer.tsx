@@ -1,5 +1,4 @@
 'use client';
-
 import type { ReactNode } from 'react';
 import { TransportProvider } from '@connectrpc/connect-query';
 import { createConnectTransport } from '@connectrpc/connect-web';

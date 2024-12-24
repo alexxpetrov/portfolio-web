@@ -6,7 +6,6 @@ import type { LoginDtoType, RegisterDtoType, User } from 'types/user';
 import { notification } from 'antd';
 import { useUserContext } from 'hooks/useUserContext';
 import {
-  useCallback,
   useState,
 } from 'react';
 import { FiCheckCircle } from 'react-icons/fi';
@@ -32,18 +31,15 @@ export function useFormControls() {
     lastName: '',
   });
 
-  const handleInputChange: ChangeEventHandler<HTMLInputElement> = useCallback(
-    (e) => {
-      const { name, value, type, checked } = e.target;
-      setFormData(prev => ({
-        ...prev,
-        [name]: type === 'checkbox' ? checked : value,
-      }));
-    },
-    [],
-  );
+  const handleInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const { name, value, type, checked } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: type === 'checkbox' ? checked : value,
+    }));
+  };
 
-  const handleBiometricAuth = useCallback(async () => {
+  const handleBiometricAuth = async () => {
     try {
       const response = await handleWebAuthRegister();
       const name = [response?.firstName, response?.lastName]
@@ -62,10 +58,10 @@ export function useFormControls() {
         message: 'Authentication failed',
       });
     }
-  }, [handleWebAuthRegister]);
+  };
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = useCallback(
-    async (e) => {
+  const handleSubmit: FormEventHandler<HTMLFormElement>
+    = async (e) => {
       e.preventDefault();
 
       try {
@@ -104,9 +100,7 @@ export function useFormControls() {
           message: 'Please check your credentials and try again',
         });
       }
-    },
-    [formState, formData, login, register],
-  );
+    };
 
   return {
     handleInputChange,

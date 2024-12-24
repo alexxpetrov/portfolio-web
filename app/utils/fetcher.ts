@@ -3,7 +3,6 @@ import type { User } from '../types/user';
 
 import axios from 'axios';
 import { jwtDecode } from 'jwt-decode';
-import { useCallback } from 'react';
 import { useUserContext } from '../hooks/useUserContext';
 import { serverRefreshToken } from '../services/serverAction';
 import { config } from './config';
@@ -148,26 +147,23 @@ export function useFetchData() {
   const { user } = useUserContext();
 
   // Main request function that manages access tokens and retries failed requests
-  const protectedFetcher = useCallback(
-    (url: string, config: AxiosRequestConfig) => async () => {
-      // Attach Authorization header with the access token
-      const reqConfig = {
-        ...config,
-        headers: {
-          ...(config.headers ?? {}),
-          Authorization: user?.accessToken
-            ? `Bearer ${user.accessToken}`
-            : null,
-        },
-      };
+  const protectedFetcher = (url: string, config: AxiosRequestConfig) => async () => {
+    // Attach Authorization header with the access token
+    const reqConfig = {
+      ...config,
+      headers: {
+        ...(config.headers ?? {}),
+        Authorization: user?.accessToken
+          ? `Bearer ${user.accessToken}`
+          : null,
+      },
+    };
 
-      // Make the API request using axiosInstance
-      const response = await axiosInstance(url, reqConfig);
+    // Make the API request using axiosInstance
+    const response = await axiosInstance(url, reqConfig);
 
-      return response.data; // If request succeeds, return the data
-    },
-    [user?.accessToken],
-  );
+    return response.data; // If request succeeds, return the data
+  };
 
   const fetcher
     = ({ url }: { url: string }) =>

@@ -1,34 +1,27 @@
 import { Tooltip } from '@components/Tooltip/Tooltip';
 import { useRoomsContext } from 'hooks/useRoomsContext';
-import { memo, useCallback, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { CreateChatModal } from './CreateChatModal';
 import { SearchBar } from './SearchBar';
 
-export const ChatRoomList = memo(() => {
+export const ChatRoomList = () => {
   const { selectedChat, switchWebSocket } = useRoomsContext();
   const { rooms, mutate } = useRoomsContext();
 
   const [searchQuery, setSearchQuery] = useState('');
   const [showModal, setShowModal] = useState(false); // State to toggle modal visibility
 
-  const onSearchChange = useCallback((value: string) => {
+  const onSearchChange = (value: string) => {
     setSearchQuery(value);
-  }, []);
+  };
 
-  const handleCreateChat = useCallback(
-    (newRoom: { name: string; id: string }) => {
-      mutate([...rooms, newRoom]); // Add the new chat room to the list
-      switchWebSocket(newRoom);
-    },
-    [rooms, switchWebSocket, mutate],
-  );
+  const handleCreateChat = (newRoom: { name: string; id: string }) => {
+    mutate([...rooms, newRoom]); // Add the new chat room to the list
+    switchWebSocket(newRoom);
+  };
 
-  const filteredChats = useMemo(
-    () =>
-      rooms.filter(({ name }) =>
-        name.toLowerCase().includes(searchQuery.toLowerCase()),
-      ),
-    [rooms, searchQuery],
+  const filteredChats = rooms.filter(({ name }) =>
+    name.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
   return (
@@ -89,4 +82,4 @@ export const ChatRoomList = memo(() => {
       )}
     </>
   );
-});
+};

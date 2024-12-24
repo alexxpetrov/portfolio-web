@@ -1,7 +1,6 @@
 import { Tooltip } from '@components/Tooltip/Tooltip';
 import Login from 'features/Auth/Login/Login';
 import { useRoomsContext } from 'hooks/useRoomsContext';
-import { useMemo } from 'react';
 import { useUserService } from 'services/useUserService';
 
 export function LogPanel() {
@@ -9,14 +8,8 @@ export function LogPanel() {
 
   const { data: userInfo } = useUserService();
 
-  const lastMessageRoomName = useMemo(
-    () => rooms.find(({ id }) => id === userInfo?.lastMessageRoomId)?.name,
-    [rooms, userInfo?.lastMessageRoomId],
-  );
-  const lastJoinedRoomName = useMemo(
-    () => rooms.find(({ id }) => id === userInfo?.joinedRoomId)?.name,
-    [rooms, userInfo?.joinedRoomId],
-  );
+  const lastMessageRoomName = () => rooms.find(({ id }) => id === userInfo?.lastMessageRoomId)?.name;
+  const lastJoinedRoomName = () => rooms.find(({ id }) => id === userInfo?.joinedRoomId)?.name;
 
   return (
     <div

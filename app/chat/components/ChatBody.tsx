@@ -1,7 +1,7 @@
 import { Tooltip } from '@components/Tooltip/Tooltip';
 import { useChatContext } from 'hooks/useChatContext';
 import { useRoomsContext } from 'hooks/useRoomsContext';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FiSend } from 'react-icons/fi';
 import { MessageList } from './MessageList';
 
@@ -23,16 +23,16 @@ export function ChatBody() {
 
   const inputRef = useRef(null);
 
-  const handleBlur = useCallback(() => {
+  const handleBlur = () => {
     // Refocus the input if it loses focus
     if (inputRef.current) {
       (inputRef.current as HTMLInputElement).focus();
     }
-  }, []);
+  };
 
   useEffect(() => {
     handleBlur();
-  }, [messages, handleBlur]);
+  }, [messages]);
 
   if (!selectedChat?.id) {
     return (

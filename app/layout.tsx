@@ -24,9 +24,7 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className} style={{ margin: 0 }}>
-
         <AppLayout>{children}</AppLayout>
-
       </body>
     </html>
   );

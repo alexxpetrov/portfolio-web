@@ -21,11 +21,6 @@ const nextConfig = {
   experimental: {
     dynamicIO: true,
     turbo: {
-      resolve: {
-        fallback: {
-          fs: false,
-        },
-      },
       resolveAlias: {
         underscore: 'lodash',
       },
