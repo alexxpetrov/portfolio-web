@@ -81,11 +81,11 @@ export function UserProvider({
   const handleLogout = async () => {
     if (config.IS_DEVELOPMENT) {
       await serverLogout({
-        accessToken: user!.accessToken,
+        accessToken: user?.accessToken ?? '',
       });
     } else {
       await client.logout({
-        accessToken: user!.accessToken,
+        accessToken: user?.accessToken ?? '',
       });
     }
 

@@ -44,7 +44,6 @@ export function ChatBody() {
 
   return (
     <div className="grid h-full grid-rows-[auto,1fr,auto] bg-gray-900 text-gray-200">
-      {/* Chat Header */}
       <div className="flex items-center justify-between border-b border-gray-700 bg-gray-800 p-4">
         <div className="z-10 flex gap-4">
           <span className="font-semibold">{selectedChat.name}</span>
@@ -78,7 +77,6 @@ export function ChatBody() {
         </button>
       </div>
 
-      {/* Chat Messages */}
       <div
         className="space-y-4 overflow-y-auto scroll-smooth p-4"
         ref={scrollableRef}
@@ -86,10 +84,8 @@ export function ChatBody() {
         <MessageList />
       </div>
 
-      {/* Chat Input */}
       <div className="border-t border-gray-700 bg-gray-800 p-4">
         <div className="relative flex items-center">
-          {/* Input Field */}
           <input
             ref={inputRef}
             type="text"
@@ -104,7 +100,6 @@ export function ChatBody() {
             placeholder="Type a message..."
             className="w-full rounded-md bg-gray-700 p-2 pr-10 text-gray-200 outline-none focus:ring-2 focus:ring-teal-300"
           />
-          {/* Send Icon */}
           {message.trim() && (
             <button
               onClick={handleSendMessage}

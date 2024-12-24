@@ -15,7 +15,6 @@ export function MessageList() {
       </div>
     );
   }
-
   const processedMessages = messages.map((message, index, arr) => {
     const messageDate = formatDate(message.time_created);
     const prevMessageDate

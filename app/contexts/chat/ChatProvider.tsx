@@ -1,3 +1,4 @@
+'use client';
 import type { Message } from 'chat/types';
 import { useChatScroll } from 'hooks/useChatScroll';
 import { useState } from 'react';
