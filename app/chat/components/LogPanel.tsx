@@ -1,12 +1,20 @@
 import { Tooltip } from '@components/Tooltip/Tooltip';
 import Login from 'features/Auth/Login/Login';
 import { useRoomsContext } from 'hooks/useRoomsContext';
+import { useEffect, useState } from 'react';
 import { useUserService } from 'services/useUserService';
 
 export function LogPanel() {
   const { rooms } = useRoomsContext();
+  const [userInfo, setUserInfo] = useState<any>(null);
+  const { getUserInfo } = useUserService();
 
-  const { data: userInfo } = useUserService();
+  useEffect(() => {
+    setInterval(async () => {
+      const userInfo = await getUserInfo();
+      setUserInfo(userInfo);
+    }, 5000);
+  }, []);
 
   const lastMessageRoomName = rooms.find(({ id }) => id === userInfo?.lastMessageRoomId)?.name;
   const lastJoinedRoomName = rooms.find(({ id }) => id === userInfo?.joinedRoomId)?.name;
