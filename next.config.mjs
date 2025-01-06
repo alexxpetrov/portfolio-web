@@ -19,6 +19,7 @@ const nextConfig = {
     return config;
   },
   experimental: {
+    ppr: true,
     reactCompiler: true,
     dynamicIO: true,
     turbo: {

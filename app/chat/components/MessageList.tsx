@@ -6,7 +6,7 @@ import { ChatMessage } from './ChatMessage';
 
 export function MessageList() {
   const { user } = useUserContext();
-  const { messages } = useChatContext();
+  const { optimisticMessages: messages } = useChatContext();
 
   if (!messages.length) {
     return (
@@ -15,6 +15,7 @@ export function MessageList() {
       </div>
     );
   }
+
   const processedMessages = messages.map((message, index, arr) => {
     const messageDate = formatDate(message.time_created);
     const prevMessageDate

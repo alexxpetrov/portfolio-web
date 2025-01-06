@@ -1,24 +1,42 @@
 import { Tooltip } from '@components/Tooltip/Tooltip';
 import { useChatContext } from 'hooks/useChatContext';
 import { useRoomsContext } from 'hooks/useRoomsContext';
-import { useEffect, useRef, useState } from 'react';
+import { useUserContext } from 'hooks/useUserContext';
+import { startTransition, useEffect, useRef, useState } from 'react';
 import { FiSend } from 'react-icons/fi';
+import { v4 as uuidv4 } from 'uuid';
 import { MessageList } from './MessageList';
 
 export function ChatBody() {
   const [message, setMessage] = useState<string>('');
-  const { scrollableRef, messages } = useChatContext();
-  const { webSocketRef, selectedChat, setSelectedChat } = useRoomsContext();
+  const { scrollableRef, optimisticMessages: messages, addOptimisticMessage } = useChatContext();
+  const { user } = useUserContext();
+  const { handleSendMessage, selectedChat, setSelectedChat } = useRoomsContext();
 
-  const handleSendMessage = () => {
+  const formRef = useRef<HTMLFormElement>(null);
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     if (message.trim() === '') {
       return;
     }
 
-    webSocketRef.current!.send(message);
+    startTransition(async () => {
+      const messageId = uuidv4();
+      addOptimisticMessage({
+        id: messageId,
+        content: message,
+        user_id: user!.id,
+        nickname: `${user?.firstName}_${user?.lastName}`,
+        room_id: selectedChat!.id,
+        time_created: new Date().toString(),
+        type: 'self',
+      });
+      // Clear the message input
+      queueMicrotask(() => setMessage(''));
 
-    console.log('Message sent:', message);
-    setMessage('');
+      // Awaiting the withResolvers promise to finish the transition
+      await handleSendMessage(new FormData(e.currentTarget), messageId);
+    });
   };
 
   const inputRef = useRef(null);
@@ -41,7 +59,6 @@ export function ChatBody() {
       </div>
     );
   }
-
   return (
     <div className="grid h-full grid-rows-[auto,1fr,auto] bg-gray-900 text-gray-200">
       <div className="flex items-center justify-between border-b border-gray-700 bg-gray-800 p-4">
@@ -85,31 +102,26 @@ export function ChatBody() {
       </div>
 
       <div className="border-t border-gray-700 bg-gray-800 p-4">
-        <div className="relative flex items-center">
+        <form ref={formRef} onSubmit={handleSubmit} action={handleSendMessage} className="relative flex items-center">
           <input
             ref={inputRef}
             type="text"
             value={message}
             onChange={e => setMessage(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                handleSendMessage();
-              }
-            }}
             autoFocus
+            name="content"
             placeholder="Type a message..."
             className="w-full rounded-md bg-gray-700 p-2 pr-10 text-gray-200 outline-none focus:ring-2 focus:ring-teal-300"
           />
           {message.trim() && (
             <button
-              onClick={handleSendMessage}
               className="absolute right-2 text-gray-400 hover:text-teal-300"
-              type="button"
+              type="submit"
             >
               <FiSend size={20} />
             </button>
           )}
-        </div>
+        </form>
       </div>
     </div>
   );

@@ -1,17 +1,40 @@
 'use client';
-import type { ChatRoom } from 'chat/types';
+import type { ChatRoom, Message } from 'chat/types';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useChatContext } from 'hooks/useChatContext';
 import { useUserContext } from 'hooks/useUserContext';
-import { useRef, useState } from 'react';
+import omit from 'lodash/omit';
+import { useReducer, useRef, useState } from 'react';
 import { useChatFetchData } from 'utils/chatFetcher';
 import { config } from 'utils/config';
+import { v4 as uuidv4 } from 'uuid';
 import { RoomsContext } from './RoomsContext';
+
+function reducer(state: Record<string, { resolve: () => void; reject: () => void }>, action: { id: string; type: 'add' | 'resolve' | 'exit'; resolve?: (value: unknown) => void; reject?: () => void }) {
+  switch (action.type) {
+    case 'add':
+      return { ...state, [action.id]: { ...omit(action, 'id', 'type') } };
+    case 'resolve':
+      if (!state?.[action?.id]) {
+        return state;
+      }
+      state?.[action.id]?.resolve();
+      return omit(state, action.id);
+    case 'exit':
+      Object.values(state).forEach(({ resolve }) => {
+        resolve();
+      });
+      return {};
+    default:
+      return state;
+  }
+}
 
 export function RoomsProvider({ children }: { children: React.ReactNode }) {
   const { protectedFetcher } = useChatFetchData();
   const { user } = useUserContext();
-  const { setMessages, scrollableRef } = useChatContext();
+  const { scrollableRef, setMessages } = useChatContext();
+  const [, dispatch] = useReducer(reducer, {});
 
   // Access the client
   const queryClient = useQueryClient();
@@ -32,6 +55,21 @@ export function RoomsProvider({ children }: { children: React.ReactNode }) {
     {} as ChatRoom,
   );
 
+  const handleSendMessage = async (message: FormData, messageId?: string) => {
+    // I had to create message IDs on the client to have unique ID for the promise map reducer
+    const id = messageId || uuidv4();
+    const { promise, resolve, reject } = Promise.withResolvers();
+
+    // Force state update via queueMicrotask to prevent deadlock
+    queueMicrotask(() => dispatch({ type: 'add', id, resolve, reject }));
+
+    // Send the message to WS
+    webSocketRef.current!.send(JSON.stringify({ content: message.get('content')!, id }));
+
+    // Wait for the promise to resolve and remove the hanging optimistic promise from the map.
+    await promise;
+  };
+
   // Open WebSocket connection
   const connectToWebSocket = (id: string) => {
     const ws = new WebSocket(
@@ -41,26 +79,35 @@ export function RoomsProvider({ children }: { children: React.ReactNode }) {
     if (ws.OPEN) {
       webSocketRef.current = ws;
     }
-
-    ws.onmessage = (event) => {
+    ws.onmessage = function (event) {
       const parsedData = JSON.parse(event.data);
-      console.log('Message received from server:', JSON.parse(event.data));
-      setMessages(prev => [
-        ...prev,
-        ...(Array.isArray(parsedData) ? parsedData : [parsedData]).sort(
-          // @ts-expect-error ignore
-          (a, b) => new Date(a.time_created) - new Date(b.time_created),
-        ),
-      ]);
+      const newMessages = (Array.isArray(parsedData) ? parsedData : [parsedData]) as Message[];
 
-      const scrollableElement = scrollableRef.current;
-      if (scrollableElement) {
-        const previousHeight = scrollableElement.scrollHeight;
-        setTimeout(() => {
-          const newHeight = scrollableElement.scrollHeight;
-          scrollableElement.scrollTop += newHeight - previousHeight;
-        }, 0);
-      }
+      setTimeout(() => {
+        newMessages.forEach((message) => {
+          if (message.user_id === user?.id) {
+            dispatch({ type: 'resolve', id: message.id });
+          }
+        });
+
+        setMessages(prev => [
+          ...prev,
+          ...newMessages.sort(
+            (a, b) => {
+              // @ts-expect-error ignore
+              return new Date(a.time_created) - new Date(b.time_created);
+            },
+          ),
+        ]);
+        const scrollableElement = scrollableRef.current;
+        if (scrollableElement) {
+          const previousHeight = scrollableElement.scrollHeight;
+          setTimeout(() => {
+            const newHeight = scrollableElement.scrollHeight;
+            scrollableElement.scrollTop += newHeight - previousHeight;
+          }, 0);
+        }
+      }, 3000);
     };
 
     // Event: Connection closed
@@ -71,6 +118,7 @@ export function RoomsProvider({ children }: { children: React.ReactNode }) {
 
     // Event: Error occurred
     ws.onerror = (error) => {
+      // promiseReducer.reject();
       console.error('WebSocket error:', error);
     };
   };
@@ -97,6 +145,8 @@ export function RoomsProvider({ children }: { children: React.ReactNode }) {
     setSelectedChat({ id, name });
   };
 
+  // const [roomChatState, submitMessageAction, isPending] = useActionState(submitMessage, { success: false });
+
   return (
     <RoomsContext
       value={{
@@ -105,8 +155,11 @@ export function RoomsProvider({ children }: { children: React.ReactNode }) {
         selectedChat,
         switchWebSocket,
         connectToWebSocket,
-        webSocketRef,
+        handleSendMessage,
         setSelectedChat,
+        // roomChatState,
+        // submitMessageAction,
+        // isPending,
       }}
     >
       {children}
