@@ -4,43 +4,10 @@ import { CardList } from 'components/CardList/CardList';
 import { JobCard } from 'components/JobCard/JobCard';
 import { ProjectCard } from 'components/ProjectCard/ProjectCard';
 import { cards, projectCardList } from 'config/sources';
-import { useEffect } from 'react';
+import { useSectionTracking } from 'hooks/useSectionTracking';
 
 export default function Home() {
-  useEffect(() => {
-    const menuItems = document.querySelectorAll('nav a');
-    const sections = document.querySelectorAll('section');
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            // Remove active class from all menu items
-
-            menuItems.forEach(item => item.classList.remove('active'));
-            // Add active class to the menu item linked to the visible section
-            const activeMenu = document.querySelector(
-              `a[href="#${entry.target.id}"]`,
-            );
-
-            activeMenu!.classList.add('active');
-          }
-        });
-      },
-      {
-        root: null, // Viewport
-        threshold: 0.5, // Trigger when 50% of the section is visible
-      },
-    );
-
-    // Observe each section
-    sections.forEach(section => observer.observe(section));
-
-    // Cleanup on unmount
-    return () => {
-      observer.disconnect();
-    };
-  }, []);
+  useSectionTracking();
 
   return (
     <div className="mx-auto min-h-screen max-w-screen-xl px-6 py-12 md:px-12 md:py-16 lg:py-0">
@@ -91,7 +58,7 @@ export default function Home() {
                   </a>
                 </li>
               </ul>
-              <ul className="mt-16 w-max">
+              {/* <ul className="mt-16 w-max">
                 <li>
                   <a
                     className="group flex items-center py-3"
@@ -103,7 +70,7 @@ export default function Home() {
                     </span>
                   </a>
                 </li>
-              </ul>
+              </ul> */}
             </nav>
           </div>
 

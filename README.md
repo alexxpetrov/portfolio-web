@@ -24,8 +24,8 @@ Stumbled across the portfolio https://github.com/bchiang7 Brittany Chiang did at
 
 ## Technologies Used
 
-- **Framework**: [Next.js 14](https://nextjs.org) with App Router.
-- **Frontend**: [React 18](https://reactjs.org) (to be upgraded to v 19).
+- **Framework**: [Next.js 15](https://nextjs.org) with App Router.
+- **Frontend**: [React 19 w/ Compiler](https://reactjs.org).
 - **Styling**: [Tailwind CSS](https://tailwindcss.com) for utility-first styling.
 - **Communication**: [Protocol Buffers (Protobuf)](https://protobuf.dev) and [ConnectRPC](https://connectrpc.com) for efficient server-client interaction. REST
 - **Git Hooks**: [Husky](https://typicode.github.io/husky/) for managing pre-commit hooks.

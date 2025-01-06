@@ -2,7 +2,7 @@ import type { Message } from 'chat/types';
 
 import { useEffect, useRef } from 'react';
 
-export function useChatScroll({ messages }: { messages: Message[] }) {
+export function useChatScroll({ optimisticMessages }: { optimisticMessages: Message[] }) {
   const scrollableRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -12,7 +12,7 @@ export function useChatScroll({ messages }: { messages: Message[] }) {
         scrollableElement.scrollTop = scrollableElement.scrollHeight;
       }, 0);
     }
-  }, [messages]);
+  }, [optimisticMessages]);
 
   return { scrollableRef };
 }

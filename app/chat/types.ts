@@ -13,12 +13,15 @@ export type Message = {
   nickname: string;
   room_id: string;
   time_created: string;
+  isSending?: boolean;
   type: 'recv' | 'self';
 };
 
 export type ChatContextType = {
   messages: Message[];
   setMessages: Dispatch<SetStateAction<Message[]>>;
+  optimisticMessages: Message[];
+  addOptimisticMessage: (newMessage: Message) => void;
   scrollableRef: RefObject<HTMLDivElement | null>;
 };
 
@@ -28,6 +31,6 @@ export type RoomsContextType = {
   switchWebSocket: ({ id, name }: ChatRoom) => void;
   connectToWebSocket: (id: string) => void;
   selectedChat: ChatRoom | null;
-  webSocketRef: RefObject<WebSocket | null>;
+  handleSendMessage: (message: FormData, id?: string) => void;
   setSelectedChat: Dispatch<SetStateAction<ChatRoom | null>>;
 };

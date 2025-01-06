@@ -29,7 +29,14 @@ export const ChatMessage: FC<ChatMessageProps> = ({
         </span>
         <span className="mr-8 overflow-hidden break-words">
           {message.content}
+          {message.isSending && (
+            <span className="mr-8 overflow-hidden break-words text-gray-200">
+              {' '}
+              Sending...
+            </span>
+          )}
         </span>
+
         <span className={`absolute bottom-1 right-2 text-xs ${timeClass}`}>
           {formatTime(message.time_created)}
         </span>
