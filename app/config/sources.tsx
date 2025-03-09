@@ -5,77 +5,70 @@ import identiaImg from '@public/projects/identia.webp';
 export const cards = [
   {
     id: 1,
-    dateStart: '2024-08',
-    dateFinish: 'Present',
-    title: 'Senior Frontend Engineer',
-    company: '· Aiola',
-    description: `Created and deployed to production AI Model Publish flow UI and back end using AWS DynamoDB/AppSync for data storage/retrieval and Prefect to track asynchronous job status. 
-  Applied short-polling strategy to synchronize Front End with AWS DynamoDB using Nest.js Back end as a proxy
-  Unified three endpoint requests into a single one resulting in improved request latency and a lower amount of unnecessary FE state changes
-  Integrated and set up ESLint ( tsconfig ) with Husky to improve codebase quality and lower the amount of CI runs.
-  `,
-    techStack: [
-      'TypeScript',
-      'Nest.js',
-      'React',
-      'Jest',
-      'React Testing Library',
-      'AWS',
-      'AppSync',
-      'DynamoDB',
-      'Prefect',
-    ],
-    link: 'https://aiola.com/',
-  },
-  {
-    id: 2,
     dateStart: '2023-02',
-    dateFinish: '2024-08',
+    dateFinish: '2025-02',
     title: 'Senior Frontend Engineer',
     company: '· Playtika',
-    description: `Created a dynamic Redux storage with multiple nested layers. 
-  Added an FE-based version-controlled migration mechanism
-  Refactored a large monolithic application into independent modules 
-  Improved campaign managers’ performance by 50%`,
+    description: `Improved budget managers’ performance by 64.8% after a major refactoring of a monolithic application.
+Integrated Websocket into review tool cutting budget planning costs by 24.2%.
+Added offline mode to the budget planning app reducing overall time spent while planning by 38.7%.
+Deployed Next.js budget planning app cutting costs by 26.4%.`,
     techStack: [
       'React',
       'Typescript',
+      'Next.js',
       'Redux',
       'Redux-saga',
       'Recharts',
       'Ag-Grid',
+      'Zustand',
+      'Jest/React Testing Library',
+      'Playwright',
+      'Go',
+      'Websockets',
+      'Redis',
+      'Kafka',
+      'PosgreSQL',
     ],
     link: 'https://www.playtika.com/',
   },
   {
-    id: 3,
-    dateStart: '2022/02',
+    id: 2,
+    dateStart: '2021/02',
     dateFinish: '2023/02',
     title: 'Senior Frontend Engineer, Accessibility',
     company: '· Nearmap',
-    description: `Set up a Dockerized microfrontend service with React/Redux. 
-      Introduced the application to the team with and integrated into a large in-production product.
-  Improved AVG application rating by 0.2 (4.3 -> 4.5).`,
+    description: `Developer a service with AI features, improving application average rating to 4.74 (4.28 -> 4.74).
+Increased the amount of test coverage to 95.4% (84.3% -> 95.4%).
+Integrated Playwright E2E reducing error rate by 38.4%.
+Optimised assets and application reducing initial load by 1.24s.
+Team lead of 4 developers in a Scrum team.
+Improved UX with service graceful degradation`,
     techStack: [
       'React',
-      'Jest/React Testing Library',
       'Docker',
       'Redux',
       'Redux-saga',
       'HTML/SCSS',
       'Typescript',
+      'Vite',
+      'Vitest',
+      'Nest.js',
+      'AWS/AppSync',
+      'DynamoDB',
+      'Prefect',
     ],
     link: 'https://www.nearmap.com/',
   },
   {
-    id: 4,
+    id: 3,
     dateStart: '2019/06',
-    dateFinish: '2022/02',
+    dateFinish: '2021/02',
     title: 'Middle Frontend Engineer',
-    company: '· Altexsoft',
-    description: `Internal Forum: Leading a team of Front End junior developers, creating and assigning tasks, grooming and decomposing stories, setting up front end
-  Video recording software: Created a custom video player using Canvas, merging two video streams using WebRTC
-  Set up initial Front End structure for Next.js, React, Redux and Webpack.`,
+    company: '· Netflix',
+    description: `Developer WebRTC recording application improving in-house agents performance by 48.2%.
+Integrated UI tests and Typescript reducing the error rate by 27.8%.
+Optimised React modules and improved performance of agents by 17.2%. `,
     techStack: [
       'React',
       'Next.js',
@@ -87,13 +80,14 @@ export const cards = [
     link: 'https://www.altexsoft.com/',
   },
   {
-    id: 5,
+    id: 4,
     dateStart: '2018/01',
     dateFinish: '2019/06',
     title: 'Junior Frontend Engineer',
     company: '· Plarium',
-    description: `Browser App: Building and maintaining online chat, web app and user forum
-  Desktop App with Electron: Creating and maintaining React modules, setting up Routes and ensuring static typing with Typescript.`,
+    description: `Created online chat with Websockets.
+Delivered a redesigned forum improving players’ reviews.
+Desktop App with Electron: Creating and maintaining React modules, setting up Routes.`,
     techStack: ['React', 'Electron', 'Typescript'],
     link: 'https://plarium.com/',
   },

@@ -125,31 +125,21 @@ export default function Home() {
             className="mb-16 scroll-mt-16 md:mb-24 lg:mb-36 lg:scroll-mt-24"
           >
             <p className="mb-4">
-              I’m a developer passionate about building intuitive, scalable web
-              applications that solve real-world problems with clean,
-              maintainable code. My favorite work revolves around crafting
-              seamless user experiences, combining cutting-edge technologies
-              with efficient solutions for performance and scalability.
-            </p>
-            <p className="mb-4">
-              Currently, I’m expanding my expertise in backend development,
-              specializing in Go (Golang), serverless architectures, and cloud
-              technologies like AWS. I’ve contributed to projects that integrate
-              frontend systems with robust backend solutions. My experience also
-              includes optimizing cloud-based infrastructures and implementing
-              scalable, low-latency APIs, ensuring seamless integration between
-              systems.
+              I'm afull‑stack developer with 6+ years of commercial experience, working in teams ranging from 2 to 40 members, both remotely and on‑site.
+              I have 2 years of team leadership experience managing the entire development cycle—from gathering product owner requirements to releasing a
+              fully optimized web application with high test coverage, detailed analytics, and continuous integration/continuous deployment (CI/CD).
+              I am an expert in building responsive, high‑performance web solutions.
             </p>
             <p className="mb-4">
               In the past, I’ve worked with a diverse range of companies—from
               <a
                 className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
                 rel="noreferrer noopener"
-                href="https://aiola.com/"
+                href="https://www.netflix.com"
                 target="_blank"
               >
                 {' '}
-                startups
+                successful streaming services
               </a>
               {' '}
               to
@@ -160,9 +150,10 @@ export default function Home() {
                 href="https://www.nearmap.com/"
                 target="_blank"
               >
-                large companies
+                geospatial solutions
                 {' '}
               </a>
+              {' '}
               and
               {' '}
               <a
@@ -173,6 +164,18 @@ export default function Home() {
               >
                 {' '}
                 digital entertainment corporations
+              </a>
+              {' '}
+              as well as
+              {' '}
+              <a
+                className="font-medium text-slate-200 hover:text-teal-300 focus-visible:text-teal-300"
+                rel="noreferrer noopener"
+                href="https://plarium.com/"
+                target="_blank"
+              >
+                {' '}
+                successful mobile game studios
               </a>
               , where I tackled challenges like refactoring monolithic apps,
               introducing Dockerized microservices, and improving performance

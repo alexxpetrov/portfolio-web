@@ -19,9 +19,9 @@ const nextConfig = {
     return config;
   },
   experimental: {
-    ppr: true,
+    ppr: false,
     reactCompiler: true,
-    dynamicIO: true,
+    dynamicIO: false,
     turbo: {
       resolveAlias: {
         underscore: 'lodash',
