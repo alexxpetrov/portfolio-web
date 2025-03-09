@@ -2,12 +2,9 @@
 import type { ReactNode } from 'react';
 import { TransportProvider } from '@connectrpc/connect-query';
 import { createConnectTransport } from '@connectrpc/connect-web';
-import { QueryClient } from '@tanstack/react-query';
 import { Provider } from 'react-redux';
 import { config } from 'utils/config';
 import { store } from './store/store.index';
-
-const queryClient = new QueryClient();
 
 const transport = createConnectTransport({
   baseUrl: config.CHAT_GRPC_ENDPOINT,
